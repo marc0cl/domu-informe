@@ -1,0 +1,302 @@
+Este capítulo abordará los servicios web necesarios para este proyecto, el modelo de datos, diagramas de entidad relación y diseño de la plataforma DOMU. Se presenta el modelo de datos, la arquitectura del software, los principales casos de uso y el diseño de las interfaces, que permiten visualizar cómo se implementarán los requerimientos funcionales y no funcionales definidos en el capítulo anterior.
+
+% ---------------------------------------------
+\section{Descripción de los Servicios Web}
+
+Los servicios web necesarios se implementarán utilizando una arquitectura \textbf{API REST} debido a su flexibilidad, escalabilidad y compatibilidad con distintas plataformas. Estas APIs permitirán gestionar operaciones críticas como autenticación, control de accesos, encomiendas, reservas, tareas del personal, administración financiera, e interacción con la comunidad y proveedores.
+
+Entre los servicios esenciales destacan:
+
+\begin{itemize}
+    \item \textbf{Autenticación y Autorización}: Manejo seguro de credenciales mediante \textbf{JWT} (\textit{JSON Web Tokens}) para asegurar acceso restringido según roles.
+    \item \textbf{Gestión de Usuarios y Roles}: Administración y asignación dinámica de roles y permisos basados en \textbf{RBAC} (\textit{Role-Based Access Control}).
+    \item \textbf{Control de Accesos}: Registro y validación de visitantes mediante la **lectura del código QR de documentos de identidad** o la aplicación, integrando el flujo de datos del escáner en el sistema.
+    \item \textbf{Gestión Operativa}: Registro y seguimiento de tareas asignadas al personal, incluyendo evidencias fotográficas en caso de ser necesario y control de turnos.
+    \item \textbf{Administración Financiera}: Emisión y gestión de estados de cuenta de gastos comunes, pagos electrónicos y monitoreo de morosidad.
+    \item \textbf{Comunicación Comunitaria}: Módulos para notificaciones, reservas de espacios comunes, votaciones electrónicas y foros de discusión comunitarios.
+\end{itemize}
+
+% ---------------------------------------------
+\section{Modelo de datos}
+
+El modelo de datos es de tipo relacional, con el fin de mantener la simpleza y eficiencia del almacenamiento de información crítica del sistema.
+
+Las entidades del modelo de datos son:
+\begin{enumerate}[label=(\alph*)] % Nivel principal: (a), (b), (c), ...
+    \item \textbf{Identidad y Roles}: Gestiona los datos personales y credenciales de residentes y el rol asignado.
+    \begin{enumerate}[label=\arabic*.] % Subnivel: (a.1), (a.2), ...
+        \item \textbf{Usuario}: Datos personales y credenciales.
+        \item \textbf{Rol}: Catálogo de roles (residente, administrador, personal).
+    \end{enumerate}
+
+    \item \textbf{Condominio}: Describe la estructura del condominio, incluyendo edificios, unidades habitacionales y estacionamientos asignados.
+    \begin{enumerate}[label=\arabic*.]
+        \item \textbf{Edificio}: Información de cada torre o condominio.
+        \item \textbf{UnidadHab}: Departamentos/unidades con coeficiente de prorrata.
+    \end{enumerate}
+
+    \item \textbf{Visitas y Control de Acceso}: Registra accesos y visitas, valida identidades y gestiona encomiendas con evidencias.
+    \begin{enumerate}[label=\arabic*.]
+        \item \textbf{Visita}: Datos básicos de la persona que ingresa.
+        \item \textbf{AutorizacionVisita}: QR y vigencia pre-autorizada.
+        \item \textbf{RegistroAcceso}: Hora de entrada/salida y validaciones.
+        \item \textbf{Encomienda}: Paquetes recibidos y evidencia fotográfica.
+    \end{enumerate}
+
+    \item \textbf{Personal, Turnos y Tareas}: Asigna, monitorea y registra turnos del personal del condominio, incluyendo bitácoras diarias.
+    \begin{enumerate}[label=\arabic*.]
+        \item \textbf{Personal}: Conserjes, aseo y demás staff.
+        \item \textbf{Turno}: Programación y registro real de jornada.
+        \item \textbf{Tarea}: Asignaciones con evidencia y estados.
+        \item \textbf{BitacoraPersonal}: Incidencias o novedades diarias.
+    \end{enumerate}
+
+    \item \textbf{Finanzas y Gastos Comunes}: Administra cargos mensuales, pagos realizados, morosidades y transacciones financieras generales.
+    \begin{enumerate}[label=\arabic*.]
+        \item \textbf{MesGastoComun}: Carátula mensual (PDF, vencimiento).
+        \item \textbf{CargoGC}: Ítems de gasto común.
+        \item \textbf{PagoGC}: Pagos por unidad, medio y fecha.
+        \item \textbf{Morosidad}: Saldos pendientes y sanciones.
+        \item \textbf{TransaccionFin}: Ingresos y egresos generales.
+    \end{enumerate}
+
+    \item \textbf{Reservas de Espacios Comunes}: Gestiona reservas de espacios comunes con control de aforo, tiempo máximo y bloqueos por morosidad.
+    \begin{enumerate}[label=\arabic*.]
+        \item \textbf{EspacioComun}: Salón, quincho, gimnasio, etc.
+        \item \textbf{Reserva}: Bloques de tiempo, aforo y bloqueo por mora.
+    \end{enumerate}
+
+    \item \textbf{Participación (Foros y Votaciones)}: Facilita procesos de votación de la comunidad y provee espacios de discusión organizados.
+    \begin{enumerate}[label=\arabic*.]
+        \item \textbf{Votacion}: Procesos electorales o decisiones.
+        \item \textbf{OpcionVoto}: Alternativas de cada votación.
+        \item \textbf{Voto}: Registro de cada sufragio.
+        \item \textbf{CategoriaForo}: Clasificación de hilos.
+        \item \textbf{HiloForo}: Temas de discusión.
+        \item \textbf{MensajeForo}: Comentarios dentro de un hilo.
+    \end{enumerate}
+
+    \item \textbf{Soporte, Proveedores y Seguridad}: Maneja integralmente servicios externos, reclamos internos, mantenimiento y \textit{backups}.
+    \begin{enumerate}[label=\arabic*.]
+        \item \textbf{Ticket}: Reclamos o sugerencias de residentes.
+        \item \textbf{SeguimientoTicket}: Conversación y cambios de estado.
+        \item \textbf{Proveedor}: Datos tributarios y de contacto.
+        \item \textbf{ServicioSolicitado}: Solicitudes de servicio externo.
+        \item \textbf{Cotizacion}: Propuesta económica adjunta.
+        \item \textbf{Factura}: Documento tributario pagado al proveedor.
+        \item \textbf{MantenimientoPrev}: Calendario de mantención preventiva.
+        \item \textbf{BackupBD}: Historial de respaldos automáticos.
+        \item \textbf{KPI\_Diario}: Métricas diarias para \textit{dashboard}.
+    \end{enumerate}
+\end{enumerate}
+
+\cleardoublepage % Asegura que esta sección comience en una página limpia (incluso página par/impar si aplica)
+\subsection{Modelo Entidad-Relación}
+
+Ya que el proyecto utilizará MySQL como base de datos, definimos el siguiente diagrama Entidad-Relación que ayudará a comprender mejor la definición de las relaciones y la estructura de los datos.
+
+\begin{figure}[H]
+  \centering
+  % Aseguramos que la imagen se escale al máximo ancho de la página, pero no más de 1.0
+  \includegraphics[width=\textwidth]{Proyecto_de_Titulo/InformeFinal-SW/images/MER.png}
+  \caption{Modelo Entidad-Relación del Sistema DOMU}
+  \label{fig:mer}
+\end{figure}
+
+\clearpage % Fuerza un salto de página después de la figura, asegurando que el contenido siguiente comience en una nueva página.
+
+\cleardoublepage % Asegura que esta sección comience en una página limpia
+\subsection{Modelo Relacional}
+
+A continuación, se modelaron los datos siguiendo el patrón relacional, detallando las tablas, columnas, claves primarias y foráneas que se implementarán en MySQL.
+
+\begin{figure}[H]
+  \centering
+  % Escala la imagen para que ocupe el ancho máximo de la caja de texto, garantizando visibilidad.
+  \includegraphics[width=\textwidth]{Proyecto_de_Titulo/InformeFinal-SW/images/ModeloRelacional.png}
+  \caption{Diagrama del Modelo Relacional del Sistema DOMU}
+  \label{fig:relacional}
+\end{figure}
+
+\clearpage % Fuerza un salto de página después de la figura.
+
+\section{Diseño de interfaz y navegación}
+En esta sección se dará énfasis al desarrollo de los \textit{mockups} que contempla nuestra aplicación \textbf{DOMU}, donde se detalla la guía de estilo a seguir, en conjunto con el logotipo que tendrá la \textit{app}. También se definirán las guías de colores a utilizar, las cuales serán las encargadas de representar nuestra identidad visual a través de las interfaces gráficas de la aplicación.
+
+\subsection{Guías de estilos}
+
+La guía de estilo marcará las pautas a seguir para el diseño de la web. Por tanto, servirá de consulta para visualizar los objetivos de la aplicación en cuanto a su estilo. El principal objetivo es dotar al estilo de la aplicación de la máxima sencillez posible, a fin de que al usuario le resulte intuitivo el uso de la aplicación. A continuación se señalarán aspectos relativos al estilo como son el logotipo, los colores principales y secundarios, la tipografía y la composición de las interfaces.
+
+\subsection{Logotipo}
+\label{subsec:logotipo}
+
+El logotipo de \textbf{DOMU} es el principal símbolo gráfico que representa la plataforma. Podrá presentarse como \textbf{imagotipo} e \textbf{isotipo}; por defecto se utiliza exclusivamente el imagotipo a color, que combina el ícono con el nombre de la plataforma.
+
+El ícono está basado en una letra “D” tridimensional, diseñada con geometría simple; el contorno evoca el entorno habitacional y comunitario en el que se desarrolla la aplicación.
+
+El texto que acompaña al ícono utiliza una tipografía de estilo moderno y geométrico que refuerza la estética tecnológica de la marca.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale=0.5]{Proyecto_de_Titulo/InformeFinal-SW/images/LogotipoDOMU.png}
+  \caption{Logotipo de Domu}
+  \label{fig:logo}
+\end{figure}
+
+\subsection{Guía de colores}
+Los colores corporativos de la aplicación componen una gama cromática cálida, orientada a transmitir cercanía, energía y modernidad.
+
+En conjunto, esta paleta de colores que se muestra en la figura a continuación. La cual busca lograr una experiencia visual agradable y llamativa para los usuarios de la plataforma.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale=0.5]{Proyecto_de_Titulo/InformeFinal-SW/images/PaletaDeColores.png}
+  \caption{Paleta de Colores DOMU}
+  \label{fig:paleta}
+\end{figure}
+
+\subsection{Tipografía}
+La tipografía utilizada es un tipo de letra sencilla y universal que facilite la legibilidad. Se ha optado por emplear una fuente gratuita de Google Fonts, como es Roboto Mono. En las figuras 5.5 y 5.6 se incluye una representación de dicha fuente con los caracteres más comunes.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale=0.5]{Proyecto_de_Titulo/InformeFinal-SW/images/EjemploTipografiaRoboto1.png}
+  \caption{Texto de Ejemplo 1 Tipografía Roboto Mono}
+  \label{fig:tipografia}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale=0.5]{Proyecto_de_Titulo/InformeFinal-SW/images/EjemploTipografiaRoboto2.png}
+  \caption{Texto de Ejemplo 2 Tipografía Roboto Mono}
+  \label{fig:tipografia}
+\end{figure}
+
+\subsection{Composición de Interfaces}
+\label{subsec:composicion-interfaces}
+
+La composición de las interfaces expuesta a continuación corresponde a la versión adaptada para móvil que será la versión implementada en primer lugar. La adaptación para pantallas de mayor tamaño se realizará en un futuro.
+
+% --- ÍTEM A: Inicio de Sesión ---
+\begin{itemize}
+    \item[\textbf{A.}] \textbf{Inicio de Sesión (Login)}: Interfaz de autenticación para todos los usuarios.
+\end{itemize}
+\begin{figure}[H]
+    \centering
+    % Reemplaza esta ruta y scale con la figura real de tu pantalla de Login
+    \includegraphics[scale=0.5]{Proyecto_de_Titulo/InformeFinal-SW/images/InterfazInicioSesion.png} 
+    \caption{A. Mockup de la interfaz de Inicio de Sesión.}
+    \label{fig:mockup-login}
+\end{figure}
+\clearpage % Sugerido para separar figuras grandes en páginas distintas.
+
+
+% --- ÍTEM B: Vista Conserje (Registro QR) ---
+\begin{itemize}
+    \item[\textbf{B.}] \textbf{Vista Conserje}: Interfaz operativa clave para el registro de visitas mediante escaneo QR.
+\end{itemize}
+\begin{figure}[H]
+    \centering
+    % Reemplaza esta ruta y scale con la figura real de tu pantalla de Conserje
+    \includegraphics[scale=0.5]{Proyecto_de_Titulo/InformeFinal-SW/images/InterfazConserje.png}
+    \caption{B. Mockup de la interfaz de la Vista Conserje.}
+    \label{fig:mockup-conserje}
+\end{figure}
+\clearpage
+
+
+% --- ÍTEM C: Vista Administración ---
+\begin{itemize}
+    \item[\textbf{C.}] \textbf{Vista Administración}: Paneles de control para la gestión general de la comunidad.
+\end{itemize}
+\begin{figure}[H]
+    \centering
+    % Reemplaza esta ruta y scale con la figura real
+    \includegraphics[scale=0.5]{Proyecto_de_Titulo/InformeFinal-SW/images/InterfazAdministracion.png}
+    \caption{C. Mockup de la interfaz de la Vista Administración.}
+    \label{fig:mockup-administracion}
+\end{figure}
+\clearpage
+
+% --- ÍTEM D: Vista Comité ---
+\begin{itemize}
+    \item[\textbf{D.}] \textbf{Vista Comité}: Interfaz con acceso a información crítica, documentos y procesos de votación destinados a los miembros del comité de administración.
+\end{itemize}
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.5]{Proyecto_de_Titulo/InformeFinal-SW/images/InterfazComite.png}
+    \caption{D. Mockup de la interfaz de la Vista Comité.}
+    \label{fig:mockup-comite}
+\end{figure}
+\clearpage
+
+
+% --- ÍTEM E: Vista Residente (Aplicación Móvil) ---
+\begin{itemize}
+    \item[\textbf{E.}] \textbf{Vista Residente}: Interfaz de la aplicación móvil, centralizando funcionalidades como recepción de notificaciones, reserva de espacios y pago de gastos comunes.
+\end{itemize}
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.5]{Proyecto_de_Titulo/InformeFinal-SW/images/InterfazResidente.png}
+    \caption{E. Mockup de la interfaz de la Vista Residente (Aplicación Móvil).}
+    \label{fig:mockup-residente}
+\end{figure}
+\clearpage
+
+
+% --- ÍTEM F: Vista Reporte de Incidencias ---
+\begin{itemize}
+    \item[\textbf{F.}] \textbf{Vista Reporte de Incidencias}: Interfaz para la gestión y el seguimiento de reclamos, sugerencias o fallas operacionales (\textit{tickets}).
+\end{itemize}
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.5]{Proyecto_de_Titulo/InformeFinal-SW/images/IterfazReporteDeIncidencias.png}
+    \caption{F. Mockup de la interfaz de Reporte de Incidencias.}
+    \label{fig:mockup-incidencias}
+\end{figure}
+\clearpage
+
+
+% --- ÍTEM G: Vista Reporte Financiero ---
+\begin{itemize}
+    \item[\textbf{G.}] \textbf{Vista Reporte Financiero}: Paneles analíticos que presentan a la administración las métricas clave de gastos comunes, egresos y estado de morosidad.
+\end{itemize}
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.5]{Proyecto_de_Titulo/InformeFinal-SW/images/InterfazReportesFinancieros.png}
+    \caption{G. Mockup de la interfaz de Reporte Financiero.}
+    \label{fig:mockup-financiero}
+\end{figure}
+\clearpage
+
+
+% --- ÍTEM H: Vista Pago de Gastos Comunes ---
+\begin{itemize}
+    \item[\textbf{H.}] \textbf{Vista Pago de Gastos Comunes}: Flujo transaccional que guía al residente a través del proceso de pago en línea de su cuenta mensual.
+\end{itemize}
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.5]{Proyecto_de_Titulo/InformeFinal-SW/images/InterfazPagoGGCC.png}
+    \caption{H. Mockup de la interfaz de Pago de Gastos Comunes.}
+    \label{fig:mockup-pago-gc}
+\end{figure}
+\clearpage
+
+% --- ÍTEM I: Vista Reserva de Áreas Comunes ---
+\begin{itemize}
+    \item[\textbf{I.}] \textbf{Vista Reserva de Áreas Comunes}: Calendario y gestión de reservas por parte del residente.
+\end{itemize}
+\begin{figure}[H]
+    \centering
+    % Reemplaza esta ruta y scale con la figura real
+    \includegraphics[scale=0.5]{Proyecto_de_Titulo/InformeFinal-SW/images/InterfazReservaAreasComunes.png}
+    \caption{I. Mockup de la interfaz de Reserva de Áreas Comunes.}
+    \label{fig:mockup-reservas}
+\end{figure}
+\clearpage
+
+\section{Diseno de la Arquitectura}
+
+\subsection{Configuracion Inicial del Entorno}
+
+\subsection{Arquitectura de Implementacion Final}

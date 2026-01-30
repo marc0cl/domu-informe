@@ -1,0 +1,273 @@
+% Capítulo 1 - Introducción
+
+El presente informe detalla las especificaciones técnicas del proyecto de título de la carrera de Ingeniería Civil en Informática de la Universidad del Bío-Bío. Este proyecto surge con el objetivo de satisfacer una necesidad creciente en las comunidades residenciales: mejorar la gestión interna y la calidad de vida de los residentes mediante el uso de tecnologías digitales.
+
+En la actualidad, muchas comunidades residenciales de edificios y condominios en Chile enfrentan dificultades en aspectos como el control de visitas, la trazabilidad de encomiendas, la administración financiera y la comunicación entre vecinos, lo que genera conflictos, desconfianza y baja eficiencia operativa. Esta situación se agrava frente al crecimiento del parque inmobiliario y la entrada en vigor de la Ley de Copropiedad Inmobiliaria N\textsuperscript{o}~21.442, que exige mayor trazabilidad, participación y transparencia en la gestión comunitaria.
+
+Ante este escenario, se desarrolla \textit{DOMU}, una plataforma integral que centraliza los procesos clave de la gestión comunitaria, incluyendo un sistema de control de acceso optimizado. A diferencia de otras soluciones locales, las cuales se mencionarán más adelante, que abordan procesos de forma parcial, \textit{DOMU} automatiza e integra funciones clave en un solo sistema, involucrando a todos los actores de la comunidad: administradores, conserjes, residentes y personal de la comunidad.
+
+Más allá de su componente técnico, \textit{DOMU} busca fortalecer la convivencia, facilitar la gestión administrativa y brindar una solución moderna, accesible y acorde a la normativa vigente, promoviendo entornos más seguros, eficientes y participativos.
+
+\section{Presentación del área y su problemática}
+
+Esta sección explica la situación actual e identifica los problemas que surgen de esta área.
+
+\subsection{Descripción del problema}
+
+La administración de comunidades residenciales en Chile enfrenta actualmente múltiples desafíos operativos, normativos y tecnológicos. El crecimiento sostenido del parque inmobiliario, junto con la entrada en vigor de la Ley de Copropiedad Inmobiliaria N\textsuperscript{o}~21.442 en abril de 2022, ha establecido nuevas exigencias en materia de trazabilidad, participación y transparencia en la gestión comunitaria. Sin embargo, en la práctica, muchas comunidades continúan funcionando con sistemas manuales y desarticulados, lo que afecta directamente la eficiencia del servicio y la calidad de vida de los residentes.
+
+Entre las principales dificultades se encuentra el registro de visitas y accesos, que en la mayoría de los casos aún se realiza mediante libros físicos y anotaciones informales. Este método carece de mecanismos de validación y seguimiento, es susceptible a errores y manipulación, y no permite generar informes confiables. A esto se suma la falta de un sistema centralizado para la gestión de encomiendas y correspondencia, lo que provoca confusión, pérdidas de paquetes y una baja trazabilidad en la entrega dentro de una comunidad residencial. Además, muchas comunidades no cuentan con canales adecuados para recibir reclamos o sugerencias, ni con herramientas eficientes para difundir información relevante, lo que genera desinformación, frustración y un deterioro del clima organizacional.
+
+La administración interna también presenta falencias importantes. La asignación y monitoreo de tareas del personal —como conserjes, personal de aseo o proveedores— suele realizarse de forma informal, sin indicadores de desempeño ni seguimiento sistematizado. Esto disminuye la capacidad de respuesta ante eventualidades y contribuye a la desorganización operativa. En el ámbito financiero, la gestión de gastos comunes, control de morosidad y administración de cuentas se lleva a cabo en muchos casos con planillas Excel o programas sin integración, lo que dificulta la transparencia, el control y la toma de decisiones oportunas. A ello se suma la inexistencia de sistemas digitales para realizar votaciones del comité, reservar áreas comunes o consultar su disponibilidad, limitando la participación activa de los residentes.
+
+En respuesta, han emergido varias plataformas digitales en el mercado nacional, aunque con limitaciones importantes. \textit{ComunidadFeliz} ofrece su plan full a 3\,UF mensuales (o 30\,UF anuales con abono), incorporando funcionalidades completas de gastos comunes, pagos online vía WebPay Plus, conciliación bancaria, módulos de conserjería y remuneraciones con certificación Previred, además de capacitación y soporte premium. \textit{Edifito}, presente en más de 6.000 comunidades, propone una gestión integral que incluye módulos de control de acceso, encomiendas, financiamiento, reservas, conciliación y contabilidad, junto con asesorías legales, aunque su precio se define a través de cotización y puede incluir descuentos según temporada. \textit{EdiPro} trabaja con un modelo por módulos en Chile: su Pack Conserje básico arranca en 9.571\,CLP/mes, incluye control de accesos, encomiendas, gestión de personal y comunicación; el Pack Administra (25.524\,CLP/mes) y el Pack Full (31.905\,CLP/mes) agregan contabilidad, conciliación bancaria, remuneraciones, videoconferencias y votaciones online. También existen alternativas más económicas como \textit{GastoComúnChile} desde 25.000\,CLP/mes por comunidad, enfocadas exclusivamente en —como dice su nombre— gastos comunes.
+
+Si bien estas alternativas han contribuido a mejorar la gestión en algunas comunidades, presentan limitaciones importantes: muchas no integran todos los procesos en una sola interfaz y requieren múltiples módulos que no siempre se comunican entre sí. En algunos casos, las funcionalidades son limitadas o poco adaptables a las necesidades específicas de cada condominio, lo que obliga a las administraciones a combinar varias herramientas para cubrir sus procesos, generando duplicación de esfuerzos y mayores gastos.
+
+En este contexto, la falta de una solución digital unificada, económica y escalable evidencia un problema estructural en la gestión comunitaria en Chile. La dependencia de sistemas manuales y la fragmentación de herramientas tecnológicas dificultan la implementación de una administración transparente, participativa y eficiente. Esto justifica la necesidad de una nueva propuesta tecnológica que permita centralizar procesos clave, mejorar la trazabilidad y fortalecer la convivencia en las comunidades residenciales.
+
+\section{Presentación de los procesos del ámbito del proyecto en la Empresa}
+
+En esta sección se incluyen diagramas BPMN 2.0 de cuatro procesos que actualmente se realizan en varias comunidades. Estos modelos servirán como punto de partida para el diseño y automatización de los flujos para nuestra multiplataforma \textit{DOMU}.
+
+\subsection{Proceso de registro residente}
+
+El proceso de registro comienza cuando un residente solicita ser inscrito mediante un formulario. La administración valida los datos ingresados. Si el formulario es inválido, se notifica el rechazo. Si es válido, se registra al residente y se le notifica. Finalmente, el residente valida su información, completando así su registro en una comunidad residencial.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.95\linewidth]{Proyecto_de_Titulo/InformeFinal-SW/images/ProcesoDeRegistroResidenteBPMN.png}
+\caption{Proceso de registro de residente}
+\label{fig:bpmn-inicio-sesion}
+\end{figure}
+
+\subsection{Proceso de registro de visitas}
+
+El proceso de registro de visitas, común en comunidades sin plataformas digitales o con planes básicos de estas, comienza con la llegada del visitante al condominio. El conserje notifica la visita al residente y solicita la confirmación para autorizar el ingreso. Paralelamente, se solicita al visitante que complete un formulario en papel con sus datos personales y motivo de la visita. Una vez entregado el formulario al conserje, este procede a validar la información registrada. Tras la validación y la confirmación del residente, el conserje permite el ingreso del visitante, finalizando el proceso con su entrada al condominio.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.95\linewidth]{Proyecto_de_Titulo/InformeFinal-SW/images/ProcesoRegistroVisitaBPMN.jpg}
+\caption{Proceso de registro de visitas en comunidades residenciales.}
+\label{fig:bpmn-registro-visita}
+\end{figure}
+
+\subsection{Proceso de recepción y entrega de encomiendas}
+
+El proceso de recepción de encomiendas, común en comunidades que no cuentan con plataformas digitales o utilizan planes básicos, comienza cuando un repartidor entrega el paquete a un conserje. Este registra manualmente la recepción, anotando los datos disponibles —como destinatario, remitente y hora de entrega— en un cuaderno o planilla física.
+
+Luego de registrar la encomienda, el conserje notifica informalmente al residente, ya sea mediante una llamada telefónica, mensaje de texto o comunicación directa. El residente, al recibir la notificación, válida por su cuenta el envío con el proveedor para confirmar su origen y contenido. Una vez verificado, se dirige a retirar el paquete personalmente.
+
+Finalmente, el residente firma un libro de recepción o documento similar como constancia de conformidad, completando así el proceso de entrega.
+
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.95\linewidth]{Proyecto_de_Titulo/InformeFinal-SW/images/ProcesoDeEncomiendasBPMN.jpg}
+\caption{Proceso de encomiendas.}
+\label{fig:bpmn-encomienda}
+\end{figure}
+
+\subsection{Proceso de pago de gastos comunes}
+
+El proceso de pago de gastos comunes, tal como se realiza en muchas comunidades sin automatización digital, comienza con la llegada de la boleta mensual al residente, la cual suele ser enviada por correo electrónico o distribuida en formato físico (impresa). El residente revisa el detalle del cobro y, posteriormente, realiza una transferencia bancaria al número de cuenta indicado por la administración del edificio.
+
+Una vez realizada la transferencia, el residente debe enviar manualmente el comprobante de pago —ya sea por correo electrónico, WhatsApp o entrega física— a la administración. Esta se encarga de validar el documento recibido, verificando el monto, la fecha y el nombre del remitente.
+
+Si el pago es correcto, la administración actualiza el estado de los gastos comunes de manera manual en sus registros, y notifica al residente que su estado de cuenta ha sido actualizado. Finalmente, el residente puede comprobar que su boleta ha sido registrada como pagada, completando así el proceso.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.95\linewidth]{Proyecto_de_Titulo/InformeFinal-SW/images/ProcedoDePagoGgCcBPMN.png}
+\caption{Proceso de pago de gastos comunes.}
+\label{fig:bpmn-pago-ggcc}
+\end{figure}
+
+
+\section{Propuesta de Solución}
+
+Se propone una plataforma de software que centralice los procesos críticos de la administración de edificios, desde el control de accesos hasta la gestión financiera.
+A diferencia de las herramientas actuales, \textit{DOMU} integra una solución de control de acceso para el registro de visitas que se caracteriza por su eficiencia: el sistema incorpora la integración de una pistola escáner de código QR, que permite la captura y el análisis instantáneo de los datos contenidos en la cédula de identidad chilena. Esta aproximación facilita el registro y la validación inmediata de visitantes, proveedores y personal de mantenimiento, reduciendo los errores de la gestión manual.
+
+Asimismo, la plataforma digitaliza la trazabilidad de encomiendas y correspondencia, agiliza la comunicación interna y mejora la seguridad del edificio. La plataforma se complementa con una aplicación móvil que permite a los residentes gestionar pagos, reservar espacios comunes, recibir notificaciones y participar en votaciones. De este modo, la aplicación aborda de manera unificada la administración interna (tareas y seguimiento de personal), la relación con proveedores (solicitudes y facturación) y la experiencia del residente, promoviendo eficiencia, transparencia y satisfacción en la convivencia diaria.
+
+
+\section{Análisis de los principales trabajos realizados en el área}
+
+Actualmente existen varias soluciones orientadas a la administración de edificios y condominios, como \textit{ComunidadFeliz}, \textit{Edifito}, \textit{Edipro} y \textit{GastoComunChile}. Todas ellas abordan parcialmente la gestión financiera, la comunicación con residentes, el registro de gastos comunes y, en algunos casos, el control de accesos. Sin embargo, ninguna integra de forma completa las áreas involucradas —administrador, residentes, personal de aseo, conserjes, proveedores y visitas.
+
+\begin{enumerate}
+    \item \textbf{ComunidadFeliz}: ofrece una plataforma enfocada en la administración digital de comunidades residenciales, con funcionalidades que incluyen gestión de gastos comunes, pagos en línea, comunicación con residentes, votaciones virtuales, reservas de espacios comunes y conciliación bancaria. El Plan Full incorpora módulos adicionales como gestión de conserjería, remuneraciones y soporte especializado.
+
+    \par\noindent
+    Si bien \textit{ComunidadFeliz} cuenta con una presencia consolidada en el mercado chileno, su enfoque se centra principalmente en la administración financiera y la interacción con residentes, dejando fuera la integración operativa directa de actores como el personal interno, proveedores o sistemas físicos de acceso.
+
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=.8\linewidth]{Proyecto_de_Titulo/InformeFinal-SW/images/PaginaComunidadFeliz.png}
+        \caption{Página web de ComunidadFeliz.}
+        \label{fig:site-comunidadfeliz}
+    \end{figure}
+
+    \item \textbf{Edifito}: ofrece una plataforma digital orientada a la administración integral de comunidades, con foco en la automatización de procesos financieros y operativos. Entre sus principales funcionalidades se encuentran la generación automática de gastos comunes, conciliación bancaria, gestión de remuneraciones, control de accesos mediante códigos QR o lectura de cédulas —similar a los lectores de precios de las cajas automáticas de supermercados—, administración de encomiendas, reservas de espacios comunes, comunicación interna, votaciones virtuales y conexión con cámaras de seguridad.
+
+    \par\noindent
+    \textit{Edifito} trabaja bajo un modelo comercial basado exclusivamente en cotización personalizada, por lo que no publica valores estándar en su sitio web. El precio final se ajusta en función del tamaño de la comunidad, la cantidad de unidades habitacionales y los módulos requeridos por cada cliente.
+
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=.8\linewidth]{Proyecto_de_Titulo/InformeFinal-SW/images/PaginaEdifito.png}
+        \caption{Página web de Edifito.}
+        \label{fig:site-edifito}
+    \end{figure}
+
+    \item \textbf{Edipro}: ofrece una plataforma digital orientada a la administración de comunidades, centrada principalmente en la automatización de procesos financieros y operativos. Sus funcionalidades incluyen gestión de gastos comunes, conciliación bancaria, control de accesos mediante códigos QR o lectura de cédulas, administración de remuneraciones, registro de encomiendas, reservas de espacios comunes, votaciones virtuales, comunicación interna, videoconferencias e integración con cámaras de seguridad.
+
+    \par\noindent
+    \textit{Edipro} opera bajo un modelo modular, compuesto por tres paquetes escalables según las necesidades de cada comunidad. El \textit{Pack Conserje} (CLP 9.571 mensuales) contempla funciones básicas como control de accesos, registro de visitas y encomiendas, mensajería interna y tareas operativas. El \textit{Pack Administra} (CLP 25.524 mensuales) añade contabilidad, cálculo de gastos comunes, remuneraciones y conciliación bancaria. Finalmente, el \textit{Pack Full} (aproximadamente CLP 31.905 mensuales) integra todos los servicios anteriores, sumando reservas de espacios, videoconferencias y votaciones digitales.
+
+    \par\noindent
+    Estos valores se encuentran disponibles en el portal oficial:       \url{https://www.comparasoftware.cl/edipro}.
+
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=.8\linewidth]{Proyecto_de_Titulo/InformeFinal-SW/images/PaginaEdipro.png}
+        \caption{Página web de Edipro.}
+        \label{fig:site-edipro}
+    \end{figure}
+
+
+    \item \textbf{GastoComunChile}: su propuesta se centra en optimizar la gestión financiera comunitaria, con funcionalidades que incluyen el ingreso de consumos y cobros individuales, cálculo automático de gastos comunes, conciliación bancaria, generación de minutas y reportes —como libro diario, mayor, cartolas de morosidad o corte de servicios—, envío masivo de notificaciones por correo y gestión de remuneraciones con archivos compatibles con \textit{Previred}.
+
+    \par\noindent
+    \textit{GastoComunChile} ofrece planes por comunidad con un costo inicial de \$25.000 CLP al mes (más IVA), o \$250.000 CLP al año si se prefiere pago anual, incluyendo soporte técnico, configuración personalizada y actualizaciones continuas sin cargo adicional.
+
+    \par\noindent
+    Aunque la plataforma cubre a fondo toda la gestión de gastos comunes y nómina, se posiciona como una competencia fuerte únicamente en ese ámbito específico.
+
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=.8\linewidth]{Proyecto_de_Titulo/InformeFinal-SW/images/PaginaGastoComunChile.png}
+        \caption{Página web de GastoComunChile.}
+        \label{fig:site-gastocomunchile}
+    \end{figure}
+
+\end{enumerate}
+
+\par\vspace{0.5em}
+\noindent
+\textit{DOMU} se diferencia al proponer un sistema integral que combina la plataforma de software con un sistema de acceso ágil, automatizando el registro de visitantes, proveedores y personal de mantenimiento. Además, incorpora la gestión centralizada de tareas, pagos, comunicación interna y votaciones en un solo entorno, solucionando la falta de trazabilidad y coordinación observada en los sistemas actuales.
+
+
+% \section{Justificación de la Propuesta}
+
+% La gestión de comunidades residenciales involucra una serie de procesos interdependientes, como el control de accesos, la administración financiera, la comunicación con residentes, la recepción de encomiendas y la coordinación del personal interno. Actualmente, muchas de estas tareas se llevan a cabo de forma fragmentada, ya sea mediante herramientas manuales o plataformas digitales aisladas, lo que genera ineficiencias, errores frecuentes, pérdida de tiempo y una limitada capacidad de control y trazabilidad.
+
+% Las plataformas existentes han logrado digitalizar ciertos aspectos clave, sirviendo como referencia para identificar buenas prácticas y oportunidades de mejora. Sin embargo, ninguna de ellas integra todos los procesos críticos en un solo sistema ni contempla soluciones físicas que refuercen la seguridad operativa, como un tótem de registro. Esta ausencia de integración limita su efectividad a la hora de ofrecer una experiencia realmente centralizada, segura y eficiente para las comunidades.
+
+% En este contexto, la propuesta de \textit{DOMU} se justifica por su enfoque integral e innovador. A través de una única plataforma, se reúnen todos los elementos esenciales de la administración comunitaria —pago de gastos comunes, remuneraciones, notificaciones, entre otros—. El uso de un tótem de acceso permite registrar y validar de manera inmediata tanto a visitantes como al personal, reduciendo errores humanos y fortaleciendo el control de ingreso. Además, el sistema permite asignar, monitorear y evaluar tareas internas, optimizando la productividad y la capacidad de respuesta operativa.
+
+% \textit{DOMU} no solo digitaliza, sino que también centraliza y conecta todos los procesos clave de una comunidad, entregando una solución moderna, escalable y competitiva frente a las herramientas actuales. Su implementación apunta a mejorar la eficiencia administrativa, fortalecer la seguridad y promover una mejor convivencia en los entornos residenciales.
+
+\section{Justificación de la Propuesta}
+
+La gestión de comunidades residenciales involucra una serie de procesos interdependientes, como el control de accesos, la administración financiera, la comunicación con residentes, la recepción de encomiendas y la coordinación del personal interno. Actualmente, muchas de estas tareas se llevan a cabo de forma fragmentada, ya sea mediante herramientas manuales o plataformas digitales aisladas, lo que genera ineficiencias, errores frecuentes, pérdida de tiempo y una limitada capacidad de control y trazabilidad.
+
+Las plataformas existentes han logrado digitalizar ciertos aspectos clave, sirviendo como referencia para identificar buenas prácticas y oportunidades de mejora. Sin embargo, ninguna de ellas integra todos los procesos críticos en un solo sistema. Esta ausencia de integración limita su efectividad a la hora de ofrecer una experiencia realmente centralizada, segura y eficiente para las comunidades.
+
+En este contexto, la propuesta de \textit{DOMU} se justifica por su enfoque integral e innovador, centrado en la eficiencia operativa y la seguridad.
+A través de una única plataforma, se reúnen todos los elementos esenciales de la administración comunitaria —pago de gastos comunes, remuneraciones, notificaciones, entre otros—. Para el registro de visitantes, el sistema se apoya en el computador de conserjería e incorpora la lectura de códigos QR de la cédula de identidad chilena mediante una pistola lectora. Esta característica de diseño permite el registro y validación inmediata de visitantes, ya que la captura de datos vía QR minimiza errores de escritura, fortaleciendo el control de ingreso. Además, el sistema permite asignar, monitorear y evaluar tareas internas, optimizando la productividad y la capacidad de respuesta operativa.
+
+\textit{DOMU} no solo digitaliza, sino que también centraliza y conecta todos los procesos clave de una comunidad, entregando una solución moderna, escalable y competitiva frente a las herramientas actuales. Su implementación apunta a mejorar la eficiencia administrativa, fortalecer la seguridad y promover una mejor convivencia en los entornos residenciales.
+
+\section{Objetivos del proyecto}
+
+En este punto se presentan los objetivos que guiarán el desarrollo, junto con las actividades correspondientes para su cumplimiento. Se expone tanto el objetivo general como los objetivos específicos.
+
+\subsection{Objetivo General del proyecto}
+
+Desarrollar una plataforma integral para comunidades residenciales que automatice y optimice procesos clave como el control de visitas, la trazabilidad de encomiendas, la gestión financiera y la asignación de tareas al personal, garantizando un entorno centralizado, trazabilidad completa de la información y alta disponibilidad para todos los usuarios.
+
+
+\subsection{Objetivos Específicos y Descripción de las actividades}
+
+A continuación, se detallan los objetivos específicos del proyecto junto con  la descripción de las actividades asociadas a cada uno de estos. Estas actividades permitirán organizar de manera estructurada las tareas necesarias para alcanzar los objetivos planteados, asegurando un desarrollo sistemático y organizado del proyecto.
+\newpage
+\begin{longtable}{|p{0.4\textwidth}|p{0.55\textwidth}|}
+\hline
+\textbf{Objetivo} & \textbf{Descripción de las actividades} \\
+\hline
+\endfirsthead
+
+\hline
+\textbf{Objetivo} & \textbf{Descripción de las actividades} \\
+\hline
+\endhead
+
+\hline
+\endfoot
+
+\hline
+1. Comparar los sistemas actuales de administración de edificios, identificando sus fortalezas y limitaciones, así como las percepciones de los usuarios, para definir los requerimientos funcionales de nuestra propuesta. &
+\begin{enumerate}
+    \item Investigar y documentar al menos tres sistemas de administración de edificios existentes en el mercado chileno.
+    \item Identificar las características y funcionalidades clave de cada sistema, considerando también la experiencia de uso reportada por los usuarios finales.
+    \item Analizar las fortalezas y debilidades de cada sistema en relación con las necesidades detectadas de los distintos tipos de usuarios (administradores, residentes, personal).
+    \item Recoger y sistematizar retroalimentación de usuarios reales mediante encuestas o entrevistas estructuradas (mínimo 5 personas).
+    \item Definir los requerimientos funcionales del nuevo sistema basándose en el análisis comparativo y en las necesidades expresadas por los usuarios.
+\end{enumerate}
+\\ \hline
+
+2. Definir tecnologías y metodologías disponibles que permitan desarrollar el sistema de registro con escaneo QR, página web y backend. &
+\begin{enumerate}
+    \item Definir tecnologías para el frontend y backend.
+    \item Investigar y seleccionar el hardware de escaneo QR (pistola lectora), evaluando su compatibilidad  y la estructura de datos arrojada por la cédula de identidad chilena.
+    \item Evaluar metodologías de desarrollo de software (ágil, cascada, etc.) adecuadas para el proyecto y escoger la que mejor se ajuste a la propuesta.
+    \item Investigar opciones para la integración \textit{plug-and-play} del escáner QR con el computador de conserjería, y definir el método de procesamiento de la cadena de texto obtenida.
+\end{enumerate}
+\\ \hline
+
+3. Diseñar la estructura de software que incorpora módulos de control de acceso, seguimiento de encomiendas, asignación de tareas al personal y comunicación con los residentes, entre otros. &
+\begin{enumerate}
+    \item Definir la arquitectura general del software y sus diferentes módulos.
+    \item Diseñar el modelo de datos para cada módulo.
+    \item Diseñar los diagramas de procesos en notación BPMN y los modelos entidad–relación (MER) correspondientes a los flujos.
+    \item Diseñar la interfaz de usuario (UI) para cada módulo.
+\end{enumerate}
+\\ \hline
+
+4. Implementar un prototipo funcional que integre los módulos diseñados en una plataforma inicial. &
+\begin{enumerate}
+    \item Configurar el entorno de desarrollo y las herramientas de control de versiones.
+    \item Implementar las funcionalidades de backend.
+    \item Desarrollar el frontend garantizando la comunicación con el backend.
+    \item Realizar pruebas unitarias y ajustes.
+    \item Asegurar la correcta sincronización de datos entre módulos.
+\end{enumerate}
+\\ \hline
+
+5. Integrar el software de registro con el hardware de escaneo QR, verificando la correcta captura, \textit{parseo} y envío de los datos de la cédula de identidad a la plataforma central. &
+\begin{enumerate}
+    \item Adquirir el hardware (pistola escáner) y configurar los \textit{drivers} necesarios para la correcta \textit{emulación del teclado} en el computador de conserjería.
+    \item Implementar la lógica de \textit{parsing} (análisis) en el software para decodificar la cadena de texto arrojada por el escáner QR de la cédula chilena.
+    \item Garantizar la sincronización y el envío seguro de los datos personales capturados a la base de datos central.
+    \item Validar la precisión de la captura y el \textit{parsing} de los campos de la cédula (RUT, Nombre, Apellido).
+    \item Realizar pruebas de rendimiento y robustez del proceso de escaneo.
+\end{enumerate}
+\\ \hline
+
+6. Realizar pruebas finales, validación y ajuste del sistema DOMU. &
+\begin{enumerate}
+    \item Diseñar un plan de pruebas integral.
+    \item Recopilar retroalimentación de usuarios finales.
+    \item Corregir y optimizar el sistema según resultados.
+    \item Validar cumplimiento de requerimientos definidos.
+    \item Documentar resultados y dejar el sistema operativo.
+\end{enumerate}
+\\ \hline
+
+\end{longtable}
+
+\section{Composición del Informe}
+Aquí va como se organiza el informe, mencionar los capítulos que abrodan las etapas del proyecto.
+describiendo brevemente c/u 

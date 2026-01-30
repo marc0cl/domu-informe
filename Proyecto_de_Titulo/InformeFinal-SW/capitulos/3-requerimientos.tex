@@ -1,0 +1,136 @@
+% --------------------------------------------------------------
+%  Capítulo 3 – Especificación de Requerimientos – Producto SW
+% --------------------------------------------------------------
+Este capítulo detalla los límites, restricciones y los requerimientos funcionales y no funcionales del sistema \textit{DOMU}.  
+Los requisitos se agrupan según los módulos principales: Control de Accesos, Gestión Operativa, Finanzas, Comunicación y Soporte.
+
+\section{Límites del Proyecto}
+En esta sección se definen los límites técnicos y operacionales del sistema, los cuales establecen el alcance previsto para su funcionamiento en condiciones reales. Estos límites permiten acotar el diseño y asegurar que la solución cumpla con lo esperado dentro de parámetros definidos y controlables.
+\label{sec:limites}
+
+\subsection{Límites de Plataforma (Hardware \& SO)}
+Se detallan aquí las condiciones mínimas requeridas en términos de dispositivos y sistemas operativos, tanto para usuarios móviles como para el entorno de ejecución del backend.
+
+\begin{itemize}
+    \item El aplicativo móvil soporta \textbf{Android 11 o superior} y \textbf{iOS 14 o superior}. Dispositivos con versiones anteriores acceden únicamente al portal web \textit{responsive}.
+    \item El lector de cédulas debe ser compatible con QR ISO/IEC 18004 y Código~128; otros formatos quedan fuera de alcance.
+    \item El back-end se despliega sobre arquitecturas \textbf{x86\_64}; no se certifica compatibilidad con ARM en ambientes productivos.
+\end{itemize}
+
+\subsection{Límites de Conectividad y Red}
+Esta sección define los requisitos mínimos de red necesarios para garantizar un rendimiento adecuado y una comunicación segura entre los distintos componentes del sistema.
+
+\begin{itemize}
+    \item Requiere conexión a Internet con latencia \(<\) 150 ms y ancho de banda \(\ge\) 2 Mbps simétricos por dispositivo para cumplir RNF\_02.
+    \item Todo tráfico externo usa \textbf{TLS 1.3}; versiones anteriores de TLS/SSL se rechazan.
+    \item El sistema no opera en redes sin salida a Internet (modo \textit{offline} queda fuera del alcance de la versión 1.0).
+\end{itemize}
+
+\subsection{Límites de Integración Externa}
+Se especifican las tecnologías y formatos de integración aceptados por el sistema, junto con las restricciones relacionadas con servicios de terceros.
+
+\begin{itemize}
+    \item Las integraciones se realizan exclusivamente mediante \textbf{API REST + JSON} sobre HTTPS. SOAP, GraphQL, WebSockets u otras interfaces no están contempladas.
+    \item Únicamente se soporta la pasarela de pagos \textbf{Mercado Pago}.
+\end{itemize}
+
+\subsection{Límites de Datos y Retención}
+Aquí se describen las restricciones relacionadas con el almacenamiento, el volumen de datos y las políticas de retención a largo plazo.
+
+\begin{itemize}
+    \item En caso de que sea necesario un respaldo, se coordinara almacenamiento en Google Drive de archivos comprimidos respaldando la información.
+    \item Base de datos soportada: \textbf{MySQL}. Otros motores (PostgreSQL, MariaDB, SQL Server, etc.) no se consideran.
+    \item Tamaño lógico máximo de la base de datos: 500 GB; para volúmenes mayores se requerirá particionamiento y revisión de arquitectura.
+\end{itemize}
+
+\subsection{Límites de Escalabilidad y Uso}
+Se presentan las capacidades máximas del sistema en cuanto a número de usuarios, unidades habitacionales y eventos procesados por día.
+
+\begin{itemize}
+    \item Comunidad máxima: 2.000 unidades habitacionales por instalación.
+    \item Usuarios concurrentes autenticados soportados: hasta 5.000.
+    \item Picos de eventos (visitas, notificaciones) limitados a 20.000 registros/día.
+\end{itemize}
+
+\section{Restricciones Técnicas}
+En esta sección se presentan las restricciones técnicas que condicionan el desarrollo y despliegue del sistema. Estas restricciones están asociadas a decisiones de infraestructura, arquitectura y tecnologías obligatorias que deben cumplirse a lo largo del proyecto.
+
+\begin{itemize}
+    \item La infraestructura para el MVP serán los mismos equipos en los que el código fue escrito.
+    \item En caso de que los desarrolladores lo consideren, se expondrá el Frontend en una pagina web con un hosting adquirido por ellos. Al igual que el servidor que alojara el backend y frontend.
+\end{itemize}
+
+% \section{Identificación de los Usuarios}
+
+\section{Requerimientos Funcionales}
+A continuación, se presentan los requerimientos funcionales identificados en la etapa inicial del proyecto, los cuales se consideran fundamentales para el desarrollo de la aplicación.
+
+{\small\setlength{\tabcolsep}{4pt}\renewcommand{\arraystretch}{1.2}
+\begin{longtable}{|p{0.14\textwidth}|p{0.80\textwidth}|}
+\hline
+\textbf{ID} & \textbf{El sistema debe…} \\ \hline
+RF\_01 & Registrar la \textbf{entrada y salida de VISITAS} mediante lector de cédula o QR, validando el RUT. \\ \hline
+RF\_02 & Enviar \textbf{notificación push} al RESIDENTE cuando se registre una VISITA, DELIVERY o ENCOMIENDA a su nombre. \\ \hline
+RF\_03 & Permitir al RESIDENTE \textbf{pre-autorizar visitas} y generar QR temporal con fecha/hora de expiración. \\ \hline
+RF\_04 & Gestionar el \textbf{registro confiable de encomiendas}: recepción, fotografía de evidencia y entrega al residente (firma digital). \\ \hline
+RF\_05 & Gestionar \textbf{tareas y turnos} del PERSONAL (aseo, conserjes), permitiendo al ADMINISTRADOR asignar, re-asignar y monitorear estado. \\ \hline
+RF\_06 & Permitir al PERSONAL marcar \textbf{inicio/fin de jornada} y declarar tareas completadas con fotos adjuntas. \\ \hline
+RF\_07 & Generar y enviar mensualmente el \textbf{estado de gastos comunes}; habilitar pago electrónico. \\ \hline
+RF\_08 & Mantener \textbf{morosidad y conciliación}: el ADMINISTRADOR puede aplicar sanciones y enviar notificaciones. \\ \hline
+RF\_09 & Gestionar \textbf{reservas de espacios comunes} con reglas de aforo, tiempo máximo y bloqueo ante mora. \\ \hline
+RF\_10 & Implementar un \textbf{sistema de votaciones} (elecciones de comité, decisiones de gasto) con anonimato y trazabilidad. \\ \hline
+RF\_11 & Habilitar \textbf{foro/chat comunitario} categorizado (avisos, eventos, reclamos, sugerencias). \\ \hline
+RF\_12 & Registrar \textbf{tickets de reclamos/sugerencias} y permitir su seguimiento por estado (abierto, en progreso, cerrado). \\ \hline
+RF\_13 & Proveer un \textbf{formulario de gastos comunes}: Incluyendo una descripcion breve, periodicidad (¿Se repite mensualmente?), fecha de inicio y termino, etc. \\ \hline
+RF\_14 & Registrar \textbf{mantenimientos preventivos}; programar alertas de vencimiento. \\ \hline
+RF\_15 & Emitir \textbf{dashboards} con KPIs de seguridad (conteo de incidentes), finanzas (ingresos/egresos) y desempeño de tareas. \\ \hline
+RF\_16 & Permitir al ADMINISTRADOR configurar \textbf{roles y permisos} granularmente (\ac{RBAC}). \\ \hline
+\caption{Requerimientos Funcionales del sistema DOMU}
+\label{tab:rf}
+\end{longtable}
+}
+
+\section{Requerimientos No Funcionales}
+Los siguientes requerimientos no funcionales definen las condiciones de calidad que debe cumplir el sistema, más allá de sus funcionalidades. Estos aspectos aseguran que la aplicación sea confiable, eficiente, accesible y fácil de mantener.
+
+\begin{itemize}
+    \item \textbf{RNF\_01 Disponibilidad}: \(\ge\) 99{,}0\,\% mensual.
+    \item \textbf{RNF\_02 Rendimiento}: 95\,\% de las peticiones REST responden \(\le\) 500\,ms bajo 50\,RPS.
+    \item \textbf{RNF\_03 Accesibilidad}: contraste mínimo 4{,}5:1 y navegación por teclado.
+    \item \textbf{RNF\_04 Mantenibilidad}: cobertura de tests \(\ge\) 80\,\%, código backend documentado con \texttt{Swagger / OpenAPI~3}.
+\end{itemize}
+
+\section{Interfaces Externas de Entrada}
+En esta sección se describen las interfaces externas de entrada que permitirán el ingreso de datos al sistema por parte de distintos actores.
+
+{\small
+\begin{longtable}{|p{0.12\textwidth}|p{0.28\textwidth}|p{0.54\textwidth}|}
+\hline
+\textbf{ID} & \textbf{Nombre} & \textbf{Detalle de datos} \\ \hline
+DE\_01 & Registro visita & RUN, Nombre, Unidad destino, Motivo, Foto, \textit{timestamp} \\ \hline
+DE\_02 & Recepción encomienda & Código paquete, RUN residente, Foto evidencia, \textit{timestamp} \\ \hline
+DE\_03 & Pago gastos comunes & RUN, Monto, Medio, Fecha, Comprobante PDF \\ \hline
+DE\_04 & Reserva espacio & RUN, Espacio, \textit{timestamp reserva}, Nº asistentes \\ \hline
+DE\_05 & Ticket reclamo & RUN, Tipo, Descripción, Fotos, Prioridad \\ \hline
+DE\_06 & Solicitud proveedor & ID proveedor, Descripción servicio, Cotización PDF \\ \hline
+\caption{Interfaces de Entrada}
+\label{tab:entrada}
+\end{longtable}
+}
+
+\section{Interfaces Externas de Salida}
+Esta sección presenta las interfaces externas de salida que el sistema entrega a los distintos usuarios finales (reportes, notificaciones o visualizaciones).
+
+{\small
+\begin{longtable}{|p{0.12\textwidth}|p{0.28\textwidth}|p{0.46\textwidth}|p{0.12\textwidth}|}
+\hline
+\textbf{ID} & \textbf{Nombre} & \textbf{Datos incluidos} & \textbf{Medio} \\ \hline
+IS\_01 & Reporte visitas & Fecha, RUN, Hora in/out, Unidad & PDF / Email \\ \hline
+IS\_02 & Estado cuenta mensual & Periodo, Cargos, Pagos, Saldo & PDF / Email \\ \hline
+IS\_03 & Dashboard KPI & Indicadores clave en JSON & Web / CSV \\ \hline
+IS\_04 & Notificación push & Título, Mensaje, \textit{timestamp}, \textit{deep link} & Móvil \\ \hline
+IS\_05 & Acta de votación & Tema, Quórum, Resultado, \textit{hash} verificación & PDF firmado \\ \hline
+\caption{Interfaces de Salida}
+\label{tab:salida}
+\end{longtable}
+}

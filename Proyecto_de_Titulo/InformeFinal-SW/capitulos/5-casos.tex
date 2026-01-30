@@ -1,0 +1,498 @@
+% ---------------------------------------------
+% Capítulo 4 — Análisis
+% ---------------------------------------------
+
+% ==== Estilo CU sin color + ajuste de ancho ====
+% Encabezado de cada CU (sin banner)
+\newcommand{\cutop}[2]{%
+  \multicolumn{2}{|l|}{\textbf{#1\;\;#2}}\\\hline
+}
+% Secciones de ancho completo dentro de la tabla
+\newcommand{\cusec}[2]{%
+  \multicolumn{2}{|p{0.96\linewidth}|}{\textbf{#1:}\;#2}\\\hline
+}
+% Cabecera Actor / Sistema
+\newcommand{\cuheader}[2]{\textbf{#1} & \textbf{#2}\\\hline}
+
+% Tamaño y padding locales para TODO el capítulo 4
+\begingroup
+\small
+\setlength{\tabcolsep}{4pt}
+\renewcommand{\arraystretch}{1.08}
+
+\label{cap:analisis}
+
+\noindent Este capítulo presenta las historias de usuario, actores y la especificación de Casos de Uso del sistema \textit{DOMU}, junto con su matriz de trazabilidad con los requerimientos funcionales (RF).
+
+% ====== 4.1 Historias de usuario ======
+\section{Historias de usuario}
+\begin{itemize}
+  \item Como \textbf{residente}, quiero recibir notificaciones de mis encomiendas para retirarlas a tiempo.
+  \item Como \textbf{administrador}, quiero generar reportes financieros para tomar decisiones de gestión.
+  \item Como \textbf{conserje}, quiero registrar ingreso/salida de visitas para resguardar la seguridad.
+\end{itemize}
+
+% ====== 4.2 Actores de Casos de Uso ======
+\section{Actores de casos de uso}
+\begin{table}[H]
+\centering
+% Ajustes SOLO para esta tabla:
+\setlength{\tabcolsep}{3pt}       % menos padding lateral
+\renewcommand{\arraystretch}{1.10}
+
+% Suma de anchos ≈ 0.92\linewidth para dejar margen a líneas y tabcolsep
+\begin{tabular}{|p{0.14\linewidth}|p{0.18\linewidth}|p{0.30\linewidth}|p{0.16\linewidth}|p{0.14\linewidth}|}
+\hline
+\textbf{Actor} & \textbf{Cargo(s)} & \textbf{Funciones en la empresa} &
+\textbf{Nivel de conocimientos técnicos} & \textbf{Nivel de privilegio} \\\hline
+
+Administrador & Admin. de comunidad & Gestión de finanzas, proveedores, usuarios y reglas &
+Medio & Alto (configuración global) \\\hline
+
+Conserje & Guardia/Conserje & Control de accesos, encomiendas, bitácora &
+Básico & Medio (módulos operativos) \\\hline
+
+Personal & Aseo/Mantención & Ejecución de tareas y reportes de actividad &
+Básico & Bajo–Medio (tareas asignadas) \\\hline
+
+Residente & Usuario final & Pagos, reservas, votaciones, reclamos &
+Básico & Bajo (ámbito personal) \\\hline
+
+Proveedor & Externo & Servicios/cotizaciones, atención de órdenes &
+Básico & Bajo (interacciones asignadas) \\\hline
+\end{tabular}
+\caption{Actores que interactúan con el sistema.}
+\label{tab:actores}
+\end{table}
+
+
+% ====== 4.3 Diagramas y especificación de casos de uso ======
+\section{Diagramas y especificación de casos de uso}
+% Inserten aquí sus diagramas (uno o más) y referéncienlos con \ref.
+
+% ====== 4.3.1 Tablas de Casos de Uso (19 CU) ======
+\subsection{Especificación detallada de Casos de Uso}
+
+% ---------- A partir de aquí, todas las tablas usan columnas 0.475\linewidth ----------
+% CU_01
+\begin{table}[H]\centering
+\begin{tabular}{|p{0.475\linewidth}|p{0.475\linewidth}|}\hline
+\cutop{CU\_01}{Gestionar ingreso y salida de visitas}
+\cusec{Precondiciones}{Visitante se presenta en tótem de acceso. Tótem operativo y con conexión.}
+\cusec{Includes}{—}
+\cusec{Extends}{CU\_15 Ingreso controlado (QR), cuando la visita fue pre-registrada.}
+\cuheader{Conserje}{Sistema}
+1) Ingresa RUT/Pasaporte o escanea QR. & 2) Valida identidad (formato/duplicidad). \\\hline
+3) Selecciona residente destino. & 4) Envía notificación push/email al residente. \\\hline
+5) Confirma autorización (verbal/app). & 6) Registra hora de ingreso y habilita apertura. \\\hline
+\multicolumn{2}{|l|}{\textbf{Flujo de eventos alternativos}}\\\hline
+2a. Documento inválido. & 2b. Muestra error y solicita reingreso. \\\hline
+4a. Residente no responde. & 4b. Rechaza acceso y registra incidente. \\\hline
+\cusec{Post condiciones}{Visita registrada con hora de entrada/salida (cuando aplique).}
+\end{tabular}
+\caption{CU\_01 — Gestionar ingreso y salida de visitas}
+\label{tab:cu01}
+\end{table}
+
+% CU_02
+\begin{table}[H]\centering
+\begin{tabular}{|p{0.475\linewidth}|p{0.475\linewidth}|}\hline
+\cutop{CU\_02}{Registrar encomiendas y notificar a residentes}
+\cusec{Precondiciones}{Paquete recibido por conserje.}
+\cusec{Includes}{—}
+\cusec{Extends}{—}
+\cuheader{Conserje}{Sistema}
+1) Escanea código o ingresa datos. & 2) Asocia paquete a depto. y genera ID. \\\hline
+3) Toma fotografía (opcional). & 4) Guarda imagen y datos. \\\hline
+5) Confirma registro. & 6) Envía notificación push/email al residente. \\\hline
+\multicolumn{2}{|l|}{\textbf{Flujo de eventos alternativos}}\\\hline
+3a. Sin cámara disponible. & Continúa sin foto. \\\hline
+\cusec{Post condiciones}{Encomienda en estado “Por retirar”.}
+\end{tabular}
+\caption{CU\_02 — Registrar encomiendas y notificar a residentes}
+\label{tab:cu02}
+\end{table}
+
+% CU_03
+\begin{table}[H]\centering
+\begin{tabular}{|p{0.475\linewidth}|p{0.475\linewidth}|}\hline
+\cutop{CU\_03}{Mantener bitácora de incidentes y turnos}
+\cusec{Precondiciones}{Conserje autenticado en módulo Bitácora.}
+\cusec{Includes}{—}
+\cusec{Extends}{—}
+\cuheader{Conserje}{Sistema}
+1) Inicia nueva entrada. & 2) Muestra formulario. \\\hline
+3) Describe incidente/actividad. & 4) Guarda registro con fecha/hora. \\\hline
+5) Adjunta multimedia (opcional). & 6) Almacena archivos. \\\hline
+\multicolumn{2}{|l|}{\textbf{Flujo de eventos alternativos}}\\\hline
+5a. Archivo $>$ 10 MB. & Rechaza y muestra aviso. \\\hline
+\cusec{Post condiciones}{Bitácora actualizada; visible para el administrador.}
+\end{tabular}
+\caption{CU\_03 — Mantener bitácora de incidentes y turnos}
+\label{tab:cu03}
+\end{table}
+
+% CU_04
+\begin{table}[H]\centering
+\begin{tabular}{|p{0.475\linewidth}|p{0.475\linewidth}|}\hline
+\cutop{CU\_04}{Pagar gastos comunes}
+\cusec{Precondiciones}{Residente autenticado; existe boleta pendiente.}
+\cusec{Includes}{CU\_09 Generar reportes.}
+\cusec{Extends}{—}
+\cuheader{Residente}{Sistema}
+1) Selecciona boleta. & 2) Muestra detalle. \\\hline
+3) Elige medio de pago. & 4) Procesa en la pasarela. \\\hline
+5) Confirma transacción. & 6) Marca “Pagado” y envía recibo PDF. \\\hline
+\multicolumn{2}{|l|}{\textbf{Flujo de eventos alternativos}}\\\hline
+ & 4a. Pago rechazado $\rightarrow$ mantiene “Pendiente” y muestra error. \\\hline
+\cusec{Post condiciones}{Boleta pagada; recibo enviado por email.}
+\end{tabular}
+\caption{CU\_04 — Pagar gastos comunes}
+\label{tab:cu04}
+\end{table}
+
+% CU_05
+\begin{table}[H]\centering
+\begin{tabular}{|p{0.475\linewidth}|p{0.475\linewidth}|}\hline
+\cutop{CU\_05}{Reservar área común}
+\cusec{Precondiciones}{Residente al día en pagos; módulo de reservas habilitado.}
+\cusec{Includes}{—}
+\cusec{Extends}{—}
+\cuheader{Residente}{Sistema}
+1) Selecciona fecha/hora. & 2) Valida disponibilidad. \\\hline
+3) Confirma reserva. & 4) Registra reserva y notifica. \\\hline
+5) (opcional) Paga tarifa. & 6) Registra pago. \\\hline
+\multicolumn{2}{|l|}{\textbf{Flujo de eventos alternativos}}\\\hline
+2a. Horario no disponible. & Muestra calendario alternativo. \\\hline
+\cusec{Post condiciones}{Espacio marcado como “Reservado”.}
+\end{tabular}
+\caption{CU\_05 — Reservar área común}
+\label{tab:cu05}
+\end{table}
+
+% CU_06
+\begin{table}[H]\centering
+\begin{tabular}{|p{0.475\linewidth}|p{0.475\linewidth}|}\hline
+\cutop{CU\_06}{Gestionar morosidad y conciliación}
+\cusec{Precondiciones}{Estados de cuenta cargados.}
+\cusec{Includes}{—}
+\cusec{Extends}{—}
+\cuheader{Administrador}{Sistema}
+1) Abre módulo de morosidad. & 2) Lista deudores y saldos. \\\hline
+3) Aplica intereses/sanciones. & 4) Recalcula saldo, registra acción y notifica. \\\hline
+5) Realiza conciliación bancaria. & 6) Sugerencias de conciliación y comprobantes. \\\hline
+\multicolumn{2}{|l|}{\textbf{Flujo de eventos alternativos}}\\\hline
+5a. Archivo bancario inválido. & Muestra error y permite reintentar. \\\hline
+\cusec{Post condiciones}{Morosidad actualizada; bitácora de conciliación.}
+\end{tabular}
+\caption{CU\_06 — Gestionar morosidad y conciliación}
+\label{tab:cu06}
+\end{table}
+
+% CU_07
+\begin{table}[H]\centering
+\begin{tabular}{|p{0.475\linewidth}|p{0.475\linewidth}|}\hline
+\cutop{CU\_07}{Asignar tareas a personal}
+\cusec{Precondiciones}{Personal activo en el sistema.}
+\cusec{Includes}{—}
+\cusec{Extends}{CU\_13 Marcar tarea completada.}
+\cuheader{Administrador}{Sistema}
+1) Crea tarea con descripción. & 2) Guarda en tablero. \\\hline
+3) Asigna responsable. & 4) Notifica push al personal. \\\hline
+5) Adjunta archivo (opcional). & 6) Vincula adjunto. \\\hline
+\multicolumn{2}{|l|}{\textbf{Flujo de eventos alternativos}}\\\hline
+1a. Descripción vacía. & Exige completar campos. \\\hline
+\cusec{Post condiciones}{Tarea “Asignada” con fecha límite.}
+\end{tabular}
+\caption{CU\_07 — Asignar tareas a personal}
+\label{tab:cu07}
+\end{table}
+
+% CU_08
+\begin{table}[H]\centering
+\begin{tabular}{|p{0.475\linewidth}|p{0.475\linewidth}|}\hline
+\cutop{CU\_08}{Registrar inicio/fin de jornada del personal}
+\cusec{Precondiciones}{Personal autenticado.}
+\cusec{Includes}{—}
+\cusec{Extends}{—}
+\cuheader{Personal}{Sistema}
+1) Pulsa “Iniciar jornada/Terminar jornada”. & 2) Registra timestamp y ubicación (si aplica). \\\hline
+3) Agrega observación (opcional). & 4) Guarda observación. \\\hline
+\multicolumn{2}{|l|}{\textbf{Flujo de eventos alternativos}}\\\hline
+1a. Sin conexión. & Guarda local y sincroniza luego. \\\hline
+\cusec{Post condiciones}{Marcación registrada y visible para el administrador.}
+\end{tabular}
+\caption{CU\_08 — Registrar inicio/fin de jornada del personal}
+\label{tab:cu08}
+\end{table}
+
+% CU_09
+\begin{table}[H]\centering
+\begin{tabular}{|p{0.475\linewidth}|p{0.475\linewidth}|}\hline
+\cutop{CU\_09}{Generar reportes financieros}
+\cusec{Precondiciones}{Datos contables cargados.}
+\cusec{Includes}{—}
+\cusec{Extends}{—}
+\cuheader{Administrador}{Sistema}
+1) Selecciona rango y tipo de reporte. & 2) Genera PDF/Excel con KPIs. \\\hline
+3) Descarga/visualiza reporte. & 4) Registra evento de auditoría. \\\hline
+\multicolumn{2}{|l|}{\textbf{Flujo de eventos alternativos}}\\\hline
+ & 2a. Falta información $\rightarrow$ alerta “Datos incompletos”. \\\hline
+\cusec{Post condiciones}{Reporte generado y almacenado en histórico.}
+\end{tabular}
+\caption{CU\_09 — Generar reportes financieros}
+\label{tab:cu09}
+\end{table}
+
+% CU_10
+\begin{table}[H]\centering
+\begin{tabular}{|p{0.475\linewidth}|p{0.475\linewidth}|}\hline
+\cutop{CU\_10}{Votaciones de comité/decisiones de gasto}
+\cusec{Precondiciones}{Residentes habilitados; tema de votación configurado.}
+\cusec{Includes}{—}
+\cusec{Extends}{—}
+\cuheader{Residente}{Sistema}
+1) Abre votación y revisa antecedentes. & 2) Verifica habilitación y registra voto. \\\hline
+3) Emite voto. & 4) Aplica anonimato y traza hash/acta. \\\hline
+\multicolumn{2}{|l|}{\textbf{Flujo de eventos alternativos}}\\\hline
+1a. Residente inhabilitado (mora). & Deniega voto y muestra motivo. \\\hline
+\cusec{Post condiciones}{Voto registrado; acta consolidada.}
+\end{tabular}
+\caption{CU\_10 — Votaciones de comité/decisiones de gasto}
+\label{tab:cu10}
+\end{table}
+
+% CU_11
+\begin{table}[H]\centering
+\begin{tabular}{|p{0.475\linewidth}|p{0.475\linewidth}|}\hline
+\cutop{CU\_11}{Mantenimiento preventivo}
+\cusec{Precondiciones}{Equipos registrados; plan de mantenimiento.}
+\cusec{Includes}{—}
+\cusec{Extends}{—}
+\cuheader{Administrador}{Sistema}
+1) Definir plan. & 2) Programar alertas de vencimiento. \\\hline
+3) Ejecutar orden (personal). & 4) Registrar ejecución y evidencia. \\\hline
+\multicolumn{2}{|l|}{\textbf{Flujo de eventos alternativos}}\\\hline
+3a. Orden rechazada/reprogramada. & Ajusta fecha y reprograma. \\\hline
+\cusec{Post condiciones}{Órdenes programadas y ejecutadas con evidencias.}
+\end{tabular}
+\caption{CU\_11 — Mantenimiento preventivo}
+\label{tab:cu11}
+\end{table}
+
+% CU_12
+\begin{table}[H]\centering
+\begin{tabular}{|p{0.475\linewidth}|p{0.475\linewidth}|}\hline
+\cutop{CU\_12}{Gestionar estacionamientos (titulares y pases)}
+\cusec{Precondiciones}{Mapa de estacionamientos configurado.}
+\cusec{Includes}{—}
+\cusec{Extends}{—}
+\cuheader{Administrador}{Sistema}
+1) Asigna/edita titular. & 2) Valida disponibilidad/reglas. \\\hline
+3) Emite pase temporal para visita. & 4) Genera QR y controla vigencia. \\\hline
+\multicolumn{2}{|l|}{\textbf{Flujo de eventos alternativos}}\\\hline
+2a. Estacionamiento ocupado. & Sugiere alternativa/reprograma. \\\hline
+\cusec{Post condiciones}{Asignación/pase registrado y trazable.}
+\end{tabular}
+\caption{CU\_12 — Gestionar estacionamientos (titulares y pases)}
+\label{tab:cu12}
+\end{table}
+
+% CU_13
+\begin{table}[H]\centering
+\begin{tabular}{|p{0.475\linewidth}|p{0.475\linewidth}|}\hline
+\cutop{CU\_13}{Marcar tarea completada}
+\cusec{Precondiciones}{Tarea en estado “Asignada”.}
+\cusec{Includes}{—}
+\cusec{Extends}{—}
+\cuheader{Personal}{Sistema}
+1) Abre la tarea. & 2) Muestra detalle. \\\hline
+3) Marca “Completada” y sube evidencia. & 4) Cambia estado y notifica al administrador. \\\hline
+\multicolumn{2}{|l|}{\textbf{Flujo de eventos alternativos}}\\\hline
+3a. Sin conexión. & Guarda en caché y sincroniza luego. \\\hline
+\cusec{Post condiciones}{Tarea cerrada con timestamp y evidencia.}
+\end{tabular}
+\caption{CU\_13 — Marcar tarea completada}
+\label{tab:cu13}
+\end{table}
+
+% CU_14
+\begin{table}[H]\centering
+\begin{tabular}{|p{0.475\linewidth}|p{0.475\linewidth}|}\hline
+\cutop{CU\_14}{Configurar roles y permisos (RBAC)}
+\cusec{Precondiciones}{Administrador con privilegios de seguridad.}
+\cusec{Includes}{—}
+\cusec{Extends}{—}
+\cuheader{Administrador}{Sistema}
+1) Define roles/permisos. & 2) Guarda política y aplica reglas. \\\hline
+3) Asigna roles a usuarios. & 4) Actualiza credenciales y auditoría. \\\hline
+\multicolumn{2}{|l|}{\textbf{Flujo de eventos alternativos}}\\\hline
+2a. Conflicto de permisos. & Informa colisión y sugiere ajuste. \\\hline
+\cusec{Post condiciones}{Política RBAC aplicada y trazada.}
+\end{tabular}
+\caption{CU\_14 — Configurar roles y permisos}
+\label{tab:cu14}
+\end{table}
+
+% CU_15
+\begin{table}[H]\centering
+\begin{tabular}{|p{0.475\linewidth}|p{0.475\linewidth}|}\hline
+\cutop{CU\_15}{Ingreso controlado (QR)}
+\cusec{Precondiciones}{QR generado por Residente; tótem activo.}
+\cusec{Includes}{—}
+\cusec{Extends}{Puede extender CU\_01.}
+\cuheader{Visita/Delivery/Proveedor}{Sistema}
+1) Escanea QR en tótem. & 2) Verifica vigencia. \\\hline
+ & 3) Registra entrada. \\\hline
+ & 4) Notifica residente. \\\hline
+\multicolumn{2}{|l|}{\textbf{Flujo de eventos alternativos}}\\\hline
+ & 2a. QR expirado $\rightarrow$ acceso denegado. \\\hline
+\cusec{Post condiciones}{Entrada registrada; estado visita “Activo”.}
+\end{tabular}
+\caption{CU\_15 — Ingreso controlado (QR)}
+\label{tab:cu15}
+\end{table}
+
+% CU_16
+\begin{table}[H]\centering
+\begin{tabular}{|p{0.475\linewidth}|p{0.475\linewidth}|}\hline
+\cutop{CU\_16}{Participar en foro/marketplace}
+\cusec{Precondiciones}{Residente autenticado; módulo habilitado.}
+\cusec{Includes}{—}
+\cusec{Extends}{—}
+\cuheader{Residente}{Sistema}
+1) Ingresa a Foro/Marketplace. & 2) Muestra categorías y anuncios. \\\hline
+3) Publica/explora anuncios. & 3) Registra entrada. \\\hline
+ & 4) Despliega formulario de publicación. \\\hline
+ & 6) Valida y guarda anuncio. \\\hline
+\multicolumn{2}{|l|}{\textbf{Flujo de eventos alternativos}}\\\hline
+ & 4a. Campo obligatorio vacío $\rightarrow$ error. \\\hline
+ & 4b. Imagen $>$ 5 MB $\rightarrow$ rechaza. \\\hline
+\cusec{Post condiciones}{Anuncio publicado con estado “Activo”.}
+\end{tabular}
+\caption{CU\_16 — Participar en foro/marketplace}
+\label{tab:cu16}
+\end{table}
+
+% CU_17
+\begin{table}[H]\centering
+\begin{tabular}{|p{0.475\linewidth}|p{0.475\linewidth}|}\hline
+\cutop{CU\_17}{Registrar reclamo por ruidos molestos}
+\cusec{Precondiciones}{Residente autenticado; módulo de tickets operativo.}
+\cusec{Includes}{—}
+\cusec{Extends}{—}
+\cuheader{Residente}{Sistema}
+1) Crea nuevo reclamo. & 2) Despliega formulario. \\\hline
+3) Completa datos y adjunta evidencia (opcional). & 4) Valida y crea ticket \textsc{ABIERTO}; notifica. \\\hline
+\multicolumn{2}{|l|}{\textbf{Flujo de eventos alternativos}}\\\hline
+ & 3a. Archivo $>$ 10 MB $\rightarrow$ rechaza. \\\hline
+ & 3b. Sin conexión $\rightarrow$ guarda local y sincroniza. \\\hline
+\cusec{Post condiciones}{Ticket visible para seguimiento.}
+\end{tabular}
+\caption{CU\_17 — Registrar reclamo por ruidos molestos}
+\label{tab:cu17}
+\end{table}
+
+% CU_18
+\begin{table}[H]\centering
+\begin{tabular}{|p{0.475\linewidth}|p{0.475\linewidth}|}\hline
+\cutop{CU\_18}{Registrar mantención de ascensor en bitácora}
+\cusec{Precondiciones}{Conserje autenticado; trabajo en curso/finalizado.}
+\cusec{Includes}{—}
+\cusec{Extends}{—}
+\cuheader{Conserje}{Sistema}
+1) Selecciona “Nueva entrada”. & 2) Muestra formulario. \\\hline
+3) Detalla proveedor, hallazgos, duración. & 4) Guarda y vincula al plan de mantención. \\\hline
+5) Adjunta foto. & 6) Almacena foto; notifica al administrador. \\\hline
+\multicolumn{2}{|l|}{\textbf{Flujo de eventos alternativos}}\\\hline
+ & 5a. Sin cámara $\rightarrow$ permite guardar. \\\hline
+ & 5b. Falla de red $\rightarrow$ reintenta/sincroniza. \\\hline
+\cusec{Post condiciones}{Bitácora actualizada; administrador notificado.}
+\end{tabular}
+\caption{CU\_18 — Registrar mantención de ascensor en bitácora}
+\label{tab:cu18}
+\end{table}
+
+% CU_19
+\begin{table}[H]\centering
+\begin{tabular}{|p{0.475\linewidth}|p{0.475\linewidth}|}\hline
+\cutop{CU\_19}{Gestionar proveedores}
+\cusec{Precondiciones}{Administrador autenticado; permiso “gestión de proveedores”.}
+\cusec{Includes}{—}
+\cusec{Extends}{—}
+\cuheader{Administrador}{Sistema}
+1) Ingresa al módulo Proveedores. & 2) Lista proveedores actuales. \\\hline
+3) Nuevo/Editar/Eliminar. & 4) Despliega formulario con campos requeridos. \\\hline
+5) Completa datos y adjunta documentos. & 6) Valida RUT/duplicidad; guarda cambios. \\\hline
+7) Confirma operación. & 8) Muestra éxito y registra auditoría. \\\hline
+\multicolumn{2}{|l|}{\textbf{Flujo de eventos alternativos}}\\\hline
+ & 6a. RUT duplicado $\rightarrow$ “Proveedor ya existe”. \\\hline
+ & 6b. Campo obligatorio vacío $\rightarrow$ exige completar. \\\hline
+\cusec{Post condiciones}{Proveedor disponible para cotizaciones/servicios.}
+\end{tabular}
+\caption{CU\_19 — Gestionar proveedores}
+\label{tab:cu19}
+\end{table}
+
+% ====== 4.4 Matriz de trazabilidad RF ↔ CU ======
+\section{Matriz de trazabilidad RF–CU}
+
+% --- Opción A (compacta) ---
+\begin{longtable}{|m{3cm}|m{12.5cm}|}
+\hline
+\textbf{RF} & \textbf{Casos de Uso relacionados} \\\hline
+RF\_01 (Visitas) & CU\_01, CU\_15 \\\hline
+RF\_02 (Notificaciones) & CU\_01, CU\_02, CU\_04, CU\_05, CU\_07, CU\_13, CU\_15, CU\_17, CU\_18, CU\_19 \\\hline
+RF\_03 (Pre-autorizar visitas/QR) & CU\_15 \\\hline
+RF\_04 (Encomiendas) & CU\_02 \\\hline
+RF\_05 (Tareas/turnos) & CU\_07, CU\_08, CU\_13 \\\hline
+RF\_06 (Inicio/fin jornada) & CU\_08 \\\hline
+RF\_07 (Estado de cuenta/pago) & CU\_04, CU\_06, CU\_09 \\\hline
+RF\_08 (Morosidad/conciliación) & CU\_06 \\\hline
+RF\_09 (Reservas) & CU\_05, CU\_12 \\\hline
+RF\_10 (Votaciones) & CU\_10 \\\hline
+RF\_11 (Foro/chat) & CU\_16 \\\hline
+RF\_12 (Tickets reclamos) & CU\_17 \\\hline
+RF\_13 (Proveedores/servicios) & CU\_19, CU\_18 \\\hline
+RF\_14 (Mantenimiento preventivo) & CU\_11, CU\_18 \\\hline
+RF\_15 (Dashboards/KPI) & CU\_09 \\\hline
+RF\_16 (Estacionamientos) & CU\_12, CU\_01 \\\hline
+RF\_17 (Backup automático) & (proceso batch; no CU interactivo directo) \\\hline
+RF\_18 (RBAC) & CU\_14 \\\hline
+\caption{Matriz de trazabilidad RF–CU (vista compacta).}
+\label{tab:traza-compacta}
+\end{longtable}
+
+% --- Opción B (cuadrícula “X”) en página apaisada ---
+\begin{landscape}
+\small
+\setlength{\tabcolsep}{3pt}
+\renewcommand{\arraystretch}{1.1}
+\begin{longtable}{|l|*{19}{c|}}
+\hline
+\textbf{RF \textbackslash\ CU} & \textbf{01} & \textbf{02} & \textbf{03} & \textbf{04} & \textbf{05} & \textbf{06} & \textbf{07} & \textbf{08} & \textbf{09} & \textbf{10} & \textbf{11} & \textbf{12} & \textbf{13} & \textbf{14} & \textbf{15} & \textbf{16} & \textbf{17} & \textbf{18} & \textbf{19}\\\hline
+RF\_01 & X &  &  &  &  &  &  &  &  &  &  &  &  &  & X &  &  &  &  \\\hline
+RF\_02 & X & X &  &  & X &  & X &  & X &  &  &  & X &  & X &  & X & X & X \\\hline
+RF\_03 &  &  &  &  &  &  &  &  &  &  &  &  &  &  & X &  &  &  &  \\\hline
+RF\_04 &  & X &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  \\\hline
+RF\_05 &  &  &  &  &  &  & X & X &  &  &  &  & X &  &  &  &  &  &  \\\hline
+RF\_06 &  &  &  &  &  &  &  & X &  &  &  &  &  &  &  &  &  &  &  \\\hline
+RF\_07 &  &  &  & X &  & X &  &  &  &  &  &  &  &  &  &  &  &  &  \\\hline
+RF\_08 &  &  &  &  &  & X &  &  &  &  &  &  &  &  &  &  &  &  &  \\\hline
+RF\_09 &  &  &  &  & X &  &  &  &  &  &  & X &  &  &  &  &  &  &  \\\hline
+RF\_10 &  &  &  &  &  &  &  &  &  & X &  &  &  &  &  &  &  &  &  \\\hline
+RF\_11 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & X &  &  &  \\\hline
+RF\_12 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & X &  &  \\\hline
+RF\_13 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & X & X \\\hline
+RF\_14 &  &  &  &  &  &  &  &  &  &  & X &  &  &  &  &  &  & X &  \\\hline
+RF\_15 &  &  &  &  &  &  &  &  & X &  &  &  &  &  &  &  &  &  &  \\\hline
+RF\_16 & X &  &  &  &  &  &  &  &  &  &  & X &  &  &  &  &  &  &  \\\hline
+RF\_17 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  \\\hline
+RF\_18 &  &  &  &  &  &  &  &  &  &  &  &  &  & X &  &  &  &  &  \\\hline
+\caption{Matriz de trazabilidad RF–CU (cuadrícula).}
+\label{tab:traza-grid}
+\end{longtable}
+\end{landscape}
+
+% Cierra el ámbito local de tamaño/padding del capítulo
+\endgroup

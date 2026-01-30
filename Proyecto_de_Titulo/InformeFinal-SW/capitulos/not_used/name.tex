@@ -1,0 +1,712 @@
+
+\section{Factibilidad del Proyecto}
+El estudio de factibilidad constituye una evaluación integral orientada a determinar si un proyecto propuesto —en este caso, el desarrollo e implementación del sistema de administración y gestión de comunidades residenciales \textbf{DOMU}— resulta técnica, operativa y económicamente viable. El objetivo principal de este análisis es estimar las posibilidades de éxito del proyecto antes de su ejecución, minimizando así los riesgos asociados a la inversión de tiempo, recursos y esfuerzos. 
+
+A través de esta evaluación, se busca proporcionar una base sólida para la toma de decisiones estratégicas, garantizando que \textbf{DOMU} no solo sea viable desde el punto de vista conceptual, sino también aplicable y rentable en contextos reales. En esta sección, se abordarán tres dimensiones fundamentales de la viabilidad del proyecto: la \textbf{factibilidad técnica}, la \textbf{factibilidad operativa} y, especialmente, la \textbf{factibilidad económica}, cuyo análisis permitirá establecer si los beneficios esperados justifican los costos asociados al desarrollo e implementación del sistema.
+  
+\subsection{Factibilidad técnica}
+Esta sección evalúa la viabilidad técnica del proyecto considerando software y hardware mínimos.
+\begin{longtable}{|p{0.38\textwidth}|p{0.18\textwidth}|p{0.36\textwidth}|}
+% --- CAPTION Y ESTRUCTURA DE CABECERAS ---
+% Esta es la leyenda que aparecerá en el "Índice de Tablas"
+\caption{Especificaciones del software requerido para el desarrollo.}
+\label{tab:software_desarrollo} \\
+
+% --- Cabecera de la PRIMERA página ---
+\hline
+\multicolumn{3}{|c|}{\textbf{Especificación del software requerido en desarrollo}} \\
+\hline
+\textbf{Software} & \textbf{Versión Mínima} & \textbf{Propósito en el Proyecto} \\
+\hline
+\endhead % \endfirsthead se omite para usar la misma cabecera en todas las páginas
+
+
+% --- Pie de página (en todas menos la última) ---
+\hline
+\multicolumn{3}{|r|}{\small\textit{Continúa en la siguiente página...}} \\
+\hline
+\endfoot
+
+% --- Pie de página (solo en la última página) ---
+\hline
+\endlastfoot
+
+% --- CONTENIDO DE LA TABLA (Agrupado y ordenado) ---
+
+\multicolumn{3}{|l|}{\textit{Entorno y Control de Versiones}} \\ \hline
+Sistema operativo PC & macOS, Windows 11 & Entorno compatible de desarrollo \\
+Git & 2.50+ & Sistema de control de versiones \\
+GitHub & Web & Plataforma de repositorios Git \\ \hline
+
+\multicolumn{3}{|l|}{\textit{IDEs y Editores de Código}} \\ \hline
+Visual Studio Code & 1.101+ & Editor de código (enfocado a front-end) \\
+IntelliJ IDEA & 2024.1+ & IDE de Java (enfocado a back-end) \\ \hline
+
+\multicolumn{3}{|l|}{\textit{Tecnologías Back-End}} \\ \hline
+Java JDK & 21 & Kit de desarrollo de Java \\
+Spring Boot & 3.x & Framework de aplicaciones Java \\ \hline
+
+\multicolumn{3}{|l|}{\textit{Tecnologías Front-End}} \\ \hline
+Node.js + NVM & LTS & Entorno de ejecución y gestión de versiones \\
+React / React Native / Expo & Actual & Frameworks para interfaces de usuario \\ \hline
+
+\multicolumn{3}{|l|}{\textit{Gestión de Datos y API}} \\ \hline
+MySQL & 8.0+ & Motor de base de datos relacional \\
+DBeaver & 25.1+ & Interfaz gráfica para MySQL \\
+Postman & v11+ & Cliente para pruebas de API REST \\ \hline
+
+\multicolumn{3}{|l|}{\textit{Contenerización}} \\ \hline
+Docker & 20.10.14+ & Plataforma de contenerización \\ \hline
+
+\multicolumn{3}{|l|}{\textit{Diseño y Navegación}} \\ \hline
+Figma & Web & Herramienta de diseño y prototipado \\
+Google Chrome & Última & Navegador web para depuración \\ \hline
+
+\end{longtable}
+
+
+\begin{table}[H]
+
+    % Centra la tabla en la página
+    \centering
+    
+    % Añadimos la leyenda (caption) para el Índice de Tablas
+    \caption{Especificaciones del hardware requerido para el desarrollo.}
+    \label{tab:hardware_desarrollo}
+    
+    % El entorno "tabular" es el que dibuja la tabla
+    \begin{tabular}{|p{0.42\textwidth}|p{0.50\textwidth}|}
+    
+    % --- Cabecera de la tabla ---
+    \hline
+    \multicolumn{2}{|c|}{\textbf{Especificación hardware requerido en desarrollo}}\\
+    \hline
+    \textbf{Especificación hardware} & \textbf{Detalle mínimo} \\
+    \hline
+    
+    % --- Contenido de la tabla ---
+    Dispositivos para desarrollo & MacBook Pro M1 (8-core), 16~GB RAM, SSD~500~GB; HP Victus 16 (i7-10750H), 16~GB RAM, SSD~1~TB \\
+    \hline
+    Pistola escáner de QR & Capaz de leer códigos QR (ISO/IEC 18004), conexión USB o Bluetooth. \\
+    \hline
+    
+    \end{tabular}
+\end{table}
+
+\begin{table}[H]
+
+    % Centra la tabla en la página
+    \centering
+    
+    % Añadimos la leyenda (caption) para el Índice de Tablas
+    \caption{Especificaciones del hardware para los servidores de desarrollo y producción.}
+    \label{tab:hardware_servidores}
+    
+    % El entorno "tabular" es el que dibuja la tabla
+    \begin{tabular}{|p{0.42\textwidth}|p{0.50\textwidth}|}
+    
+    % --- Cabecera de la tabla ---
+    \hline
+    \multicolumn{2}{|c|}{\textbf{Especificación hardware servidor de desarrollo y producción}}\\
+    \hline
+    \textbf{Especificación} & \textbf{Detalle} \\
+    \hline
+    
+    % --- Contenido de la tabla ---
+    Servidor de desarrollo & Intel Core i5, 16~GB RAM, SSD; Windows~11. Pruebas locales y Docker. \\
+    \hline % <-- Añadí esta línea para separar las dos filas
+    Servidor de producción & Xeon multi-core 2.0~GHz, 32~GB RAM, SSD~NVMe 1~TB. \\
+    \hline
+    
+    \end{tabular}
+\end{table}
+
+
+
+\textbf{Conclusión de la factibilidad técnica:} Con base en las especificaciones de software, hardware de desarrollo y servidores, se concluye que el proyecto \textbf{DOMU} es técnicamente factible.
+
+El equipo de desarrollo cuenta con los recursos tecnológicos necesarios, incluyendo entornos de desarrollo completos y un ecosistema de software moderno (Java, Spring Boot, React, MySQL y Docker). Estas tecnologías son estándares de la industria, de código abierto y están respaldadas por comunidades activas, lo que facilita la resolución de problemas y el aprendizaje continuo.
+
+En cuanto al hardware, los componentes físicos requeridos para la operación del sistema consisten en los equipos de desarrollo y una \textbf{pistola de escáner QR comercial}. Este tipo de dispositivo lector está ampliamente disponible en el mercado, es de costo accesible y asegura la compatibilidad (generalmente \textit{plug-and-play} vía USB) para la lectura de los códigos de las cédulas de identidad chilenas.
+
+Considerando la madurez de las tecnologías de software seleccionadas y la accesibilidad del hardware requerido, se puede afirmar que el desarrollo e implementación del sistema \textbf{DOMU} es completamente viable desde el punto de vista técnico.
+
+
+
+
+\subsection{Factibilidad Operativa}
+
+La factibilidad operativa del sistema \textbf{DOMU} evalúa si los usuarios finales —administradores de comunidades, conserjes, comités, residentes y personal de servicio— podrán adoptar y utilizar eficazmente la plataforma en su entorno cotidiano. También considera la disposición de los actores involucrados para participar activamente y las competencias mínimas necesarias para su uso.
+
+\subsubsection{Disponibilidad tecnológica y competencias de los usuarios}
+
+El éxito operativo de una plataforma como \textbf{DOMU} está estrechamente vinculado al nivel de acceso a la tecnología y a las competencias digitales de sus usuarios. En este contexto, las condiciones actuales de conectividad en las regiones del Biobío y La Araucanía —zonas donde se proyecta su implementación inicial— resultan favorables para la adopción del sistema. De acuerdo con datos de Subtel e INE, más del 80~\% de los hogares urbanos en estas regiones cuenta con conexión a Internet fija o móvil, y los \textit{smartphones} se han consolidado como el principal medio de acceso a servicios digitales. Esto permite establecer que tanto residentes como miembros del comité de administración poseen el equipamiento necesario para interactuar con plataformas web y aplicaciones móviles como \textbf{DOMU}.
+
+En lo que respecta a los administradores y conserjes, estos ya desarrollan actividades de coordinación, registro de visitas, control de encomiendas y comunicación interna mediante herramientas digitales básicas como hojas de cálculo, WhatsApp o correo electrónico. Este nivel de exposición tecnológica facilita la transición hacia un sistema más estructurado. La principal herramienta física para el registro en conserjería será la \textbf{pistola de escáner QR}, un dispositivo de uso simple (similar a un lector de código de barras de supermercado) que no requiere competencias técnicas avanzadas, facilitando el registro rápido y sin errores de visitas y encomiendas.
+
+Por su parte, el personal de aseo y mantención solo requiere realizar acciones simples dentro del sistema, como marcar el inicio o término de tareas, registrar observaciones o cargar evidencias; funciones que no exigen habilidades técnicas avanzadas y que pueden ser fácilmente abordadas mediante capacitaciones breves y material de apoyo.
+
+El comité de administración, encargado de validar decisiones, revisar reportes y gestionar aspectos estratégicos de la comunidad, también se beneficiará de una interfaz clara y visualmente orientada, con acceso a \textit{dashboards} e indicadores que apoyan la toma de decisiones. En cuanto a los residentes, su interacción está centrada en funciones cotidianas como recibir notificaciones, realizar pagos en línea, reservar espacios comunes o emitir reclamos, todas ellas acciones para las cuales ya existe una familiaridad generalizada en contextos digitales actuales.
+
+En este contexto, \textbf{DOMU} no representa una barrera tecnológica, sino una sistematización de hábitos digitales ya adquiridos, adaptados a la gestión de comunidades residenciales. La infraestructura tecnológica existente, junto con la experiencia previa y las capacidades de los distintos usuarios, permite afirmar que el sistema puede ser adoptado y utilizado de manera efectiva, reforzando su viabilidad operativa.
+
+\subsubsection{Usabilidad del sistema y apoyo a la adopción}
+
+Uno de los factores críticos para la adopción exitosa de un sistema tecnológico en entornos residenciales es su facilidad de uso. En el caso de \textbf{DOMU}, la interfaz será diseñada considerando los distintos perfiles de usuario —desde residentes sin formación técnica hasta administradores con mayor experiencia digital— priorizando la simplicidad, la claridad visual y la reducción de pasos para realizar tareas comunes. 
+
+Además, el sistema contempla compatibilidad multiplataforma, permitiendo el acceso tanto desde dispositivos móviles como desde navegadores web, lo que incrementa la flexibilidad de uso según las preferencias o posibilidades de cada usuario. Esta accesibilidad técnica se complementa con elementos de apoyo integrados, como guías interactivas, ayuda contextual y materiales de capacitación diseñados para facilitar el aprendizaje autónomo. En consecuencia, la usabilidad de \textbf{DOMU} no solo favorece su adopción inicial, sino que también garantiza un uso sostenido en el tiempo con un bajo requerimiento de soporte técnico.
+
+\subsubsection{Aceptación y motivación}
+
+La disposición de los usuarios a incorporar un nuevo sistema depende directamente del valor que perciben en su uso. En ese sentido, \textbf{DOMU} responde a problemáticas concretas que afectan actualmente a muchas comunidades residenciales: desorganización en el registro de visitas, poca trazabilidad en la entrega de encomiendas, falta de transparencia en la gestión financiera y escasos canales de comunicación interna. Al ofrecer soluciones integradas y automatizadas para estos procesos, el sistema entrega beneficios claros y tangibles para todos los actores involucrados.
+
+Los administradores encuentran en \textbf{DOMU} una herramienta que facilita el control operativo y la rendición de cuentas; los conserjes y personal de servicio optimizan sus tareas al reducir la carga manual y el margen de error; el comité accede a indicadores clave para tomar decisiones informadas; y los residentes mejoran su experiencia al contar con un canal unificado para interactuar con su comunidad. Esta alineación entre necesidades reales y funcionalidades ofrecidas constituye un factor clave para la aceptación del sistema.
+
+% --- Conclusión (usando \subsubsection* para que no se numere) ---
+\subsubsection*{Conclusión de la factibilidad operativa}
+
+A partir del análisis realizado, se concluye que el sistema \textbf{DOMU} es operativamente factible. Las regiones del Biobío y La Araucanía, definidas como zonas de implementación inicial, presentan condiciones tecnológicas adecuadas, tanto en términos de infraestructura de conectividad como de equipamiento disponible entre los usuarios. Asimismo, los distintos actores involucrados —residentes, comités, administradores, conserjes y personal de servicio— poseen las competencias digitales mínimas requeridas para utilizar la plataforma, o bien pueden adquirirlas fácilmente mediante acciones de capacitación puntuales.
+
+La estructura del sistema, diseñada con criterios de usabilidad y accesibilidad, reduce las barreras de entrada y promueve un uso eficiente por parte de perfiles diversos. Además, \textbf{DOMU} responde a necesidades reales y transversales de las comunidades residenciales, lo que incrementa la disposición de los usuarios a participar activamente en su implementación y uso.
+
+
+\subsection{Factibilidad Económica}
+
+La factibilidad económica es un componente clave en la evaluación integral del proyecto \textbf{DOMU}, ya que permite determinar si su desarrollo e implementación resultan financieramente viables. Esta sección tiene como objetivo identificar, cuantificar y analizar los costos asociados al proyecto, así como proyectar sus beneficios, con el fin de fundamentar decisiones de inversión informadas y reducir la incertidumbre en torno a su sostenibilidad.
+
+En esta evaluación se considerarán los costos directos involucrados, tales como los recursos humanos necesarios para el desarrollo del software, las licencias requeridas, los servicios de \textit{hosting} y dominio, así como el equipamiento físico requerido para la implementación, principalmente la pistola de escáner QR. Si bien algunos de estos recursos ya se encuentran disponibles, serán igualmente incluidos en la estimación para obtener una visión completa y realista del valor económico comprometido.
+
+Asimismo, se incluirá el costo asociado a la depreciación de los activos utilizados, como los equipos computacionales de desarrollo previamente adquiridos, con el fin de entregar una estimación realista de todos los elementos involucrados en el desarrollo de la aplicación. Esta depreciación se calculará mediante un prorrateo proporcional al período de desarrollo del proyecto, tomando en cuenta la vida útil estimada de dichos activos. De esta manera, se busca reflejar adecuadamente el desgaste y la obsolescencia tecnológica que afectan a los recursos durante su uso intensivo.
+\newpage
+% --- TABLA 5 (ajustada a margen con tamaño y tabcolsep locales)
+{\small\setlength{\tabcolsep}{4pt}
+\begin{table}[H]
+    
+    % Centra la tabla en la página
+    \centering
+    
+    % Añadimos la leyenda (caption) para el Índice de Tablas
+    \caption{Costos de recursos técnicos de desarrollo (Software y Hardware).}
+    \label{tab:costos_recursos_tecnicos}
+    
+    % Mantenemos \small y la reducción de espacio para que la tabla quepa
+    {\small\setlength{\tabcolsep}{4pt}
+    
+    % El entorno "tabular" es el que dibuja la tabla
+    \begin{tabular}{|p{0.23\textwidth}|c|r|c|r|c|r|}
+    
+    % --- Cabecera de la tabla ---
+    % El título anterior se eliminó y se reemplazó por el \caption
+    \hline
+    \textbf{Recurso} & \textbf{Cant.} & \textbf{Valor (CLP)} & \textbf{Depr. (mes)} & \textbf{Valor mensual} & \textbf{Meses} & \textbf{Total (CLP)}\\
+    \hline
+    
+    % --- Contenido de la tabla ---
+    \multicolumn{7}{|l|}{\textbf{Software}}\\ \hline
+    Visual Studio Code & 2 & \$0 & & & 4 & \$0\\
+    Docker & 2 & \$0 & & & 4 & \$0\\
+    Git & 2 & \$0 & & & 4 & \$0\\
+    GitHub & 2 & \$0 & & & 4 & \$0\\
+    Sistema operativo Windows & 1 & \$229.999 & 36 & \$6.389 & 4 & \$25.555\\
+    Sistema operativo macOS & 1 & \$0 & & & 4 & \$0\\
+    Java JDK & 2 & \$0 & & & 4 & \$0\\
+    Javalin & 2 & \$0 & & & 4 & \$0\\
+    Node.js + NVM & 2 & \$0 & & & 4 & \$0\\
+    React / React Native / Expo & 2 & \$0 & & & 4 & \$0\\
+    MySQL & 1 & \$0 & & & 4 & \$0\\
+    Postman & 2 & \$0 & & & 4 & \$0\\
+    Google Chrome & 2 & \$0 & & & 4 & \$0\\
+    DBeaver & 2 & \$0 & & & 4 & \$0\\
+    Figma & 1 & \$0 & & & 4 & \$0\\ \hline
+    \multicolumn{6}{|r|}{\textbf{Total software}} & \$25.555\\
+    \hline \hline % Doble línea para separar secciones
+    \multicolumn{7}{|l|}{\textbf{Hardware}}\\ \hline
+    MacBook Pro M1 & 1 & \$1.200.000 & 36 & \$33.333 & 4 & \$133.332\\
+    HP Victus 16 & 1 & \$709.990 & 36 & \$19.722 & 4 & \$78.888\\
+    Pistola escáner de QR & 1 & \$22.525 & 24 & \$939 & 4 & \$3.756\\ \hline
+    \multicolumn{6}{|r|}{\textbf{Total hardware}} & \$215.976\\
+    \hline \hline % Doble línea para el gran total
+    \multicolumn{6}{|r|}{\textbf{Total recursos técnicos}} & \$241.531\\
+    \hline
+    
+    \end{tabular}
+    } % Cierre del scope de \small y \setlength
+\end{table}
+
+A continuación, en la Tabla~\ref{tab:costos_servicios} se detallan los valores aproximados correspondientes al costo de adquisición y mantenimiento de un dominio web y un servicio de \textit{hosting}, ambos necesarios para el correcto funcionamiento de la plataforma \textbf{DOMU}. Los precios mensuales y su equivalente anual permiten estimar con mayor precisión el gasto asociado a estos servicios, fundamentales tanto en la etapa de desarrollo como en la de operación continua.
+
+Las cotizaciones se realizaron en base a los planes básicos ofrecidos por NIC Chile para la compra de dominio “.cl” y por el proveedor Hostinger para el servicio de \textit{hosting} web compartido. Esta información es útil para proyectar los costos operacionales del sistema, permitiendo tomar decisiones informadas sobre el presupuesto necesario para la puesta en marcha y continuidad del proyecto.
+
+
+\begin{table}[H]
+
+    % Centra la tabla en la página
+    \centering
+    
+    % Esta es la leyenda (caption) que irá al Índice de Tablas.
+    % Reemplaza al \multicolumn que tenías.
+    \caption{Costos de Hosting y Dominio.}
+    
+    % Este label coincide con el \ref que te di en el texto anterior
+    \label{tab:costos_servicios}
+    
+    % El entorno "tabular". 
+    % Usamos 'l' (left) para el ítem y 'r' (right) para los números/dinero.
+    \begin{tabular}{|l|r|r|}
+    
+    % --- Cabecera de la tabla ---
+    \hline
+    \textbf{Ítem} & \textbf{Mensual (CLP)} & \textbf{Anual (CLP)}\\
+    \hline
+    
+    % --- Contenido de la tabla ---
+    Dominio & \$832 & \$9.990\\
+    Hosting & \$13.500 & \$162.000\\
+    \hline
+    \textbf{Total} & \textbf{\$14.332} & \textbf{\$171.990}\\
+    \hline
+    
+    \end{tabular}
+\end{table}
+
+En la Tabla~\ref{tab:costos_rrhh} se presenta una estimación referencial del costo asociado a los recursos humanos necesarios para el desarrollo de la plataforma \textbf{DOMU}. Los valores están calculados en base a tarifas promedio de mercado para cada perfil profesional, considerando un período de desarrollo de 4~meses en donde se pretende trabajar 2~horas diarias independiente del cargo.
+
+Es importante destacar que el desarrollo será realizado directamente por los autores del proyecto de título, quienes asumirán los cargos mencionados en la tabla, por lo tanto, estos montos no representan un desembolso económico real, sino que corresponden a un \textit{costo de oportunidad}. Su inclusión permite dimensionar el valor del trabajo técnico involucrado y facilita la evaluación del proyecto si este fuera llevado a cabo por una empresa o equipo externo.
+
+
+\begin{table}[H]
+
+    % Centra la tabla en la página
+    \centering
+    
+    % Esta es la leyenda (caption) que irá al Índice de Tablas.
+    \caption{Cálculo costo de recursos humanos de desarrollo.}
+    
+    % Este label coincide con el \ref que te di en el texto anterior
+    \label{tab:costos_rrhh}
+    
+    % Mantenemos tus ajustes de \small, \tabcolsep y \arraystretch
+    {\small\setlength{\tabcolsep}{3pt}
+    \renewcommand{\arraystretch}{1.1}
+    
+    % El entorno "tabular" es el que dibuja la tabla
+    \begin{tabular}{|p{0.34\textwidth}|c|c|c|r|r|}
+    
+    % --- Cabecera de la tabla ---
+    % Se elimina el \multicolumn{6}{|c|}{...} que tenías
+    \hline
+    \textbf{Cargo} & \textbf{Cant.} & \textbf{Meses} & \shortstack{\textbf{Horas}\\\textbf{estim.}} & \textbf{Costo x hora} & \textbf{Total (CLP)}\\
+    \hline
+    
+    % --- Contenido de la tabla ---
+    Desarrollador Frontend & 1 & 4 & 160 & \$18.250 & \$2.920.000\\
+    Desarrollador Backend  & 1 & 4 & 160 & \$20.000 & \$3.200.000\\
+    Diseñador UX/UI        & 1 & 1 &  40 & \$15.000 &   \$600.000\\
+    Tester / QA            & 1 & 1 &  40 & \$15.000 &   \$600.000\\
+    Gestor de Proyecto     & 1 & 4 & 160 & \$21.666 & \$3.466.560\\
+    \hline
+    \multicolumn{5}{|r|}{\textbf{Total}} & \textbf{\$10.786.560}\\
+    \hline
+    
+    \end{tabular}
+    } % Cierre del scope de \small, \setlength y \renewcommand
+\end{table}
+
+
+La Tabla~\ref{tab:costos_suministros} presenta una estimación del costo de suministros necesarios para el desarrollo del proyecto \textbf{DOMU} durante un período de cuatro meses. Se consideran los gastos asociados al uso de servicios de internet y electricidad, dado que el desarrollo se realizará de forma remota. Para ello, se estimaron dos planes de internet cotizados con la compañía VTR y dos cuentas de electricidad con un valor arbitrario suficiente para cubrir los gastos asociados como parte de los suministros requeridos.
+
+
+\begin{table}[H]
+
+    % Centra la tabla en la página
+    \centering
+    
+    % Esta es la leyenda (caption) que irá al Índice de Tablas.
+    \caption{Cálculo del costo de suministros de desarrollo.}
+    
+    % Este label coincide con el \ref que te di en el texto anterior
+    \label{tab:costos_suministros}
+    
+    % El entorno "tabular". 
+    % Usamos 'l' (left), 'c' (center) y 'r' (right) para mejor alineación.
+    \begin{tabular}{|l|c|r|c|r|}
+    
+    % --- Cabecera de la tabla ---
+    \hline
+    \textbf{Material} & \textbf{Cant.} & \textbf{Costo mensual} & \textbf{Meses} & \textbf{Total (CLP)}\\
+    \hline
+    
+    % --- Contenido de la tabla ---
+    Plan Internet & 2 & \$16.990 & 4 & \$67.960\\
+    Boletas de electricidad & 2 & \$12.000 & 4 & \$48.000\\
+    \hline
+    \textbf{Total} & & \textbf{\$28.990} & & \textbf{\$115.960}\\
+    \hline
+    
+    \end{tabular}
+\end{table}
+
+
+
+La Tabla~\ref{tab:costos_resumen} presenta un resumen de los costos estimados para el desarrollo del proyecto \textbf{DOMU}. Se incluyen los recursos técnicos, humanos y de suministros necesarios para llevar a cabo la implementación inicial de la plataforma. Este total representa la inversión inicial del proyecto, la cual será considerada como el desembolso del año cero en el flujo de caja proyectado.
+
+% --- INICIO TABLA RESUMEN DE COSTOS (Formato consistente con las anteriores) ---
+
+% Usamos [H] para forzar que la tabla se mantenga junta
+\begin{table}[H]
+
+    % Centra la tabla en la página
+    \centering
+    
+    % Esta es la leyenda (caption) que irá al Índice de Tablas.
+    \caption{Resumen de Costos de Desarrollo.}
+    
+    % Label para que el \ref{tab:costos_resumen} funcione
+    \label{tab:costos_resumen}
+    
+    % El entorno "tabular". 
+    % Usamos 'l' (left) y 'r' (right) para alineación.
+    \begin{tabular}{|l|r|}
+    
+    % --- Cabecera de la tabla ---
+    % \multicolumn reemplaza al título superior que tenías en la imagen
+    \hline
+    \multicolumn{2}{|c|}{\textbf{Resumen de Costos de Desarrollo}}\\
+    \hline
+    
+    % --- Contenido de la tabla ---
+    Duración & 4 meses\\
+    \hline
+    Recursos Técnicos & \$241.531\\
+    \hline
+    Recursos Humanos & \$10.786.560\\
+    \hline
+    Suministros & \$115.960\\
+    \hline
+    \textbf{Total} & \textbf{\$11.144.051}\\
+    \hline
+    
+    \end{tabular}
+\end{table}
+% --- FIN TABLA RESUMEN DE COSTOS ---
+
+
+La Tabla~\ref{tab:ingresos_y1} presenta la estimación de ingresos mensuales proyectados para el primer año de funcionamiento de \textbf{DOMU}, basada en un modelo de suscripción mensual por comunidad. Se ha definido un valor de \$90.000 CLP por suscripción, considerando los servicios tecnológicos, soporte y funcionalidades ofrecidas por la plataforma.
+
+La proyección del número de comunidades suscritas considera un crecimiento escalonado y progresivo, con el objetivo de alcanzar 25 comunidades al término del primer año. Este crecimiento se espera lograr a través de una estrategia de captación apoyada por campañas de publicidad digital, principalmente mediante Meta Ads (Facebook e Instagram) y Google Ads, herramientas que permiten una segmentación precisa hacia nuestro público objetivo.
+
+Estas acciones de marketing están contempladas dentro de los costos operativos del proyecto, destinando un presupuesto mensual promedio de \$300.000 CLP. Dichas plataformas no requieren una suscripción fija, sino que operan bajo un modelo de pago por clic (\textit{CPC}), donde se cobra según la cantidad de interacciones (clics) que generan los anuncios.  Esto permite ajustar el gasto en función del rendimiento de las campañas y mantener un control sobre la inversión publicitaria.
+
+
+% Usamos [H] para forzar que la tabla se mantenga junta
+\begin{table}[H]
+
+    % Centra la tabla en la página
+    \centering
+    
+    % Esta es la leyenda (caption) que irá al Índice de Tablas.
+    \caption{Estimación de ingresos mensuales (primer año).}
+    
+    % Le damos un label para poder referenciarla
+    \label{tab:ingresos_y1}
+    
+    % El entorno "tabular". 
+    % Usamos 'c' (center) y 'r' (right) para mejor alineación.
+    \begin{tabular}{|c|c|r|r|}
+    
+    % --- Cabecera de la tabla ---
+    \hline
+    \textbf{Mes} & \textbf{Comunidades} & \textbf{Valor suscripción} & \textbf{Ingreso mensual (CLP)}\\
+    \hline
+    
+    % --- Contenido de la tabla ---
+    1 & 3 & \$90.000 & \$270.000\\
+    2 & 5 & \$90.000 & \$450.000\\
+    3 & 8 & \$90.000 & \$720.000\\
+    4 & 8 & \$90.000 & \$720.000\\
+    5 & 10 & \$90.000 & \$900.000\\
+    6 & 11 & \$90.000 & \$990.000\\
+    7 & 13 & \$90.000 & \$1.170.000\\
+    8 & 15 & \$90.000 & \$1.350.000\\
+    9 & 19 & \$90.000 & \$1.710.000\\
+    10 & 21 & \$90.000 & \$1.890.000\\
+    11 & 22 & \$90.000 & \$1.980.000\\
+    12 & 25 & \$90.000 & \$2.250.000\\
+    \hline % Línea de separación antes del total
+    \textbf{Total} & & & \textbf{\$14.400.000}\\
+    \hline
+    
+    \end{tabular}
+\end{table}
+
+
+% --- INICIO DE LA SUBSECCIÓN DE FLUJO DE CAJA ---
+
+\subsubsection{Flujo de caja}
+
+Para asegurar la viabilidad económica del proyecto, se empleará el indicador del Valor Actual Neto (VAN) como medida.  Para ello, se realizará el cálculo del flujo de caja correspondiente a la inversión inicial, así como se proyectarán los flujos de caja para los primeros 5~años. 
+Primeramente, la Tabla~\ref{tab:costos_operativos_y1} muestra la estimación de los costos operativos anuales del proyecto para el primer año de funcionamiento, considerando los gastos mínimos necesarios para mantener y hacer crecer la plataforma.
+
+Se ha proyectado una inversión mensual de \textbf{\$300.000 CLP} en publicidad digital mediante \textit{Meta Ads} y \textit{Google Ads}, con el objetivo de captar nuevas comunidades y posicionar la aplicación en el mercado. El ítem de soporte y atención considera la implementación de un \textit{chatbot} en \textit{WhatsApp Business}, apoyado por practicantes de TI, a quienes se les asignará un sueldo mínimo mensual de \textbf{\$529.000 CLP}.
+
+Por su parte, el mantenimiento técnico contempla la contratación de un profesional a cargo de mantener la operatividad del sistema, resolver incidencias y aplicar mejoras menores, con una remuneración mensual estimada de \textbf{\$700.000 CLP}. Finalmente, el costo asociado a dominio y \textit{hosting} ya fue detallado anteriormente en el informe y corresponde a los servicios requeridos para la publicación y funcionamiento continuo de la aplicación.
+
+Estos gastos han sido considerados como base para calcular el flujo de caja proyectado durante los primeros cinco años.
+
+
+% --- INICIO TABLA COSTOS OPERATIVOS (TABLA 11) ---
+
+% Usamos [H] para forzar que la tabla se mantenga junta
+\begin{table}[H]
+
+    % Centra la tabla en la página
+    \centering
+    
+    % Esta es la leyenda (caption) que irá al Índice de Tablas.
+    \caption{Estimación de Costos Operativos del proyecto.}
+    
+    % Este label coincide con el \ref{tab:costos_operativos_y1} del texto anterior
+    \label{tab:costos_operativos_y1}
+    
+    % El entorno "tabular". 
+    % Usamos 'l' (left) y 'r' (right) para alineación.
+    \begin{tabular}{|l|r|}
+    
+    % --- Cabecera de la tabla ---
+    \hline
+    \multicolumn{2}{|c|}{\textbf{Estimación de Costos Operativos}}\\
+    \hline
+    \textbf{Ítem} & \textbf{Valor Anual (12 meses)}\\
+    \hline
+    
+    % --- Contenido de la tabla ---
+    Publicidad (Meta y Google Ads) & \$3.600.000\\
+    \hline
+    Soporte y Atención & \$6.348.000\\
+    \hline
+    Mantenimiento Técnico & \$8.400.000\\
+    \hline
+    Dominio y Hosting & \$171.990\\
+    \hline
+    \textbf{Total Costos Operativos} & \textbf{\$18.519.990}\\
+    \hline
+    
+    \end{tabular}
+\end{table}
+% --- FIN TABLA COSTOS OPERATIVOS ---
+
+
+
+
+
+% Este texto va DESPUÉS de la tabla de Costos Operativos (tab:costos_operativos_y1)
+
+Por otro lado, el crecimiento proyectado en la cantidad de suscripciones se basa en una \textbf{tasa compuesta de crecimiento anual (CAGR)} aproximada del 50\%.  Dada la siguiente fórmula de crecimiento compuesto:
+
+% Usamos $$...$$ para una ecuación centrada y sin numerar
+% Usamos \text{...} para el texto dentro de la fórmula
+% Usamos \times para el símbolo de multiplicación
+$$
+\text{Suscripciones en año } n = S_0 \times (1 + r)^n
+$$
+
+Donde:
+\begin{itemize}
+    \item $S_0 = 25$ (Suscripciones al finalizar el año 1)
+    \item $r = 0.5$ (CAGR del 50\%) % El % debe escaparse con \
+    \item $n = \text{número de años transcurridos desde el año 1}$
+\end{itemize}
+
+
+% --- INICIO TABLA PROYECCIÓN DE SUSCRIPCIONES (TABLA 12) ---
+
+% Usamos [H] para forzar que la tabla se mantenga junta
+\begin{table}[H]
+
+    % Centra la tabla en la página
+    \centering
+    
+    % Esta es la leyenda (caption) que irá al Índice de Tablas.
+    \caption{Proyección de Suscripciones por Año (CAGR 50\%).}
+    
+    % Le damos un label para poder referenciarla
+    \label{tab:proyeccion_suscripciones}
+    
+    % El entorno "tabular". 
+    % Usamos 'c' (center) para todas las columnas.
+    % Usamos \times para el símbolo de multiplicación
+    \begin{tabular}{|c|c|c|}
+    
+    % --- Cabecera de la tabla ---
+    \hline
+    \multicolumn{3}{|c|}{\textbf{Proyección de Suscripciones por Año}}\\
+    \hline
+    \textbf{Año} & \textbf{Cálculo} & \textbf{Suscripciones Proyectadas}\\
+    \hline
+    
+    % --- Contenido de la tabla ---
+    1 & 25 & 25\\
+    \hline
+    2 & $25 \times (1 + 0.50)\textasciicircum 1 = 37.5$ & 38\\
+    \hline
+    3 & $25 \times (1 + 0.50)\textasciicircum 2 = 56.25$ & 56\\
+    \hline
+    4 & $25 \times (1 + 0.50)\textasciicircum 3 = 84.375$ & 84\\
+    \hline
+    5 & $25 \times (1 + 0.50)\textasciicircum 4 = 126.56$ & 127\\
+    \hline
+    
+    \end{tabular}
+\end{table}
+% --- FIN TABLA PROYECCIÓN DE SUSCRIPCIONES ---
+
+En la siguiente tabla se presenta el flujo de caja.
+
+% --- INICIO TABLA FLUJO DE CAJA (TABLA 13) ---
+
+% Usamos [H] para forzar que la tabla se mantenga junta
+\begin{table}[H]
+
+    % Centra la tabla en la página
+    \centering
+    
+    % Esta es la leyenda (caption) que irá al Índice de Tablas.
+    \caption{Flujo de caja del proyecto (proyectado a 5 años).}
+    
+    % Le damos un label para poder referenciarla
+    \label{tab:flujo_de_caja}
+    
+    % \small para que la tabla (que es ancha) quepa mejor
+    \small
+    
+    % El entorno "tabular". 
+    % 'l' (left) para la primera columna, 'r' (right) para los números.
+    \begin{tabular}{|l|r|r|r|r|r|r|}
+    
+    % --- Cabecera de la tabla ---
+    \hline
+     & \textbf{Año 0} & \textbf{Año 1} & \textbf{Año 2} & \textbf{Año 3} & \textbf{Año 4} & \textbf{Año 5} \\
+    \hline
+    
+    % --- Contenido de la tabla ---
+    Suscripciones estimadas & 0 & 25 & 38 & 56 & 84 & 127 \\
+    \hline
+    Ingresos anuales (CLP) & \$0 & \$14.400.000 & \$41.040.000 & \$60.480.000 & \$90.720.000 & \$137.160.000 \\
+    \hline
+    Costos Operativos (CLP) & \$0 & \$18.519.990 & \$18.519.990 & \$18.519.990 & \$18.519.990 & \$18.519.990 \\
+    \hline
+    Inversión Inicial (CLP) & \$11.144.051 & \$0 & 0 & 0 & 0 & 0 \\
+    \hline
+    \textbf{Total (Flujo neto)} & \textbf{-\$11.144.051} & \textbf{-\$4.119.990} & \textbf{\$22.520.010} & \textbf{\$41.960.010} & \textbf{\$72.200.010} & \textbf{\$118.640.010} \\
+    \hline
+    
+    \end{tabular}
+\end{table}
+% --- FIN TABLA FLUJO DE CAJA ---
+
+% --- INICIO DE LA SUBSECCIÓN DE CÁLCULO DE VAN ---
+
+\subsubsection{Cálculo del V.A.N.}
+
+% Ecuación del VAN, centrada y en modo matemático
+$$
+VAN = \sum_{t=1}^{n} \frac{F_t}{(1 + k)^t} - I_0
+$$
+
+Donde cada uno de los términos, se especifican en la Tabla~\ref{tab:van_terminos}.
+
+% --- INICIO TABLA TÉRMINOS VAN (TABLA 14) ---
+
+% Usamos [H] para forzar que la tabla se mantenga junta
+\begin{table}[H]
+    \centering
+    
+    % Esta es la leyenda (caption) que irá al Índice de Tablas.
+    \caption{Términos de la fórmula de VAN.}
+    
+    % Label para referenciarla
+    \label{tab:van_terminos}
+    
+    % El entorno "tabular". 
+    \begin{tabular}{|c|l|}
+    \hline
+    \textbf{Término} & \textbf{Significado} \\
+    \hline
+    $t$ & Intervalo de tiempo \\
+    \hline
+    $n$ & Duración en años \\
+    \hline
+    $I_0$ & Inversión inicial (t=0) \\
+    \hline
+    $k$ & Tasa de descuento \\ % Corregido de 'K' a 'k' para coincidir con la fórmula
+    \hline
+    $F_t$ & Flujos de caja obtenidos en el intervalo de tiempo $t$ \\ % Corregido de 'Vt' a 'Ft'
+    \hline
+    \end{tabular}
+\end{table}
+% --- FIN TABLA TÉRMINOS VAN ---
+
+A continuación, se calculará el VAN con una tasa de descuento del 10\%.
+
+% --- INICIO TABLA CÁLCULO VAN (TABLA 15) ---
+
+% Usamos [H] para forzar que la tabla se mantenga junta
+\begin{table}[H]
+
+    % Centra la tabla en la página
+    \centering
+    
+    % Esta es la leyenda (caption) que irá al Índice de Tablas.
+    \caption{Cálculo del VAN.}
+    
+    % Le damos un label para poder referenciarla
+    \label{tab:van_calculo}
+    
+    % Ajustamos el espacio entre columnas para que quepa
+    \setlength{\tabcolsep}{4pt}
+    
+    % El entorno "tabular". 
+    % Usamos 'l' (left) y 'r' (right) para alineación.
+    % Usamos $...$ para formatear las fórmulas matemáticas.
+    \begin{tabular}{|l|l|r|}
+    
+    % --- Cabecera de la tabla ---
+    \hline
+    \textbf{Año} & \textbf{Cálculo (k = 10\%)} & \textbf{Flujo de caja (PV)} \\
+    \hline
+    
+    % --- Contenido de la tabla (CON VALORES CORREGIDOS) ---
+    Año 0 & $-\$11.144.051 / (1+0.10)^{0}$ & \textbf{-\$11.144.051} \\
+    \hline
+    Año 1 & $-\$4.119.990 / (1+0.10)^{1}$  & \textbf{-\$3.745.445} \\
+    \hline
+    Año 2 & $\$22.520.010 / (1+0.10)^{2}$  & \textbf{\$18.611.579} \\
+    \hline
+    Año 3 & $\$41.960.010 / (1+0.10)^{3}$  & \textbf{\$31.525.166} \\
+    \hline
+    Año 4 & $\$72.200.010 / (1+0.10)^{4}$  & \textbf{\$49.310.298} \\
+    \hline
+    Año 5 & $\$118.640.010 / (1+0.10)^{5}$ & \textbf{\$73.662.292} \\
+    \hline
+    
+    \end{tabular}
+\end{table}
+% --- FIN TABLA CÁLCULO VAN ---
+
+% --- INICIO TEXTO CONCLUSIÓN VAN ---
+
+% Suma de los flujos de caja traídos a valor presente (PV)
+\textbf{VAN (10\%)} = -11.144.051 + (-3.745.445) + 18.611.579 + 31.525.166 + 49.310.298 + 73.662.292 = \textbf{\$158.219.839}
+
+En este caso, el VAN obtenido es positivo (\textbf{\$158.219.839}), lo que indica que el proyecto es viable desde una perspectiva económica. % --- FIN TEXTO CONCLUSIÓN VAN ---
+
+\subsubsection{Conclusión de la factibilidad}
+Gracias al análisis realizado en los puntos anteriores, se puede concluir que el proyecto es económicamente viable. El VAN obtenido asciende a \textbf{\$158.219.839} utilizando una tasa de descuento del 10\%. Este resultado indica que el proyecto no solo recupera su inversión inicial de \textbf{\$11.144.051}, sino que además genera un excedente significativo en términos de valor presente.
+
+El flujo de caja proyectado presenta un crecimiento sostenido a lo largo de los cinco años, alcanzando resultados netos positivos a partir del segundo año, lo que evidencia una recuperación temprana de la inversión. Asimismo, los costos operativos se mantienen constantes y controlados durante todo el período analizado, lo cual refuerza la sostenibilidad financiera del proyecto en el mediano y largo plazo.
+
+En consecuencia, y bajo los supuestos establecidos, se puede afirmar con fundamentos que el proyecto es factible desde una perspectiva económica, representando una inversión rentable y sostenible.
+
+% --- FIN DE LA SECCIÓN ---
+
+

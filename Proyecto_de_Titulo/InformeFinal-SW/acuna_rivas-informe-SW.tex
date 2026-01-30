@@ -1,0 +1,112 @@
+\documentclass[final,letterpaper,oneside,authoryear,11pt,singlespace,spanish]{ezthesis}
+
+% ---------------- Preámbulo del documento ----------------
+\input{Macros.tex} % (mantén aquí lo que ya tenías)
+
+% Paquetes necesarios usados por los capítulos
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{array,longtable,tabularx,booktabs}
+\usepackage{acronym}
+\usepackage{hyperref}
+
+% Rutas de imágenes (ajusta si cambias carpetas)
+\graphicspath{{figures/}{images/}{bpmn/}{webpages/}{InformeFinal-SW/figures/}}
+
+% No estirar verticalmente el contenido
+\raggedbottom
+
+% Símbolo de fin de demostración (lo mantengo)
+\newcommand{\qed}{\nobreak \ifvmode \relax \else
+  \ifdim\lastskip<1.5em \hskip-\lastskip
+  \hskip1.5em plus0em minus0.5em \fi \nobreak
+  \vrule height0.75em width0.5em depth0.25em\fi}
+
+% ---------------- Datos de la tesis ----------------
+\author{Cristóbal Rivas Paul \\ Marco Sebastián Acuña González}
+\title{Sistema de Administración y Gestión de Comunidades Residenciales: DOMU\\Proyecto de Título}
+\degree{Ingeniería Civil Informática}
+\supervisor{Karina Pilar Rojas Contreras}
+\institution{Universidad del Bío-Bío, Chile}
+\faculty{Facultad de Ciencias Empresariales}
+\department{Departamento de Sistemas de Información}
+
+% ----------------------------------------------------
+\begin{document}
+\hyphenation{com-pu-ta-dor}
+
+% ---------- Numeración preliminar ----------
+\cleardoublepage
+\pagenumbering{roman}
+\setcounter{page}{1}
+
+% ---------- Portada ----------
+\include{titlepage}
+
+% ---------- Prefacios ----------
+% \input{capitulos/resumen}
+% \input{capitulos/dedicatoria}
+\input{capitulos/acronimos}
+
+% ---------- Índices ----------
+\renewcommand\contentsname{Índice General}
+\tableofcontents
+
+\renewcommand{\listfigurename}{Índice de Figuras}
+\listoffigures
+
+\renewcommand{\listtablename}{Índice de Tablas}
+\listoftables
+
+% ---------- Cuerpo principal ----------
+\cleardoublepage
+\pagenumbering{arabic}
+\setcounter{page}{1}
+
+\chapter{Introducción}
+\label{cap:introduccion}
+\input{capitulos/1-introduccion}
+
+\chapter{Proyecto}
+\label{cap:proyecto}
+\input{capitulos/2-proyecto}
+
+\chapter{Especificación de Requerimientos – Producto de Software}
+\label{cap:requerimientos}
+\input{capitulos/3-requerimientos}
+
+\chapter{Factibilidad del Proyecto}
+\label{cap:factibilidad}
+\input{capitulos/4-factibilidad}
+
+\chapter{Análisis del Proyecto - Casos de Uso}
+\label{cap:casos}
+\input{capitulos/5-casos}
+
+\chapter{Diseño}
+\label{cap:diseno}
+\input{capitulos/6-diseno}
+
+\chapter{Desarrollo del Trabajo}
+\label{cap:desarrollo}
+\input{capitulos/7-desarrollo}
+
+\chapter{Implantación y Puesta en Marcha}
+\label{cap:implantacion}
+\input{capitulos/8-implantacion}
+
+\chapter{Conclusión}
+\label{cap:conclusion}
+\input{capitulos/9-conclusion}
+
+% ---------- Bibliografía ----------
+\bibliographystyle{Thesis}
+\bibliography{bibliografia}
+
+% ---------- Anexos ----------
+\appendix
+
+\chapter{Aspectos de Gestión de Proyectos}\label{anexo:gestion}
+\input{anexos/05-gestionproyecto.tex}
+
+\end{document}
