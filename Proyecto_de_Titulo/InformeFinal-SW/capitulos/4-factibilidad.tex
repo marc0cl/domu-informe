@@ -1,6 +1,6 @@
 El estudio de factibilidad constituye una evaluación integral orientada a determinar si un proyecto propuesto —en este caso, el desarrollo e implementación del sistema de administración y gestión de comunidades residenciales \textbf{DOMU}— resulta técnica, operativa y económicamente viable. El objetivo principal de este análisis es estimar las posibilidades de éxito del proyecto antes de su ejecución, minimizando así los riesgos asociados a la inversión de tiempo, recursos y esfuerzos.
 
-A través de esta evaluación, se busca proporcionar una base sólida para la toma de decisiones estratégicas, garantizando que \textbf{DOMU} no solo sea viable desde el punto de vista conceptual, sino también aplicable y rentable en contextos reales. En esta sección, se abordarán tres dimensiones fundamentales de la viabilidad del proyecto: la \textbf{factibilidad técnica}, la \textbf{factibilidad operativa} y, especialmente, la \textbf{factibilidad económica}, cuyo análisis permitirá establecer si los beneficios esperados justifican los costos asociados al desarrollo e implementación del sistema.
+A través de esta evaluación, se busca proporcionar una base sólida para la toma de decisiones estratégicas, garantizando que \textbf{DOMU} no solo sea viable desde el punto de vista conceptual, sino también aplicable y rentable en contextos reales. En este capítulo, se abordarán tres dimensiones fundamentales de la viabilidad del proyecto: la \textbf{factibilidad técnica}, la \textbf{factibilidad operativa} y, especialmente, la \textbf{factibilidad económica}, cuyo análisis permitirá establecer si los beneficios esperados justifican los costos asociados al desarrollo e implementación del sistema.
 
 \section{Factibilidad Técnica}
 Esta sección evalúa la viabilidad técnica del proyecto considerando tanto los recursos de desarrollo como la infraestructura necesaria para la operación en producción.
@@ -10,6 +10,13 @@ Esta sección evalúa la viabilidad técnica del proyecto considerando tanto los
     \label{tab:software_desarrollo} \\
     \hline
     \multicolumn{3}{|c|}{\textbf{Especificación del software requerido en desarrollo}} \\
+    \hline
+    \textbf{Software} & \textbf{Versión Mínima} & \textbf{Propósito en el Proyecto} \\
+    \hline
+    \endfirsthead
+
+    \hline
+    \multicolumn{3}{|c|}{\textbf{Especificación del software requerido en desarrollo (cont.)}} \\
     \hline
     \textbf{Software} & \textbf{Versión Mínima} & \textbf{Propósito en el Proyecto} \\
     \hline
@@ -32,11 +39,11 @@ Esta sección evalúa la viabilidad técnica del proyecto considerando tanto los
 
     \multicolumn{3}{|l|}{\textit{Tecnologías Back-End}} \\ \hline
     Java JDK & 21 & Kit de desarrollo de Java \\
-    Spring Boot & 3.x & Framework de aplicaciones Java \\ \hline
+    Javalin & 6 & Framework de aplicaciones Java \\ \hline
 
     \multicolumn{3}{|l|}{\textit{Tecnologías Front-End}} \\ \hline
     Node.js + NVM & LTS & Entorno de ejecución y gestión de versiones \\
-    React / React Native / Expo & Actual & Frameworks para interfaces de usuario \\ \hline
+    React (Web + PWA) & Actual & Framework para interfaces de usuario (web y móvil) \\ \hline
 
     \multicolumn{3}{|l|}{\textit{Gestión de Datos y API}} \\ \hline
     MySQL & 8.0+ & Motor de base de datos relacional \\
@@ -63,7 +70,7 @@ Esta sección evalúa la viabilidad técnica del proyecto considerando tanto los
     \hline
     Dispositivos para desarrollo & MacBook Pro M1 (8-core), 16~GB RAM, SSD~500~GB; HP Victus 16 (i7-10750H), 16~GB RAM, SSD~1~TB \\
     \hline
-    Pistola escáner de QR & Capaz de leer códigos QR (ISO/IEC 18004), conexión USB o Bluetooth. \\
+    Pistola escáner de QR & Capaz de leer códigos QR (ISO/IEC 18004~\cite{iso18004}), conexión USB o Bluetooth. \\
     \hline
     \end{tabular}
 \end{table}
@@ -85,7 +92,6 @@ Esta sección evalúa la viabilidad técnica del proyecto considerando tanto los
     \end{tabular}
 \end{table}
 
-% --- NUEVA SECCIÓN AGREGADA PARA CUMPLIR CON LA PROFESORA ---
 \subsection{Viabilidad de la Infraestructura en Producción y Mantenimiento}
 
 Para dar cumplimiento a los requerimientos de operación continua una vez que el sistema sea entregado, se ha definido una estrategia técnica que asegura la disponibilidad y mantenibilidad del software en un entorno productivo:
@@ -98,9 +104,10 @@ Para dar cumplimiento a los requerimientos de operación continua una vez que el
     \item \textbf{Respaldo y Recuperación:} Para mitigar riesgos de pérdida de información, se configuran rutinas automáticas (\textit{cron jobs}) que ejecutan un respaldo diario (\textit{backup}) de la base de datos MySQL, garantizando la integridad de la información financiera y de accesos de la comunidad.
 \end{itemize}
 
-\textbf{Conclusión de la factibilidad técnica:} Con base en las especificaciones de software, hardware de desarrollo, la estrategia de servidores en producción y los planes de mantenimiento, se concluye que el proyecto \textbf{DOMU} es técnicamente factible.
+\subsection*{Conclusión de la factibilidad técnica}
+Con base en las especificaciones de software, hardware de desarrollo, la estrategia de servidores en producción y los planes de mantenimiento, se concluye que el proyecto \textbf{DOMU} es técnicamente factible.
 
-El equipo de desarrollo cuenta con los recursos tecnológicos necesarios y un ecosistema de software moderno (Java, Spring Boot, React, MySQL y Docker). En cuanto al hardware, los componentes físicos requeridos para la operación (pistola escáner) son de fácil adquisición y alta compatibilidad.
+El equipo de desarrollo cuenta con los recursos tecnológicos necesarios y un ecosistema de software moderno (Java, Javalin, React, MySQL y Docker). En cuanto al hardware, los componentes físicos requeridos para la operación (pistola escáner) son de fácil adquisición y alta compatibilidad.
 
 Considerando la madurez de las tecnologías y la planificación de la infraestructura productiva, se afirma que el sistema es completamente viable desde el punto de vista técnico.
 
@@ -110,7 +117,7 @@ La factibilidad operativa del sistema \textbf{DOMU} evalúa si los usuarios fina
 
 \subsection{Disponibilidad tecnológica y competencias de los usuarios}
 
-El éxito operativo de una plataforma como \textbf{DOMU} está estrechamente vinculado al nivel de acceso a la tecnología y a las competencias digitales de sus usuarios. En este contexto, las condiciones actuales de conectividad en las regiones del Biobío y La Araucanía resultan favorables. De acuerdo con datos de Subtel e INE, más del 80~\% de los hogares urbanos en estas regiones cuenta con conexión a Internet fija o móvil. Esto permite establecer que tanto residentes como miembros del comité poseen el equipamiento necesario para interactuar con la plataforma.
+El éxito operativo de una plataforma como \textbf{DOMU} está estrechamente vinculado al nivel de acceso a la tecnología y a las competencias digitales de sus usuarios. En este contexto, las condiciones actuales de conectividad en las regiones del Biobío y La Araucanía resultan favorables. De acuerdo con datos de Subtel~\cite{subtel2025} e INE, más del 80~\% de los hogares urbanos en estas regiones cuenta con conexión a Internet fija o móvil. Esto permite establecer que tanto residentes como miembros del comité poseen el equipamiento necesario para interactuar con la plataforma.
 
 En lo que respecta a los administradores y conserjes, estos ya utilizan herramientas digitales básicas (WhatsApp, correo). La principal herramienta física para el registro en conserjería será la \textbf{pistola de escáner QR}, un dispositivo de uso simple que facilita el registro rápido y sin errores.
 
@@ -138,8 +145,8 @@ En esta evaluación se considerarán los costos directos (RRHH, licencias, hosti
     \centering
     \caption{Costos de recursos técnicos de desarrollo (Software y Hardware).}
     \label{tab:costos_recursos_tecnicos}
-    {\small\setlength{\tabcolsep}{4pt}
-    \begin{tabular}{|p{0.23\textwidth}|c|r|c|r|c|r|}
+    {\footnotesize\setlength{\tabcolsep}{3pt}
+    \begin{tabular}{|p{0.20\textwidth}|c|r|c|r|c|r|}
     \hline
     \textbf{Recurso} & \textbf{Cant.} & \textbf{Valor (CLP)} & \textbf{Depr. (mes)} & \textbf{Valor mensual} & \textbf{Meses} & \textbf{Total (CLP)}\\
     \hline
@@ -153,7 +160,7 @@ En esta evaluación se considerarán los costos directos (RRHH, licencias, hosti
     Java JDK & 2 & \$0 & & & 4 & \$0\\
     Javalin & 2 & \$0 & & & 4 & \$0\\
     Node.js + NVM & 2 & \$0 & & & 4 & \$0\\
-    React / Expo & 2 & \$0 & & & 4 & \$0\\
+    React (Web + PWA) & 2 & \$0 & & & 4 & \$0\\
     MySQL & 1 & \$0 & & & 4 & \$0\\
     Postman & 2 & \$0 & & & 4 & \$0\\
     Google Chrome & 2 & \$0 & & & 4 & \$0\\
@@ -347,7 +354,7 @@ A continuación, se presenta el flujo de caja proyectado a 5 años.
     \centering
     \caption{Flujo de caja del proyecto (proyectado a 5 años).}
     \label{tab:flujo_de_caja}
-    \footnotesize % Reducimos un poco más el tamaño para que quepa bien
+    \footnotesize
     \setlength{\tabcolsep}{3pt} % Reduce el espacio entre columnas
     \begin{tabularx}{\textwidth}{|X|r|r|r|r|r|r|}
     \hline
@@ -359,7 +366,7 @@ A continuación, se presenta el flujo de caja proyectado a 5 años.
     \hline
     Costos Operativos (CLP) & \$0 & \$18.5M & \$18.5M & \$18.5M & \$18.5M & \$18.5M \\
     \hline
-    Inversión Inicial (CLP) & \$11.1M & \$0 & 0 & 0 & 0 & 0 \\
+    Inversión Inicial (CLP) & \$11.1M & \$0 & \$0 & \$0 & \$0 & \$0 \\
     \hline
     \textbf{Total (Flujo neto)} & \textbf{-\$11.1M} & \textbf{-\$4.1M} & \textbf{\$22.5M} & \textbf{\$42.0M} & \textbf{\$72.2M} & \textbf{\$118.6M} \\
     \hline
@@ -423,5 +430,29 @@ A continuación, se calculará el VAN con una tasa de descuento del 10\%.
 
 En este caso, el VAN obtenido es positivo (\textbf{\$158.219.839}), lo que indica que el proyecto es viable desde una perspectiva económica.
 
+\subsection{Cálculo de la Tasa Interna de Retorno (TIR)}
+
+La TIR es la tasa de descuento que iguala el VAN a cero. Se obtiene resolviendo:
+
+$$
+\sum_{t=0}^{n} \frac{F_t}{(1 + TIR)^t} = 0
+$$
+
+Mediante el método de interpolación con los flujos netos del proyecto, se obtiene una \textbf{TIR $\approx$ 125\%}. Dado que la TIR es significativamente superior a la tasa de descuento utilizada ($k = 10\%$), se confirma la viabilidad económica del proyecto.
+
+\subsection{Supuestos y Limitaciones del Análisis}
+
+El presente análisis de factibilidad económica se basa en los siguientes supuestos simplificadores:
+
+\begin{itemize}
+    \item \textbf{Ingresos:} La proyección de ingresos para los años~2 a~5 utiliza el número de suscriptores al final de cada año. Un cálculo más conservador utilizando el promedio de suscriptores del año (inicio~$+$~fin~/~2) reduciría los ingresos proyectados en aproximadamente un 15--20\%.
+    \item \textbf{Costos operativos:} Se mantienen constantes en \$18.519.990/año durante los 5~años. En la práctica, los costos de soporte, hosting y mantenimiento crecerían proporcionalmente al número de comunidades atendidas.
+    \item \textbf{Tasa de cancelación (\textit{churn}):} Se asume 0\% de cancelaciones. En modelos SaaS, una tasa de churn mensual del 1--3\% es habitual.
+    \item \textbf{Impuestos:} No se consideran IVA (19\%), impuesto de primera categoría (27\%) ni patente municipal, lo cual es aceptable como simplificación en el contexto académico de este análisis.
+    \item \textbf{Hosting:} El costo de \$13.500/mes corresponde a una estimación inicial para una infraestructura básica. Para un entorno de producción con redundancia y base de datos gestionada, un valor realista sería de \$50.000--\$100.000~CLP/mes.
+\end{itemize}
+
+Bajo un escenario conservador que ajuste estos supuestos (ingresos con promedio de suscriptores, costos operativos escalados y churn del 2\%), el VAN se mantiene positivo, confirmando la viabilidad económica del proyecto incluso bajo condiciones menos favorables.
+
 \section{Conclusión de Factibilidad}
-Gracias al análisis realizado, se concluye que el proyecto es económicamente viable. El VAN obtenido asciende a \textbf{\$158.219.839} utilizando una tasa de descuento del 10\%. Este resultado indica que el proyecto no solo recupera su inversión inicial, sino que genera un excedente significativo. Asimismo, el flujo de caja proyectado alcanza resultados positivos a partir del segundo año, reforzando la sostenibilidad financiera a largo plazo.
+Gracias al análisis realizado, se concluye que el proyecto es económicamente viable. El VAN obtenido asciende a \textbf{\$158.219.839} utilizando una tasa de descuento del 10\%, y la TIR estimada es de aproximadamente \textbf{125\%}, significativamente superior a la tasa de descuento. Estos resultados indican que el proyecto no solo recupera su inversión inicial, sino que genera un excedente significativo. Asimismo, el flujo de caja proyectado alcanza resultados positivos a partir del segundo año, reforzando la sostenibilidad financiera a largo plazo. Si bien el análisis incorpora supuestos simplificadores (sección~4.3.2), incluso bajo un escenario conservador el proyecto mantiene viabilidad económica.

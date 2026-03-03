@@ -1,152 +1,645 @@
-Este capítulo abordará los servicios web necesarios para este proyecto, el modelo de datos, diagramas de entidad relación y diseño de la plataforma DOMU. Se presenta el modelo de datos, la arquitectura del software, los principales casos de uso y el diseño de las interfaces, que permiten visualizar cómo se implementarán los requerimientos funcionales y no funcionales definidos en el capítulo anterior.
+Este capítulo abordará los servicios web necesarios para este proyecto, el modelo de datos, diagramas de entidad-relación y diseño de la plataforma DOMU. Se presenta el modelo de datos, la arquitectura del software y el diseño de las interfaces, que permiten visualizar cómo se implementarán los requerimientos funcionales y no funcionales definidos en el capítulo anterior.
 
 % ---------------------------------------------
 \section{Descripción de los Servicios Web}
 
-Los servicios web necesarios se implementarán utilizando una arquitectura \textbf{API REST} debido a su flexibilidad, escalabilidad y compatibilidad con distintas plataformas. Estas APIs permitirán gestionar operaciones críticas como autenticación, control de accesos, encomiendas, reservas, tareas del personal, administración financiera, e interacción con la comunidad y proveedores.
+La capa de servicios web de DOMU se implementa mediante una \textbf{API RESTful} expuesta a través del \textit{framework} Javalin~6, complementada con canales \textbf{WebSocket} para comunicación bidireccional en tiempo real. El backend agrupa la lógica en trece módulos funcionales, cada uno respaldado por sus respectivos \textit{Controllers}, \textit{Services} y \textit{Repositories}. Adicionalmente, el sistema integra servicios transversales de generación de documentos PDF (OpenPDF), almacenamiento en la nube (Box~API) y envío de correo electrónico (Jakarta~Mail).
 
-Entre los servicios esenciales destacan:
+La Tabla~\ref{tab:servicios-web} resume los módulos, el protocolo de comunicación que utilizan y una descripción sintética de su alcance funcional.
 
+\begin{longtable}{|p{0.22\textwidth}|p{0.13\textwidth}|p{0.57\textwidth}|}
+\caption{Módulos de servicios web del sistema DOMU}\label{tab:servicios-web}\\
+\hline
+\textbf{Módulo} & \textbf{Protocolo} & \textbf{Descripción} \\
+\hline
+\endfirsthead
+\hline
+\textbf{Módulo} & \textbf{Protocolo} & \textbf{Descripción} \\
+\hline
+\endhead
+\hline
+\endfoot
+
+Autenticación y Autorización &
+REST &
+Registro con confirmación por correo, inicio de sesión con JWT, recuperación de contraseña mediante token temporal y cierre de sesión. \\
+\hline
+
+Gestión de Usuarios y Roles &
+REST &
+CRUD de usuarios, asignación dinámica de cinco roles (Administrador, Residente, Conserje, Funcionario, Proveedor) bajo el modelo RBAC; gestión de perfiles con avatar almacenado en Box. \\
+\hline
+
+Gestión de Comunidades &
+REST / E-mail &
+Registro de comunidades con aprobación por correo electrónico, invitación de administradores, soporte multi-comunidad y vinculación de usuarios a edificios. \\
+\hline
+
+Control de Accesos &
+REST &
+Registro de visitas, pre-autorización con código QR, check-in/check-out, gestión de contactos frecuentes y bitácora de ingresos. \\
+\hline
+
+Gestión de Encomiendas &
+REST &
+Recepción de paquetes, seguimiento de estados (recibido, notificado, retirado), evidencia fotográfica y notificación al residente. \\
+\hline
+
+Gestión Operativa &
+REST &
+Administración de personal y turnos, creación y asignación de tareas con evidencia fotográfica y seguimiento por estado. \\
+\hline
+
+Administración Financiera &
+REST / PDF &
+Períodos de gasto común, cargos por unidad, registro de pagos, generación de boletas y estados de cuenta en PDF (OpenPDF). \\
+\hline
+
+Incidentes y Tickets &
+REST &
+Reporte de incidencias por residentes, asignación a responsables, seguimiento por estado y prioridad. \\
+\hline
+
+Reservas de Áreas Comunes &
+REST &
+Definición de amenidades con franjas horarias, control de aforo, consulta de disponibilidad y gestión de reservas. \\
+\hline
+
+Votaciones &
+REST &
+Creación de procesos de votación, sufragio remoto, cierre automático y exportación de resultados. \\
+\hline
+
+Comunicación Comunitaria &
+REST / WebSocket &
+Foro con categorías e hilos, chat en tiempo real vía WebSocket (\texttt{/ws/chat}), marketplace de artículos entre vecinos y biblioteca de documentos comunitarios. \\
+\hline
+
+Notificaciones &
+WebSocket &
+Entrega de notificaciones en tiempo real mediante el canal \texttt{/ws/notifications}, con preferencias configurables por tipo de evento. \\
+\hline
+
+Gestión de Proveedores y Órdenes de Servicio &
+REST &
+CRUD de proveedores vinculados a la comunidad, creación y seguimiento de órdenes de servicio con flujo de aceptación/rechazo por parte del proveedor, y gestión de cotizaciones. \\
+
+\end{longtable}
+
+% ---------------------------------------------
+\subsection{Especificación de Endpoints Principales}
+
+A continuación se documentan los endpoints REST más representativos del sistema, agrupados por módulo funcional. La API completa cuenta con más de 130~endpoints; para la especificación exhaustiva e interactiva, se recomienda consultar Swagger~UI en la ruta \texttt{/swagger} del servidor.
+
+% --- Endpoints: Autenticación ---
+\begin{longtable}{|p{0.08\textwidth}|p{0.38\textwidth}|p{0.46\textwidth}|}
+\caption{Endpoints --- Autenticación}\label{tab:ep-auth}\\
+\hline
+\textbf{Método} & \textbf{Ruta} & \textbf{Descripción} \\
+\hline
+\endfirsthead
+\hline \textbf{Método} & \textbf{Ruta} & \textbf{Descripción} \\ \hline
+\endhead
+\hline \endfoot
+
+POST & \texttt{/api/auth/register} & Registro de usuario con envío de correo de confirmación. \\
+\hline
+POST & \texttt{/api/auth/login} & Inicio de sesión; retorna token JWT. \\
+\hline
+GET & \texttt{/api/auth/confirm-email} & Confirma correo electrónico mediante token. \\
+\hline
+POST & \texttt{/api/auth/forgot-password} & Envía correo con enlace de recuperación de contraseña. \\
+\hline
+POST & \texttt{/api/auth/reset-password} & Restablece contraseña mediante token temporal. \\
+
+\end{longtable}
+
+% --- Endpoints: Usuarios ---
+\begin{longtable}{|p{0.08\textwidth}|p{0.38\textwidth}|p{0.46\textwidth}|}
+\caption{Endpoints --- Usuarios y Perfiles}\label{tab:ep-users}\\
+\hline
+\textbf{Método} & \textbf{Ruta} & \textbf{Descripción} \\
+\hline
+\endfirsthead
+\hline \textbf{Método} & \textbf{Ruta} & \textbf{Descripción} \\ \hline
+\endhead
+\hline \endfoot
+
+GET & \texttt{/api/users/profile} & Obtiene perfil del usuario autenticado. \\
+\hline
+PUT & \texttt{/api/users/profile} & Actualiza datos del perfil. \\
+\hline
+POST & \texttt{/api/users/avatar} & Sube o actualiza avatar (almacenado en Box). \\
+\hline
+GET & \texttt{/api/users} & Lista usuarios de la comunidad activa (filtro por rol). \\
+
+\end{longtable}
+
+% --- Endpoints: Comunidades ---
+\begin{longtable}{|p{0.08\textwidth}|p{0.38\textwidth}|p{0.46\textwidth}|}
+\caption{Endpoints --- Comunidades}\label{tab:ep-communities}\\
+\hline
+\textbf{Método} & \textbf{Ruta} & \textbf{Descripción} \\
+\hline
+\endfirsthead
+\hline \textbf{Método} & \textbf{Ruta} & \textbf{Descripción} \\ \hline
+\endhead
+\hline \endfoot
+
+POST & \texttt{/api/buildings} & Solicita registro de nueva comunidad. \\
+\hline
+POST & \texttt{/api/buildings/approve/\{token\}} & Aprueba solicitud de comunidad vía correo. \\
+\hline
+POST & \texttt{/api/buildings/reject/\{token\}} & Rechaza solicitud de comunidad. \\
+\hline
+GET & \texttt{/api/buildings} & Lista comunidades del usuario autenticado. \\
+\hline
+GET & \texttt{/api/buildings/\{id\}} & Obtiene detalle de una comunidad. \\
+
+\end{longtable}
+
+% --- Endpoints: Control de Accesos ---
+\begin{longtable}{|p{0.08\textwidth}|p{0.38\textwidth}|p{0.46\textwidth}|}
+\caption{Endpoints --- Control de Accesos}\label{tab:ep-access}\\
+\hline
+\textbf{Método} & \textbf{Ruta} & \textbf{Descripción} \\
+\hline
+\endfirsthead
+\hline \textbf{Método} & \textbf{Ruta} & \textbf{Descripción} \\ \hline
+\endhead
+\hline \endfoot
+
+POST & \texttt{/api/visits} & Registra nueva visita (ingreso). \\
+\hline
+POST & \texttt{/api/visits/qr-check} & Verifica código QR de visita pre-autorizada. \\
+\hline
+PUT & \texttt{/api/visits/\{id\}/checkout} & Registra salida de visita. \\
+\hline
+GET & \texttt{/api/visits} & Lista visitas de la comunidad (filtros por fecha y estado). \\
+\hline
+POST & \texttt{/api/visits/pre-authorize} & Pre-autoriza visita con generación de QR. \\
+\hline
+GET & \texttt{/api/visit-contacts} & Lista contactos frecuentes del residente. \\
+
+\end{longtable}
+
+% --- Endpoints: Encomiendas ---
+\begin{longtable}{|p{0.08\textwidth}|p{0.38\textwidth}|p{0.46\textwidth}|}
+\caption{Endpoints --- Encomiendas}\label{tab:ep-parcels}\\
+\hline
+\textbf{Método} & \textbf{Ruta} & \textbf{Descripción} \\
+\hline
+\endfirsthead
+\hline \textbf{Método} & \textbf{Ruta} & \textbf{Descripción} \\ \hline
+\endhead
+\hline \endfoot
+
+POST & \texttt{/api/parcels} & Registra nueva encomienda con evidencia fotográfica. \\
+\hline
+PUT & \texttt{/api/parcels/\{id\}/status} & Actualiza estado (notificado, retirado). \\
+\hline
+GET & \texttt{/api/parcels} & Lista encomiendas de la comunidad. \\
+\hline
+GET & \texttt{/api/parcels/\{id\}} & Detalle de una encomienda. \\
+
+\end{longtable}
+
+% --- Endpoints: Finanzas ---
+\begin{longtable}{|p{0.08\textwidth}|p{0.38\textwidth}|p{0.46\textwidth}|}
+\caption{Endpoints --- Administración Financiera}\label{tab:ep-finance}\\
+\hline
+\textbf{Método} & \textbf{Ruta} & \textbf{Descripción} \\
+\hline
+\endfirsthead
+\hline \textbf{Método} & \textbf{Ruta} & \textbf{Descripción} \\ \hline
+\endhead
+\hline \endfoot
+
+POST & \texttt{/api/common-expenses/periods} & Crea nuevo período de gasto común. \\
+\hline
+POST & \texttt{/api/common-expenses/charges} & Agrega cargos a un período por unidad. \\
+\hline
+POST & \texttt{/api/payments} & Registra pago de gasto común. \\
+\hline
+GET & \texttt{/api/common-expenses/statement/\{unitId\}} & Obtiene estado de cuenta de una unidad. \\
+\hline
+GET & \texttt{/api/common-expenses/statement/\{unitId\}/pdf} & Descarga estado de cuenta en PDF. \\
+\hline
+GET & \texttt{/api/payments} & Lista pagos registrados (filtros por período y unidad). \\
+
+\end{longtable}
+
+% --- Endpoints: Incidentes ---
+\begin{longtable}{|p{0.08\textwidth}|p{0.38\textwidth}|p{0.46\textwidth}|}
+\caption{Endpoints --- Incidentes y Tickets}\label{tab:ep-incidents}\\
+\hline
+\textbf{Método} & \textbf{Ruta} & \textbf{Descripción} \\
+\hline
+\endfirsthead
+\hline \textbf{Método} & \textbf{Ruta} & \textbf{Descripción} \\ \hline
+\endhead
+\hline \endfoot
+
+POST & \texttt{/api/incidents} & Crea nuevo ticket de incidencia. \\
+\hline
+PUT & \texttt{/api/incidents/\{id\}/status} & Actualiza estado del ticket. \\
+\hline
+GET & \texttt{/api/incidents} & Lista incidentes de la comunidad. \\
+\hline
+GET & \texttt{/api/incidents/stats} & Obtiene estadísticas de incidentes. \\
+
+\end{longtable}
+
+% --- Endpoints: Reservas ---
+\begin{longtable}{|p{0.08\textwidth}|p{0.38\textwidth}|p{0.46\textwidth}|}
+\caption{Endpoints --- Reservas de Áreas Comunes}\label{tab:ep-reservations}\\
+\hline
+\textbf{Método} & \textbf{Ruta} & \textbf{Descripción} \\
+\hline
+\endfirsthead
+\hline \textbf{Método} & \textbf{Ruta} & \textbf{Descripción} \\ \hline
+\endhead
+\hline \endfoot
+
+GET & \texttt{/api/amenities} & Lista áreas comunes de la comunidad. \\
+\hline
+GET & \texttt{/api/amenities/\{id\}/availability} & Consulta disponibilidad por fecha. \\
+\hline
+POST & \texttt{/api/reservations} & Crea reserva de área común. \\
+\hline
+DELETE & \texttt{/api/reservations/\{id\}} & Cancela reserva existente. \\
+
+\end{longtable}
+
+% --- Endpoints: Votaciones ---
+\begin{longtable}{|p{0.08\textwidth}|p{0.38\textwidth}|p{0.46\textwidth}|}
+\caption{Endpoints --- Votaciones}\label{tab:ep-polls}\\
+\hline
+\textbf{Método} & \textbf{Ruta} & \textbf{Descripción} \\
+\hline
+\endfirsthead
+\hline \textbf{Método} & \textbf{Ruta} & \textbf{Descripción} \\ \hline
+\endhead
+\hline \endfoot
+
+POST & \texttt{/api/polls} & Crea nueva votación con opciones y fecha de cierre. \\
+\hline
+POST & \texttt{/api/polls/\{id\}/vote} & Registra voto del usuario autenticado. \\
+\hline
+PUT & \texttt{/api/polls/\{id\}/close} & Cierra votación y consolida resultados. \\
+\hline
+GET & \texttt{/api/polls/\{id\}/results} & Obtiene resultados de la votación. \\
+
+\end{longtable}
+
+% --- Endpoints: Chat ---
+\begin{longtable}{|p{0.08\textwidth}|p{0.38\textwidth}|p{0.46\textwidth}|}
+\caption{Endpoints --- Chat}\label{tab:ep-chat}\\
+\hline
+\textbf{Método} & \textbf{Ruta} & \textbf{Descripción} \\
+\hline
+\endfirsthead
+\hline \textbf{Método} & \textbf{Ruta} & \textbf{Descripción} \\ \hline
+\endhead
+\hline \endfoot
+
+POST & \texttt{/api/chat/rooms} & Crea sala de chat o solicita conversación. \\
+\hline
+POST & \texttt{/api/chat/rooms/\{id\}/messages} & Envía mensaje a una sala (REST fallback). \\
+\hline
+GET & \texttt{/api/chat/rooms/\{id\}/messages} & Obtiene historial de mensajes. \\
+
+\end{longtable}
+
+% --- Endpoints: Notificaciones ---
+\begin{longtable}{|p{0.08\textwidth}|p{0.38\textwidth}|p{0.46\textwidth}|}
+\caption{Endpoints --- Notificaciones}\label{tab:ep-notifications}\\
+\hline
+\textbf{Método} & \textbf{Ruta} & \textbf{Descripción} \\
+\hline
+\endfirsthead
+\hline \textbf{Método} & \textbf{Ruta} & \textbf{Descripción} \\ \hline
+\endhead
+\hline \endfoot
+
+GET & \texttt{/api/notifications} & Lista notificaciones del usuario. \\
+\hline
+PUT & \texttt{/api/notifications/\{id\}/read} & Marca notificación como leída. \\
+\hline
+GET & \texttt{/api/notifications/preferences} & Obtiene preferencias de notificación. \\
+
+\end{longtable}
+
+% --- Endpoints: Proveedores ---
+\begin{longtable}{|p{0.08\textwidth}|p{0.38\textwidth}|p{0.46\textwidth}|}
+\caption{Endpoints --- Proveedores}\label{tab:ep-providers}\\
+\hline
+\textbf{Método} & \textbf{Ruta} & \textbf{Descripción} \\
+\hline
+\endfirsthead
+\hline \textbf{Método} & \textbf{Ruta} & \textbf{Descripción} \\ \hline
+\endhead
+\hline \endfoot
+
+POST & \texttt{/api/providers} & Registra nuevo proveedor en la comunidad. \\
+\hline
+GET & \texttt{/api/providers} & Lista proveedores de la comunidad. \\
+\hline
+GET & \texttt{/api/providers/\{id\}} & Detalle de un proveedor. \\
+\hline
+PUT & \texttt{/api/providers/\{id\}} & Actualiza datos del proveedor. \\
+\hline
+DELETE & \texttt{/api/providers/\{id\}} & Desactiva proveedor. \\
+
+\end{longtable}
+
+% --- Endpoints: Órdenes de Servicio ---
+\begin{longtable}{|p{0.08\textwidth}|p{0.38\textwidth}|p{0.46\textwidth}|}
+\caption{Endpoints --- Órdenes de Servicio}\label{tab:ep-service-orders}\\
+\hline
+\textbf{Método} & \textbf{Ruta} & \textbf{Descripción} \\
+\hline
+\endfirsthead
+\hline \textbf{Método} & \textbf{Ruta} & \textbf{Descripción} \\ \hline
+\endhead
+\hline \endfoot
+
+POST & \texttt{/api/service-orders} & Crea orden de servicio asignada a proveedor. \\
+\hline
+PUT & \texttt{/api/service-orders/\{id\}/status} & Actualiza estado de la orden (aceptar, rechazar, completar). \\
+\hline
+POST & \texttt{/api/service-orders/\{id\}/quotations} & Sube cotización vinculada a la orden. \\
+\hline
+GET & \texttt{/api/service-orders} & Lista órdenes de servicio (filtros por estado y proveedor). \\
+
+\end{longtable}
+
+Adicionalmente, el sistema expone dos canales \textbf{WebSocket} persistentes:
 \begin{itemize}
-    \item \textbf{Autenticación y Autorización}: Manejo seguro de credenciales mediante \textbf{JWT} (\textit{JSON Web Tokens}) para asegurar acceso restringido según roles.
-    \item \textbf{Gestión de Usuarios y Roles}: Administración y asignación dinámica de roles y permisos basados en \textbf{RBAC} (\textit{Role-Based Access Control}).
-    \item \textbf{Control de Accesos}: Registro y validación de visitantes mediante la **lectura del código QR de documentos de identidad** o la aplicación, integrando el flujo de datos del escáner en el sistema.
-    \item \textbf{Gestión Operativa}: Registro y seguimiento de tareas asignadas al personal, incluyendo evidencias fotográficas en caso de ser necesario y control de turnos.
-    \item \textbf{Administración Financiera}: Emisión y gestión de estados de cuenta de gastos comunes, pagos electrónicos y monitoreo de morosidad.
-    \item \textbf{Comunicación Comunitaria}: Módulos para notificaciones, reservas de espacios comunes, votaciones electrónicas y foros de discusión comunitarios.
+    \item \texttt{/ws/chat} --- Mensajería en tiempo real entre usuarios de la comunidad.
+    \item \texttt{/ws/notifications} --- Entrega de notificaciones en tiempo real según preferencias del usuario.
 \end{itemize}
+
+Ambos canales requieren autenticación mediante token JWT enviado como parámetro en la URL de conexión.
+
+% === PLACEHOLDER: Reemplazar con imagen generada ===
+% PROMPT para generador de imágenes (Gemini/GPT/DALL-E):
+%
+% "Genera un DIAGRAMA DE COMPONENTES/MÓDULOS de una API REST para un sistema llamado DOMU.
+%
+% NOTACIÓN:
+% - MÓDULOS: rectángulos redondeados con borde sólido, nombre del módulo dentro en negrita.
+% - CORE CENTRAL: un rectángulo grande en el centro etiquetado 'API REST - Javalin 6' con ícono de servidor.
+% - WEBSOCKET: 2 rectángulos con borde punteado y doble flecha bidireccional, etiquetados '/ws/chat' y '/ws/notifications'.
+% - CLIENTE: a la izquierda, un rectángulo etiquetado 'Frontend React 19 (SPA)' con flecha HTTP hacia el core.
+% - BASE DE DATOS: a la derecha, un cilindro etiquetado 'MySQL 8' con flecha desde el core.
+% - SERVICIOS EXTERNOS: arriba, 3 cajas pequeñas: 'Box API (archivos)', 'Gmail SMTP (correo)', 'OpenPDF (documentos)'.
+%
+% Los 13 módulos se organizan en GRID 4x4 alrededor del core central:
+% Fila superior: Autenticación, Usuarios y Roles, Comunidades, Control de Accesos
+% Fila media: Encomiendas, Gestión Operativa, Finanzas, Incidentes
+% Fila inferior: Reservas, Votaciones, Comunicación (Foro/Chat/Marketplace), Notificaciones
+% Última fila: Proveedores y Órdenes de Servicio
+%
+% Cada módulo tiene una línea que lo conecta al core central.
+% Los módulos de Comunicación y Notificaciones tienen además línea punteada a los WebSocket.
+%
+% ESTILO: Fondo blanco, bordes negros o gris oscuro, relleno de módulos en gris muy claro (#F5F5F5).
+% Sin gradientes, sin sombras. Tipografía sans-serif. Profesional para tesis universitaria.
+% Etiquetas en español. Formato: PNG 300dpi."
+\begin{figure}[H]
+  \centering
+  \fbox{\parbox{0.85\textwidth}{\centering\vspace{3cm}
+  \textit{[Insertar diagrama: Arquitectura modular de la API REST --- 13 módulos + 2 canales WebSocket]}
+  \vspace{3cm}}}
+  \caption{Diagrama de módulos de la API REST del sistema DOMU.}
+  \label{fig:diagrama-api-modulos}
+\end{figure}
 
 % ---------------------------------------------
 \section{Modelo de datos}
 
 El modelo de datos es de tipo relacional, con el fin de mantener la simpleza y eficiencia del almacenamiento de información crítica del sistema.
 
-Las entidades del modelo de datos son:
-\begin{enumerate}[label=(\alph*)] % Nivel principal: (a), (b), (c), ...
-    \item \textbf{Identidad y Roles}: Gestiona los datos personales y credenciales de residentes y el rol asignado.
-    \begin{enumerate}[label=\arabic*.] % Subnivel: (a.1), (a.2), ...
-        \item \textbf{Usuario}: Datos personales y credenciales.
-        \item \textbf{Rol}: Catálogo de roles (residente, administrador, personal).
-    \end{enumerate}
+Las 37~tablas del modelo, derivadas de las 35~migraciones Flyway del proyecto, se organizan en 12~dominios funcionales. La Tabla~\ref{tab:resumen-dominios} presenta un resumen de esta distribución; el detalle de cada entidad y sus atributos se encuentra en el Anexo~D (Diccionario de Datos).
 
-    \item \textbf{Condominio}: Describe la estructura del condominio, incluyendo edificios, unidades habitacionales y estacionamientos asignados.
-    \begin{enumerate}[label=\arabic*.]
-        \item \textbf{Edificio}: Información de cada torre o condominio.
-        \item \textbf{UnidadHab}: Departamentos/unidades con coeficiente de prorrata.
-    \end{enumerate}
-
-    \item \textbf{Visitas y Control de Acceso}: Registra accesos y visitas, valida identidades y gestiona encomiendas con evidencias.
-    \begin{enumerate}[label=\arabic*.]
-        \item \textbf{Visita}: Datos básicos de la persona que ingresa.
-        \item \textbf{AutorizacionVisita}: QR y vigencia pre-autorizada.
-        \item \textbf{RegistroAcceso}: Hora de entrada/salida y validaciones.
-        \item \textbf{Encomienda}: Paquetes recibidos y evidencia fotográfica.
-    \end{enumerate}
-
-    \item \textbf{Personal, Turnos y Tareas}: Asigna, monitorea y registra turnos del personal del condominio, incluyendo bitácoras diarias.
-    \begin{enumerate}[label=\arabic*.]
-        \item \textbf{Personal}: Conserjes, aseo y demás staff.
-        \item \textbf{Turno}: Programación y registro real de jornada.
-        \item \textbf{Tarea}: Asignaciones con evidencia y estados.
-        \item \textbf{BitacoraPersonal}: Incidencias o novedades diarias.
-    \end{enumerate}
-
-    \item \textbf{Finanzas y Gastos Comunes}: Administra cargos mensuales, pagos realizados, morosidades y transacciones financieras generales.
-    \begin{enumerate}[label=\arabic*.]
-        \item \textbf{MesGastoComun}: Carátula mensual (PDF, vencimiento).
-        \item \textbf{CargoGC}: Ítems de gasto común.
-        \item \textbf{PagoGC}: Pagos por unidad, medio y fecha.
-        \item \textbf{Morosidad}: Saldos pendientes y sanciones.
-        \item \textbf{TransaccionFin}: Ingresos y egresos generales.
-    \end{enumerate}
-
-    \item \textbf{Reservas de Espacios Comunes}: Gestiona reservas de espacios comunes con control de aforo, tiempo máximo y bloqueos por morosidad.
-    \begin{enumerate}[label=\arabic*.]
-        \item \textbf{EspacioComun}: Salón, quincho, gimnasio, etc.
-        \item \textbf{Reserva}: Bloques de tiempo, aforo y bloqueo por mora.
-    \end{enumerate}
-
-    \item \textbf{Participación (Foros y Votaciones)}: Facilita procesos de votación de la comunidad y provee espacios de discusión organizados.
-    \begin{enumerate}[label=\arabic*.]
-        \item \textbf{Votacion}: Procesos electorales o decisiones.
-        \item \textbf{OpcionVoto}: Alternativas de cada votación.
-        \item \textbf{Voto}: Registro de cada sufragio.
-        \item \textbf{CategoriaForo}: Clasificación de hilos.
-        \item \textbf{HiloForo}: Temas de discusión.
-        \item \textbf{MensajeForo}: Comentarios dentro de un hilo.
-    \end{enumerate}
-
-    \item \textbf{Soporte, Proveedores y Seguridad}: Maneja integralmente servicios externos, reclamos internos, mantenimiento y \textit{backups}.
-    \begin{enumerate}[label=\arabic*.]
-        \item \textbf{Ticket}: Reclamos o sugerencias de residentes.
-        \item \textbf{SeguimientoTicket}: Conversación y cambios de estado.
-        \item \textbf{Proveedor}: Datos tributarios y de contacto.
-        \item \textbf{ServicioSolicitado}: Solicitudes de servicio externo.
-        \item \textbf{Cotizacion}: Propuesta económica adjunta.
-        \item \textbf{Factura}: Documento tributario pagado al proveedor.
-        \item \textbf{MantenimientoPrev}: Calendario de mantención preventiva.
-        \item \textbf{BackupBD}: Historial de respaldos automáticos.
-        \item \textbf{KPI\_Diario}: Métricas diarias para \textit{dashboard}.
-    \end{enumerate}
-\end{enumerate}
+\begin{table}[H]
+\centering
+\small
+\begin{tabular}{|p{0.28\textwidth}|p{0.52\textwidth}|c|}
+\hline
+\textbf{Dominio} & \textbf{Entidades principales} & \textbf{Cant.} \\ \hline
+Identidad y Roles & \texttt{users}, \texttt{roles}, \texttt{user\_confirmations}, \texttt{password\_reset\_tokens} & 4 \\ \hline
+Comunidad y Estructura & \texttt{buildings}, \texttt{housing\_units}, \texttt{user\_buildings} & 3 \\ \hline
+Solicitudes de Comunidad & \texttt{building\_requests} & 1 \\ \hline
+Visitas y Control de Acceso & \texttt{visits}, \texttt{visit\_authorizations}, \texttt{visit\_access\_logs}, \texttt{visit\_contacts} & 4 \\ \hline
+Gestión Operativa & \texttt{staff}, \texttt{tasks}, \texttt{task\_assignments}, \texttt{parcels} & 4 \\ \hline
+Finanzas y Gastos Comunes & \texttt{common\_expense\_periods}, \texttt{common\_charges}, \texttt{common\_payments}, \texttt{delinquency\_records}, \texttt{common\_expense\_revisions} & 5 \\ \hline
+Reservas de Espacios & \texttt{amenities}, \texttt{amenity\_time\_slots}, \texttt{amenity\_reservations} & 3 \\ \hline
+Votaciones & \texttt{polls}, \texttt{poll\_options}, \texttt{poll\_votes} & 3 \\ \hline
+Chat y Marketplace & \texttt{chat\_room}, \texttt{chat\_participant}, \texttt{chat\_message}, \texttt{chat\_request}, \texttt{market\_category}, \texttt{market\_item}, \texttt{market\_item\_image} & 7 \\ \hline
+Foro Comunitario & \texttt{forum\_categories}, \texttt{forum\_threads}, \texttt{forum\_posts} & 3 \\ \hline
+Biblioteca, Notificaciones e Incidentes & \texttt{library\_documents}, \texttt{notifications}, \texttt{notification\_preferences}, \texttt{incidents} & 4 \\ \hline
+Proveedores & \texttt{providers}, \texttt{service\_orders}, \texttt{quotations} & 3 \\ \hline
+\end{tabular}
+\caption{Resumen de entidades del modelo de datos por dominio funcional.}
+\label{tab:resumen-dominios}
+\end{table}
 
 \subsection{Esquema de la base de datos}
-El diseño de la persistencia de datos se realizó utilizando el motor de base de datos relacional \textbf{MySQL}. El esquema fue construido mediante migraciones SQL versionadas para asegurar la consistencia entre los entornos de desarrollo y producción. A continuación, se detallan las principales entidades y sus relaciones, derivadas de los modelos de migracion.
+El diseño de la persistencia de datos se realizó utilizando el motor de base de datos relacional \textbf{MySQL~8}. El esquema se gestiona mediante \textbf{Flyway~10.15}, que ejecuta migraciones SQL versionadas al arranque del servidor, garantizando la consistencia entre los entornos de desarrollo y producción. Hasta la fecha, el proyecto acumula \textbf{35~migraciones} (\texttt{V001} a \texttt{V035}), cada una atómica e idempotente.
 
-\begin{itemize}
-    \item \textbf{Entidades de Acceso y Organización:}
-    \begin{itemize}
-        \item \texttt{rol}: Define los perfiles de acceso (Administrador, Residente, Conserje, Funcionario).
-        \item \texttt{usuario}: Entidad central que almacena credenciales, datos personales y llaves foráneas hacia \texttt{rol} y \texttt{unidad}.
-        \item \texttt{edificio} (\texttt{building}): Representa la comunidad. Contiene metadatos como dirección y configuración administrativa.
-        \item \texttt{unidad} (\texttt{housing\_unit}): Representa los departamentos o casas, vinculando a los usuarios residentes con un edificio específico.
-    \end{itemize}
-    \item \textbf{Entidades de Operación y Gestión:}
-    \begin{itemize}
-        \item \texttt{visita} y \texttt{contacto\_visita}: Registran el control de acceso, almacenando datos del visitante, el residente anfitrión y la duración autorizada.
-        \item \texttt{incidente}: Permite el seguimiento de problemas reportados, con campos para estado, prioridad y fechas de resolución.
-        \item \texttt{gasto\_comun} (\texttt{charge}): Almacena los cobros financieros asociados a una unidad y un periodo contable específico.
-    \end{itemize}
-    \item \textbf{Entidades de Participación y Servicios:}
-    \begin{itemize}
-        \item \texttt{votacion} (\texttt{poll}) y \texttt{opcion\_voto}: Estructura para la gestión democrática de decisiones comunitarias.
-        \item \texttt{amenity} (Áreas Comunes) y \texttt{reserva}: Gestionan la disponibilidad y uso de espacios compartidos (quinchos, salas de eventos), controlando aforos y bloques horarios.
-    \end{itemize}
-\end{itemize}
+A continuación, las Tablas~\ref{tab:esquema-acceso} a~\ref{tab:esquema-proveedores} presentan las tablas del esquema agrupadas por dominio funcional, junto con sus relaciones clave.
 
-El modelo respeta las formas normales para evitar redundancia de datos, utilizando claves foráneas (\texttt{FOREIGN KEY}) para mantener la integridad referencial entre las unidades, los residentes y sus respectivas operaciones (pagos, reservas, multas).
+% --- Tabla 1: Acceso y Organización ---
+\begin{table}[H]
+\centering
+\caption{Esquema de base de datos --- Acceso y Organización}\label{tab:esquema-acceso}
+\begin{tabular}{|p{0.26\textwidth}|p{0.38\textwidth}|p{0.28\textwidth}|}
+\hline
+\textbf{Tabla} & \textbf{Descripción} & \textbf{Relaciones clave} \\
+\hline
+\texttt{roles} & Catálogo de cinco roles del sistema. & --- \\
+\hline
+\texttt{users} & Credenciales, datos personales y avatar. & FK a \texttt{roles} \\
+\hline
+\texttt{buildings} & Comunidades con dirección y configuración. & --- \\
+\hline
+\texttt{housing\_units} & Unidades habitacionales con prorrata. & FK a \texttt{buildings} \\
+\hline
+\texttt{user\_buildings} & Vínculo usuarios--comunidades (N:M). & FK a \texttt{users}, \texttt{buildings} \\
+\hline
+\texttt{user\_confirmations} & Tokens de verificación de correo. & FK a \texttt{users} \\
+\hline
+\texttt{password\_reset\_tokens} & Tokens temporales de recuperación. & FK a \texttt{users} \\
+\hline
+\end{tabular}
+\end{table}
 
+% --- Tabla 2: Solicitudes de Comunidad y Control de Acceso ---
+\begin{table}[H]
+\centering
+\caption{Esquema de base de datos --- Solicitudes de Comunidad y Control de Acceso}\label{tab:esquema-solicitudes}
+\begin{tabular}{|p{0.26\textwidth}|p{0.38\textwidth}|p{0.28\textwidth}|}
+\hline
+\textbf{Tabla} & \textbf{Descripción} & \textbf{Relaciones clave} \\
+\hline
+\texttt{building\_requests} & Solicitudes de ingreso con aprobación. & FK a \texttt{buildings}, \texttt{users} \\
+\hline
+\texttt{admin\_invites} & Códigos de invitación para administradores. & FK a \texttt{buildings} \\
+\hline
+\texttt{visits} & Registros de ingreso de visitantes. & FK a \texttt{buildings}, \texttt{users} \\
+\hline
+\texttt{visit\_contacts} & Contactos frecuentes pre-autorizados. & FK a \texttt{users} \\
+\hline
+\end{tabular}
+\end{table}
 
+% --- Tabla 3: Gestión Operativa ---
+\begin{table}[H]
+\centering
+\caption{Esquema de base de datos --- Gestión Operativa}\label{tab:esquema-operativa}
+\begin{tabular}{|p{0.26\textwidth}|p{0.38\textwidth}|p{0.28\textwidth}|}
+\hline
+\textbf{Tabla} & \textbf{Descripción} & \textbf{Relaciones clave} \\
+\hline
+\texttt{staff} & Personal de la comunidad. & FK a \texttt{buildings} \\
+\hline
+\texttt{tasks} & Tareas con evidencia y estados. & FK a \texttt{buildings} \\
+\hline
+\texttt{task\_assignments} & Asignación tareas--personal. & FK a \texttt{tasks}, \texttt{staff} \\
+\hline
+\texttt{parcels} & Encomiendas con seguimiento de estados. & FK a \texttt{buildings}, \texttt{users} \\
+\hline
+\end{tabular}
+\end{table}
 
-\cleardoublepage % Asegura que esta sección comience en una página limpia (incluso página par/impar si aplica)
+% --- Tabla 4: Finanzas ---
+\begin{table}[H]
+\centering
+\caption{Esquema de base de datos --- Finanzas}\label{tab:esquema-finanzas}
+\begin{tabular}{|p{0.26\textwidth}|p{0.38\textwidth}|p{0.28\textwidth}|}
+\hline
+\textbf{Tabla} & \textbf{Descripción} & \textbf{Relaciones clave} \\
+\hline
+\texttt{common\_expense\_periods} & Períodos contables mensuales. & FK a \texttt{buildings} \\
+\hline
+\texttt{charges} & Cargos individuales por unidad. & FK a \texttt{common\_expense\_periods} \\
+\hline
+\texttt{payments} & Pagos registrados por unidad. & FK a \texttt{charges}, \texttt{users} \\
+\hline
+\end{tabular}
+\end{table}
+
+% --- Tabla 5: Participación ---
+\begin{table}[H]
+\centering
+\caption{Esquema de base de datos --- Participación y Reservas}\label{tab:esquema-participacion}
+\begin{tabular}{|p{0.26\textwidth}|p{0.38\textwidth}|p{0.28\textwidth}|}
+\hline
+\textbf{Tabla} & \textbf{Descripción} & \textbf{Relaciones clave} \\
+\hline
+\texttt{polls} & Procesos de votación comunitaria. & FK a \texttt{buildings} \\
+\hline
+\texttt{poll\_options} & Alternativas de cada votación. & FK a \texttt{polls} \\
+\hline
+\texttt{votes} & Sufragios individuales. & FK a \texttt{poll\_options}, \texttt{users} \\
+\hline
+\texttt{amenities} & Espacios comunes con reglas de aforo. & FK a \texttt{buildings} \\
+\hline
+\texttt{reservations} & Reservas de bloques horarios. & FK a \texttt{amenities}, \texttt{users} \\
+\hline
+\end{tabular}
+\end{table}
+
+% --- Tabla 6: Comunicación ---
+\begin{table}[H]
+\centering
+\caption{Esquema de base de datos --- Comunicación}\label{tab:esquema-comunicacion}
+\begin{tabular}{|p{0.26\textwidth}|p{0.38\textwidth}|p{0.28\textwidth}|}
+\hline
+\textbf{Tabla} & \textbf{Descripción} & \textbf{Relaciones clave} \\
+\hline
+\texttt{chat\_rooms} & Salas de conversación entre usuarios. & FK a \texttt{users} \\
+\hline
+\texttt{chat\_messages} & Mensajes individuales con marca temporal. & FK a \texttt{chat\_rooms}, \texttt{users} \\
+\hline
+\texttt{chat\_requests} & Solicitudes de inicio de conversación. & FK a \texttt{users} \\
+\hline
+\texttt{marketplace\_items} & Artículos en venta o donación. & FK a \texttt{users}, \texttt{buildings} \\
+\hline
+\texttt{forum\_categories} & Categorías temáticas del foro. & FK a \texttt{buildings} \\
+\hline
+\texttt{forum\_threads} & Hilos de discusión. & FK a \texttt{forum\_categories}, \texttt{users} \\
+\hline
+\end{tabular}
+\end{table}
+
+% --- Tabla 7: Soporte ---
+\begin{table}[H]
+\centering
+\caption{Esquema de base de datos --- Soporte}\label{tab:esquema-soporte}
+\begin{tabular}{|p{0.26\textwidth}|p{0.38\textwidth}|p{0.28\textwidth}|}
+\hline
+\textbf{Tabla} & \textbf{Descripción} & \textbf{Relaciones clave} \\
+\hline
+\texttt{incidents} & Reportes de incidencias. & FK a \texttt{buildings}, \texttt{users} \\
+\hline
+\texttt{library\_documents} & Documentos comunitarios en Box. & FK a \texttt{buildings} \\
+\hline
+\texttt{notifications} & Alertas entregadas vía WebSocket. & FK a \texttt{users}, \texttt{buildings} \\
+\hline
+\texttt{notification\_preferences} & Preferencias por tipo de evento. & FK a \texttt{users} \\
+\hline
+\end{tabular}
+\end{table}
+
+% --- Tabla 8: Proveedores ---
+\begin{table}[H]
+\centering
+\caption{Esquema de base de datos --- Proveedores y Servicios Externos}\label{tab:esquema-proveedores}
+\begin{tabular}{|p{0.26\textwidth}|p{0.38\textwidth}|p{0.28\textwidth}|}
+\hline
+\textbf{Tabla} & \textbf{Descripción} & \textbf{Relaciones clave} \\
+\hline
+\texttt{providers} & Proveedores externos de servicios. & FK a \texttt{buildings}, \texttt{users} \\
+\hline
+\texttt{service\_orders} & Órdenes de servicio con flujo de estados. & FK a \texttt{buildings}, \texttt{providers}, \texttt{users} \\
+\hline
+\texttt{quotations} & Cotizaciones asociadas a órdenes. & FK a \texttt{service\_orders}, \texttt{providers} \\
+\hline
+\end{tabular}
+\end{table}
+
+El modelo respeta las formas normales para evitar redundancia de datos, utilizando claves foráneas (\texttt{FOREIGN KEY}) para mantener la integridad referencial entre las unidades, los residentes y sus respectivas operaciones (pagos, reservas, incidentes). Todas las tablas incluyen columnas de auditoría \texttt{created\_at} y \texttt{updated\_at} gestionadas automáticamente.
+
+\cleardoublepage
 \subsection{Modelo Entidad-Relación}
 
 Ya que el proyecto utilizará MySQL como base de datos, definimos el siguiente diagrama Entidad-Relación que ayudará a comprender mejor la definición de las relaciones y la estructura de los datos.
 
 \begin{figure}[H]
   \centering
-  % Aseguramos que la imagen se escale al máximo ancho de la página, pero no más de 1.0
-  \includegraphics[width=\textwidth]{Proyecto_de_Titulo/InformeFinal-SW/images/MER.png}
+  \includegraphics[width=\textwidth]{MER.png}
   \caption{Modelo Entidad-Relación del Sistema DOMU}
   \label{fig:mer}
 \end{figure}
 
-\clearpage % Fuerza un salto de página después de la figura, asegurando que el contenido siguiente comience en una nueva página.
+\clearpage
 
-\cleardoublepage % Asegura que esta sección comience en una página limpia
+\cleardoublepage
 \subsection{Modelo Relacional}
 
 A continuación, se modelaron los datos siguiendo el patrón relacional, detallando las tablas, columnas, claves primarias y foráneas que se implementarán en MySQL.
 
 \begin{figure}[H]
   \centering
-  % Escala la imagen para que ocupe el ancho máximo de la caja de texto, garantizando visibilidad.
-  \includegraphics[width=\textwidth]{Proyecto_de_Titulo/InformeFinal-SW/images/ModeloRelacional.png}
+  \includegraphics[width=\textwidth]{ModeloRelacional.png}
   \caption{Diagrama del Modelo Relacional del Sistema DOMU}
   \label{fig:relacional}
 \end{figure}
 
-\clearpage % Fuerza un salto de página después de la figura.
+\clearpage
 
 \section{Diseño de interfaz y navegación}
 En esta sección se dará énfasis al desarrollo de los \textit{mockups} que contempla nuestra aplicación \textbf{DOMU}, donde se detalla la guía de estilo a seguir, en conjunto con el logotipo que tendrá la \textit{app}. También se definirán las guías de colores a utilizar, las cuales serán las encargadas de representar nuestra identidad visual a través de las interfaces gráficas de la aplicación.
@@ -166,7 +659,7 @@ El texto que acompaña al ícono utiliza una tipografía de estilo moderno y geo
 
 \begin{figure}[H]
   \centering
-  \includegraphics[scale=0.5]{Proyecto_de_Titulo/InformeFinal-SW/images/LogotipoDOMU.png}
+  \includegraphics[scale=0.5]{LogotipoDOMU.png}
   \caption{Logotipo de Domu}
   \label{fig:logo}
 \end{figure}
@@ -174,30 +667,30 @@ El texto que acompaña al ícono utiliza una tipografía de estilo moderno y geo
 \subsection{Guía de colores}
 Los colores corporativos de la aplicación componen una gama cromática cálida, orientada a transmitir cercanía, energía y modernidad.
 
-En conjunto, esta paleta de colores que se muestra en la figura a continuación. La cual busca lograr una experiencia visual agradable y llamativa para los usuarios de la plataforma.
+En conjunto, esta paleta de colores, que se muestra en la figura a continuación, busca lograr una experiencia visual agradable y llamativa para los usuarios de la plataforma.
 
 \begin{figure}[H]
   \centering
-  \includegraphics[scale=0.5]{Proyecto_de_Titulo/InformeFinal-SW/images/PaletaDeColores.png}
+  \includegraphics[scale=0.5]{PaletaDeColores.png}
   \caption{Paleta de Colores DOMU}
   \label{fig:paleta}
 \end{figure}
 
 \subsection{Tipografía}
-La tipografía utilizada es un tipo de letra sencilla y universal que facilite la legibilidad. Se ha optado por emplear una fuente gratuita de Google Fonts, como es Roboto Mono. En las figuras 5.5 y 5.6 se incluye una representación de dicha fuente con los caracteres más comunes.
+La tipografía utilizada es un tipo de letra sencilla y universal que facilite la legibilidad. Se ha optado por emplear una fuente gratuita de Google Fonts, como es Roboto Mono. En las figuras \ref{fig:tipografia1} y \ref{fig:tipografia2} se incluye una representación de dicha fuente con los caracteres más comunes.
 
 \begin{figure}[H]
   \centering
-  \includegraphics[scale=0.5]{Proyecto_de_Titulo/InformeFinal-SW/images/EjemploTipografiaRoboto1.png}
+  \includegraphics[scale=0.5]{EjemploTipografiaRoboto1.png}
   \caption{Texto de Ejemplo 1 Tipografía Roboto Mono}
-  \label{fig:tipografia}
+  \label{fig:tipografia1}
 \end{figure}
 
 \begin{figure}[H]
   \centering
-  \includegraphics[scale=0.5]{Proyecto_de_Titulo/InformeFinal-SW/images/EjemploTipografiaRoboto2.png}
+  \includegraphics[scale=0.5]{EjemploTipografiaRoboto2.png}
   \caption{Texto de Ejemplo 2 Tipografía Roboto Mono}
-  \label{fig:tipografia}
+  \label{fig:tipografia2}
 \end{figure}
 
 \subsection{Composición de Interfaces}
@@ -211,12 +704,11 @@ La composición de las interfaces expuesta a continuación corresponde a la vers
 \end{itemize}
 \begin{figure}[H]
     \centering
-    % Reemplaza esta ruta y scale con la figura real de tu pantalla de Login
-    \includegraphics[scale=0.5]{Proyecto_de_Titulo/InformeFinal-SW/images/InterfazInicioSesion.png} 
+    \includegraphics[scale=0.5]{InterfazInicioSesion.png}
     \caption{A. Mockup de la interfaz de Inicio de Sesión.}
     \label{fig:mockup-login}
 \end{figure}
-\clearpage % Sugerido para separar figuras grandes en páginas distintas.
+\clearpage
 
 
 % --- ÍTEM B: Vista Conserje (Registro QR) ---
@@ -225,8 +717,7 @@ La composición de las interfaces expuesta a continuación corresponde a la vers
 \end{itemize}
 \begin{figure}[H]
     \centering
-    % Reemplaza esta ruta y scale con la figura real de tu pantalla de Conserje
-    \includegraphics[scale=0.5]{Proyecto_de_Titulo/InformeFinal-SW/images/InterfazConserje.png}
+    \includegraphics[scale=0.5]{InterfazConserje.png}
     \caption{B. Mockup de la interfaz de la Vista Conserje.}
     \label{fig:mockup-conserje}
 \end{figure}
@@ -239,8 +730,7 @@ La composición de las interfaces expuesta a continuación corresponde a la vers
 \end{itemize}
 \begin{figure}[H]
     \centering
-    % Reemplaza esta ruta y scale con la figura real
-    \includegraphics[scale=0.5]{Proyecto_de_Titulo/InformeFinal-SW/images/InterfazAdministracion.png}
+    \includegraphics[scale=0.5]{InterfazAdministracion.png}
     \caption{C. Mockup de la interfaz de la Vista Administración.}
     \label{fig:mockup-administracion}
 \end{figure}
@@ -252,7 +742,7 @@ La composición de las interfaces expuesta a continuación corresponde a la vers
 \end{itemize}
 \begin{figure}[H]
     \centering
-    \includegraphics[scale=0.5]{Proyecto_de_Titulo/InformeFinal-SW/images/InterfazComite.png}
+    \includegraphics[scale=0.5]{InterfazComite.png}
     \caption{D. Mockup de la interfaz de la Vista Comité.}
     \label{fig:mockup-comite}
 \end{figure}
@@ -265,7 +755,7 @@ La composición de las interfaces expuesta a continuación corresponde a la vers
 \end{itemize}
 \begin{figure}[H]
     \centering
-    \includegraphics[scale=0.5]{Proyecto_de_Titulo/InformeFinal-SW/images/InterfazResidente.png}
+    \includegraphics[scale=0.5]{InterfazResidente.png}
     \caption{E. Mockup de la interfaz de la Vista Residente (Aplicación Móvil).}
     \label{fig:mockup-residente}
 \end{figure}
@@ -278,7 +768,7 @@ La composición de las interfaces expuesta a continuación corresponde a la vers
 \end{itemize}
 \begin{figure}[H]
     \centering
-    \includegraphics[scale=0.5]{Proyecto_de_Titulo/InformeFinal-SW/images/IterfazReporteDeIncidencias.png}
+    \includegraphics[scale=0.5]{InterfazReporteDeIncidencias.png}
     \caption{F. Mockup de la interfaz de Reporte de Incidencias.}
     \label{fig:mockup-incidencias}
 \end{figure}
@@ -291,7 +781,7 @@ La composición de las interfaces expuesta a continuación corresponde a la vers
 \end{itemize}
 \begin{figure}[H]
     \centering
-    \includegraphics[scale=0.5]{Proyecto_de_Titulo/InformeFinal-SW/images/InterfazReportesFinancieros.png}
+    \includegraphics[scale=0.5]{InterfazReportesFinancieros.png}
     \caption{G. Mockup de la interfaz de Reporte Financiero.}
     \label{fig:mockup-financiero}
 \end{figure}
@@ -304,7 +794,7 @@ La composición de las interfaces expuesta a continuación corresponde a la vers
 \end{itemize}
 \begin{figure}[H]
     \centering
-    \includegraphics[scale=0.5]{Proyecto_de_Titulo/InformeFinal-SW/images/InterfazPagoGGCC.png}
+    \includegraphics[scale=0.5]{InterfazPagoGGCC.png}
     \caption{H. Mockup de la interfaz de Pago de Gastos Comunes.}
     \label{fig:mockup-pago-gc}
 \end{figure}
@@ -316,41 +806,437 @@ La composición de las interfaces expuesta a continuación corresponde a la vers
 \end{itemize}
 \begin{figure}[H]
     \centering
-    % Reemplaza esta ruta y scale con la figura real
-    \includegraphics[scale=0.5]{Proyecto_de_Titulo/InformeFinal-SW/images/InterfazReservaAreasComunes.png}
+    \includegraphics[scale=0.5]{InterfazReservaAreasComunes.png}
     \caption{I. Mockup de la interfaz de Reserva de Áreas Comunes.}
     \label{fig:mockup-reservas}
 \end{figure}
 \clearpage
 
-\section{Diseño de arquitectura}
-La solución sigue un patrón de arquitectura \textbf{Cliente-Servidor} utilizando una API RESTful como medio de comunicación. Esta separación permite que el \textit{frontend} y el \textit{backend} evolucionen, se desarrollen y se desplieguen de manera independiente.
+\subsection{Vistas del Sistema por Rol}
+\label{subsec:vistas-por-rol}
 
-\begin{itemize}
-    \item \textbf{Backend (Servidor):} Construido sobre la JVM (Java Virtual Machine) utilizando \textbf{Java 21}. Se utiliza el framework ligero \textbf{Javalin 6} para la exposición de endpoints HTTP. La arquitectura interna sigue un diseño por capas (\textit{Controller-Service-Repository}), facilitando la inyección de dependencias (vía Google Guice) y la testabilidad del código.
-    \item \textbf{Frontend (Cliente):} Desarrollado como una \textit{Single Page Application} (SPA) utilizando \textbf{React 19}. La construcción y empaquetado se gestiona con \textbf{Vite}, lo que optimiza los tiempos de carga mediante \textit{code splitting} y carga perezosa (\textit{lazy loading}) de módulos.
-\end{itemize}
+El frontend de DOMU está compuesto por \textbf{54~vistas} organizadas según el rol del usuario. A continuación se presentan las vistas agrupadas por categoría de acceso, indicando los casos de uso (CU) que cada vista materializa.
+
+% --- Vistas Públicas ---
+\begin{longtable}{|p{0.28\textwidth}|p{0.42\textwidth}|p{0.22\textwidth}|}
+\caption{Vistas públicas (sin autenticación)}\label{tab:vistas-publicas}\\
+\hline
+\textbf{Vista} & \textbf{Descripción} & \textbf{CUs relacionados} \\
+\hline
+\endfirsthead
+\hline \textbf{Vista} & \textbf{Descripción} & \textbf{CUs relacionados} \\ \hline
+\endhead
+\hline \endfoot
+
+Home (Landing) & Página de presentación de la plataforma DOMU. & --- \\
+\hline
+Login & Formulario de inicio de sesión con JWT. & --- \\
+\hline
+Register & Registro de nuevo usuario con confirmación por correo. & --- \\
+\hline
+ForgotPassword & Solicitud de recuperación de contraseña. & --- \\
+\hline
+ConfirmEmail & Confirmación de correo electrónico vía token. & --- \\
+\hline
+About & Información sobre el proyecto y el equipo. & --- \\
+\hline
+RegisterByInvite & Registro mediante código de invitación de administrador. & CU\_24 \\
+
+\end{longtable}
+
+% --- Vistas Administrador ---
+\begin{longtable}{|p{0.28\textwidth}|p{0.42\textwidth}|p{0.22\textwidth}|}
+\caption{Vistas del Administrador}\label{tab:vistas-admin}\\
+\hline
+\textbf{Vista} & \textbf{Descripción} & \textbf{CUs relacionados} \\
+\hline
+\endfirsthead
+\hline \textbf{Vista} & \textbf{Descripción} & \textbf{CUs relacionados} \\ \hline
+\endhead
+\hline \endfoot
+
+AdminDashboard & Panel principal con resumen de actividad comunitaria. & CU\_09 \\
+\hline
+AdminCreateUser & Creación e invitación de usuarios a la comunidad. & CU\_14, CU\_24 \\
+\hline
+AdminIncidentsBoard & Tablero Kanban de incidentes con estados de avance. & CU\_17 \\
+\hline
+AdminIncidentStats & Estadísticas y métricas de incidentes reportados. & CU\_09 \\
+\hline
+AdminResidents & Listado y gestión de residentes por unidad. & CU\_14 \\
+\hline
+AdminHousingUnits & Gestión de unidades habitacionales y coeficientes. & CU\_24 \\
+\hline
+AdminAmenities & Configuración de áreas comunes, aforo y horarios. & CU\_05 \\
+\hline
+AdminCommonExpenses & Gestión de períodos, cargos y pagos de gastos comunes. & CU\_04, CU\_09 \\
+\hline
+AdminParcels & Gestión y seguimiento de encomiendas. & CU\_02 \\
+\hline
+AdminTasks & Creación y asignación de tareas al personal. & CU\_07 \\
+\hline
+AdminStaff & Gestión de personal operativo de la comunidad. & CU\_07 \\
+\hline
+AdminProviders & CRUD de proveedores vinculados a la comunidad. & CU\_19, CU\_25 \\
+\hline
+AdminServiceOrders & Gestión de órdenes de servicio y cotizaciones. & CU\_26 \\
+
+\end{longtable}
+
+% --- Vistas Conserje ---
+\begin{longtable}{|p{0.28\textwidth}|p{0.42\textwidth}|p{0.22\textwidth}|}
+\caption{Vistas del Conserje}\label{tab:vistas-conserje}\\
+\hline
+\textbf{Vista} & \textbf{Descripción} & \textbf{CUs relacionados} \\
+\hline
+\endfirsthead
+\hline \textbf{Vista} & \textbf{Descripción} & \textbf{CUs relacionados} \\ \hline
+\endhead
+\hline \endfoot
+
+VisitRegistrationPanel & Registro de visitas con escaneo QR y check-in/out. & CU\_01, CU\_15 \\
+\hline
+ConciergeVisitLog & Bitácora de visitas registradas. & CU\_01, CU\_03 \\
+\hline
+ConciergeParcels & Registro y gestión de encomiendas recibidas. & CU\_02 \\
+
+\end{longtable}
+
+% --- Vistas Residente ---
+\begin{longtable}{|p{0.28\textwidth}|p{0.42\textwidth}|p{0.22\textwidth}|}
+\caption{Vistas del Residente}\label{tab:vistas-residente}\\
+\hline
+\textbf{Vista} & \textbf{Descripción} & \textbf{CUs relacionados} \\
+\hline
+\endfirsthead
+\hline \textbf{Vista} & \textbf{Descripción} & \textbf{CUs relacionados} \\ \hline
+\endhead
+\hline \endfoot
+
+ResidentProfile & Perfil personal con edición de datos y avatar. & --- \\
+\hline
+ResidentVisits & Pre-autorización de visitas con generación de QR. & CU\_15 \\
+\hline
+ResidentIncidents & Reporte y seguimiento de reclamos e incidencias. & CU\_17 \\
+\hline
+ResidentAmenities & Consulta de disponibilidad y reserva de áreas comunes. & CU\_05 \\
+\hline
+ResidentCartola & Estado de cuenta del residente (gastos comunes). & CU\_04 \\
+\hline
+ResidentChargesDetail & Detalle de cargos por período. & CU\_04 \\
+\hline
+ResidentPaymentFlow & Flujo de pago de gastos comunes. & CU\_04 \\
+\hline
+ResidentParcels & Visualización de encomiendas pendientes y retiradas. & CU\_02 \\
+\hline
+ResidentPublications & Foro comunitario con categorías e hilos. & CU\_16 \\
+\hline
+ResidentLibrary & Biblioteca de documentos comunitarios. & CU\_22 \\
+\hline
+ResidentMarketplace & Marketplace de artículos entre vecinos. & CU\_21 \\
+\hline
+ResidentMarketplaceCreate & Publicación de nuevo artículo en marketplace. & CU\_21 \\
+\hline
+ChatHub & Hub de conversaciones en tiempo real (WebSocket). & CU\_20 \\
+\hline
+ChatRoom & Sala de chat individual con historial. & CU\_20 \\
+\hline
+ResidentVotaciones & Listado de votaciones activas y cerradas. & CU\_10 \\
+\hline
+ResidentVoteDetail & Detalle de votación con opciones y resultados. & CU\_10 \\
+\hline
+ResidentTasks & Visualización de tareas asignadas (rol Personal). & CU\_13 \\
+\hline
+ResidentContacts & Gestión de contactos frecuentes para visitas. & CU\_01 \\
+
+\end{longtable}
+
+% --- Vistas Proveedor ---
+\begin{longtable}{|p{0.28\textwidth}|p{0.42\textwidth}|p{0.22\textwidth}|}
+\caption{Vistas del Proveedor}\label{tab:vistas-proveedor}\\
+\hline
+\textbf{Vista} & \textbf{Descripción} & \textbf{CUs relacionados} \\
+\hline
+\endfirsthead
+\hline \textbf{Vista} & \textbf{Descripción} & \textbf{CUs relacionados} \\ \hline
+\endhead
+\hline \endfoot
+
+ProviderPortal & Portal principal del proveedor con órdenes asignadas. & CU\_27 \\
+\hline
+ProviderServiceOrders & Detalle de órdenes con flujo de aceptación y cotizaciones. & CU\_27 \\
+
+\end{longtable}
+
+% --- Vistas Especiales ---
+\begin{longtable}{|p{0.28\textwidth}|p{0.42\textwidth}|p{0.22\textwidth}|}
+\caption{Vistas especiales y transversales}\label{tab:vistas-especiales}\\
+\hline
+\textbf{Vista} & \textbf{Descripción} & \textbf{CUs relacionados} \\
+\hline
+\endfirsthead
+\hline \textbf{Vista} & \textbf{Descripción} & \textbf{CUs relacionados} \\ \hline
+\endhead
+\hline \endfoot
+
+NotificationCenter & Centro de notificaciones con lectura y preferencias. & CU\_23 \\
+\hline
+CommunitySelector & Selector de comunidad activa (multi-comunidad). & CU\_24 \\
+\hline
+UserTypeSelector & Selección de tipo de usuario en registro de proveedores. & CU\_25 \\
+\hline
+NotFound (404) & Página de error para rutas inexistentes. & --- \\
+
+\end{longtable}
+
+% === PLACEHOLDER: Reemplazar con imagen generada ===
+% PROMPT para generador de imágenes (Gemini/GPT/DALL-E):
+%
+% "Genera un MAPA DE NAVEGACIÓN (sitemap) para una aplicación web llamada DOMU.
+%
+% NOTACIÓN:
+% - VISTAS/PANTALLAS: rectángulos pequeños con bordes redondeados, nombre de la vista dentro.
+% - ROLES: 5 franjas horizontales (swimlanes) separadas por líneas, cada una con el nombre del rol a la izquierda.
+% - CONEXIONES: líneas finas conectando vistas relacionadas (ej: Cartola → ChargesDetail → PaymentFlow).
+% - VISTA COMPARTIDA: el rectángulo 'NotificationCenter' cruza todas las franjas con borde punteado.
+%
+% FRANJAS (de arriba a abajo):
+% 1. 'Público' (fondo gris claro, 7 cajas): Home, Login, Register, ForgotPassword, ConfirmEmail, About, RegisterByInvite
+% 2. 'Administrador' (fondo naranja pálido, 13 cajas): Dashboard, CreateUser, IncidentsBoard, IncidentStats,
+%    Residents, HousingUnits, Amenities, CommonExpenses, Parcels, Tasks, Staff, Providers, ServiceOrders
+% 3. 'Conserje' (fondo verde pálido, 3 cajas): VisitRegistration, VisitLog, Parcels
+% 4. 'Residente' (fondo azul pálido, 18 cajas): Profile, Visits, Incidents, Amenities, Cartola,
+%    ChargesDetail, PaymentFlow, Parcels, Publications, Library, Marketplace, MarketplaceCreate,
+%    ChatHub, ChatRoom, Votaciones, VoteDetail, Tasks, Contacts
+% 5. 'Proveedor' (fondo morado pálido, 2 cajas): ProviderPortal, ProviderServiceOrders
+%
+% Las cajas dentro de cada franja se organizan en filas. Conectar con flechas finas:
+% Login → (cualquier dashboard según rol). Cartola → ChargesDetail → PaymentFlow.
+% ChatHub → ChatRoom. Marketplace → MarketplaceCreate. Votaciones → VoteDetail.
+%
+% ESTILO: Fondo blanco general, franjas con colores pastel muy suaves. Bordes de cajas en gris oscuro.
+% Sin sombras ni gradientes. Tipografía sans-serif pequeña. Profesional para tesis universitaria.
+% Etiquetas en español. Formato: PNG 300dpi orientación horizontal (landscape)."
+\begin{figure}[H]
+  \centering
+  \fbox{\parbox{0.85\textwidth}{\centering\vspace{3cm}
+  \textit{[Insertar diagrama: Mapa de navegación del sistema por rol --- 54 vistas organizadas por actor]}
+  \vspace{3cm}}}
+  \caption{Mapa de navegación del sistema DOMU segmentado por rol de usuario.}
+  \label{fig:mapa-navegacion-roles}
+\end{figure}
+
+\clearpage
+
+\section{Diseño de arquitectura}
+La solución adopta un patrón de arquitectura \textbf{Cliente-Servidor} con una API RESTful como medio principal de comunicación, complementada por canales WebSocket para eventos en tiempo real. Esta separación permite que el \textit{frontend} y el \textit{backend} evolucionen, se desarrollen y se desplieguen de manera independiente, favoreciendo la mantenibilidad y la escalabilidad horizontal.
+
+La filosofía de diseño del \textit{backend} se fundamenta en tres principios: (i)~\textbf{separación de responsabilidades} mediante una arquitectura estricta de tres capas (\textit{Controller}~$\rightarrow$~\textit{Service}~$\rightarrow$~\textit{Repository}); (ii)~\textbf{inversión de dependencias} a través del contenedor de inyección Google~Guice, que desacopla la construcción de objetos de su uso; y (iii)~\textbf{aislamiento por comunidad} (\textit{multi-tenancy} lógico) mediante el \textit{header} HTTP \texttt{X-Building-Id}, que permite que una misma instancia del servidor atienda múltiples comunidades de forma segura.
+
+La Tabla~\ref{tab:arquitectura-componentes} detalla los componentes principales y la tecnología que los sustenta.
+
+\begin{longtable}{|p{0.28\textwidth}|p{0.64\textwidth}|}
+\caption{Componentes arquitectónicos del sistema DOMU}\label{tab:arquitectura-componentes}\\
+\hline
+\textbf{Componente} & \textbf{Tecnología y Responsabilidad} \\
+\hline
+\endfirsthead
+\hline
+\textbf{Componente} & \textbf{Tecnología y Responsabilidad} \\
+\hline
+\endhead
+\hline
+\endfoot
+
+Backend (Servidor) &
+Java~21 (LTS) sobre JVM. Framework Javalin~6.7 para \textit{endpoints} HTTP y WebSocket. Arquitectura interna \textit{Controller-Service-Repository} con inyección de dependencias vía Google~Guice~7.0. \\
+\hline
+
+Frontend (Cliente) &
+SPA desarrollada con React~19.1 y React~Router~7.9. Empaquetado con Vite~7.1, que optimiza tiempos de carga mediante \textit{code splitting} y carga perezosa (\textit{lazy loading}). \\
+\hline
+
+Base de Datos &
+MySQL~8 gestionada con HikariCP~5.1 como \textit{pool} de conexiones. Esquema versionado mediante Flyway~10.15 (35~migraciones). \\
+\hline
+
+Autenticación &
+Tokens JWT (java-jwt~4.4) con firma HMAC. Contraseñas almacenadas con \textit{hash} BCrypt. Middleware \texttt{AuthenticationHandler} valida cada petición protegida. \\
+\hline
+
+WebSocket &
+Dos canales persistentes: \texttt{/ws/chat} (mensajería entre usuarios) y \texttt{/ws/notifications} (alertas en tiempo real). Autenticación por token en la conexión inicial. \\
+\hline
+
+Almacenamiento en la nube &
+\texttt{BoxStorageService} como capa de abstracción sobre Box~API (SDK~5.2). Servicios especializados delegan la subida de avatares, evidencias y documentos. \\
+\hline
+
+Generación de documentos &
+OpenPDF~1.3.39 para la generación de boletas de gasto común, comprobantes de pago y estados de cuenta en formato PDF. \\
+\hline
+
+Correo electrónico &
+Jakarta~Mail~2.0.1 para notificaciones transaccionales: confirmación de registro, aprobación de comunidades e invitaciones de administrador. \\
+\hline
+
+Serialización &
+Jackson~2.17 con módulo JSR-310 para el manejo nativo de \texttt{LocalDate} y \texttt{LocalDateTime}. Configurado globalmente mediante \texttt{AppConfig.CustomJsonMapper}. \\
+\hline
+
+Multi-tenancy &
+\textit{Header} \texttt{X-Building-Id} enviado por el cliente en cada petición. El \textit{middleware} inyecta el identificador de comunidad, y los repositorios filtran todas las consultas por este valor. \\
+
+\end{longtable}
+
+Los patrones de diseño empleados incluyen: \textbf{Repository} para encapsular el acceso a datos, \textbf{DTO} (\textit{Data Transfer Object}) para la transferencia entre capas, \textbf{Middleware} para la validación transversal de autenticación y multi-tenancy, e \textbf{Inyección de Dependencias} para el desacoplamiento y la testabilidad del código.
 
 \subsection{Configuración Inicial del Entorno}
 Para garantizar la reproducibilidad del entorno de desarrollo y la correcta ejecución del sistema, se definieron configuraciones específicas tanto para el servidor como para el cliente, eliminando dependencias obsoletas (como \texttt{pom.xml} en favor de Gradle) y estandarizando las versiones de las herramientas.
 
-\textbf{Configuración del Backend:}
-El proyecto \texttt{domu-backend} se gestiona mediante \textbf{Gradle} (usando Kotlin DSL en \texttt{build.gradle.kts}). Las dependencias clave configuradas en \texttt{libs.versions.toml} incluyen:
-\begin{itemize}
-    \item \textbf{Lenguaje:} Java 21 (LTS).
-    \item \textbf{Framework Web:} Javalin 6.7.0.
-    \item \textbf{Base de Datos:} MySQL Connector 9.0.0 y HikariCP 5.1.0 para el pool de conexiones.
-    \item \textbf{Seguridad:} Java-JWT 4.4.0 y JBcrypt 0.4.
-\end{itemize}
+\subsubsection*{Configuración del Backend}
+El proyecto \texttt{domu-backend} se gestiona mediante \textbf{Gradle~8} (usando Kotlin~DSL en \texttt{build.gradle.kts}). Las versiones de todas las dependencias se centralizan en el catálogo \texttt{gradle/libs.versions.toml}, facilitando la actualización coordinada. El empaquetado final se realiza con el \textit{plugin} \textbf{Shadow~JAR}, generando un único archivo ejecutable (\textit{fat~JAR}) que incluye todas las dependencias transitivas.
 
-La configuración en tiempo de ejecución se maneja a través de variables de entorno, priorizando la seguridad (no hardcodear credenciales). Las variables críticas definidas son: \texttt{DB\_URI}, \texttt{DB\_USER}, \texttt{DB\_PASSWORD} para la conexión JDBC; \texttt{JWT\_SECRET} para la firma de tokens; y \texttt{APP\_SERVER\_PORT} para el puerto de despliegue (por defecto 7000).
+La Tabla~\ref{tab:deps-backend} detalla las dependencias de producción del backend.
 
-\textbf{Configuración del Frontend:}
-El proyecto \texttt{domu-frontend} utiliza \textbf{Node.js} (v18+) como entorno de ejecución y \textbf{npm} para la gestión de paquetes. La configuración base se encuentra en \texttt{vite.config.js} y \texttt{package.json}.
-\begin{itemize}
-    \item \textbf{Core:} React 19.1 y React Router 7.9.
-    \item \textbf{Variables de Entorno:} Se utiliza un archivo \texttt{.env} (basado en \texttt{.env.example}) para definir \texttt{VITE\_API\_BASE\_URL}, permitiendo cambiar el apuntamiento de la API entre el entorno de desarrollo local (proxy) y producción sin modificar el código fuente.
-    \item \textbf{Calidad de Código:} Se configuró ESLint 9.36 para asegurar el estilo y detectar errores de sintaxis en tiempo de desarrollo.
-\end{itemize}
+\begin{longtable}{|p{0.30\textwidth}|p{0.12\textwidth}|p{0.50\textwidth}|}
+\caption{Dependencias de producción del backend}\label{tab:deps-backend}\\
+\hline
+\textbf{Librería} & \textbf{Versión} & \textbf{Propósito} \\
+\hline
+\endfirsthead
+\hline
+\textbf{Librería} & \textbf{Versión} & \textbf{Propósito} \\
+\hline
+\endhead
+\hline
+\endfoot
+
+Javalin & 6.7.0 & Framework web ligero para HTTP y WebSocket. \\
+\hline
+MySQL Connector/J & 9.0.0 & Driver JDBC para MySQL~8. \\
+\hline
+HikariCP & 5.1.0 & Pool de conexiones JDBC de alto rendimiento. \\
+\hline
+Flyway Core + MySQL & 10.15.0 & Migraciones SQL versionadas al arranque. \\
+\hline
+Google Guice & 7.0.0 & Contenedor de inyección de dependencias. \\
+\hline
+java-jwt (Auth0) & 4.4.0 & Generación y validación de tokens JWT. \\
+\hline
+jBCrypt & 0.4 & \textit{Hashing} seguro de contraseñas. \\
+\hline
+Jackson JSR-310 & 2.17.2 & Serialización JSON con soporte \texttt{LocalDate}/\texttt{LocalDateTime}. \\
+\hline
+Box Java SDK & 5.2.0 & Almacenamiento de archivos en Box. \\
+\hline
+Google Cloud Storage & 2.36.1 & Almacenamiento alternativo en GCS. \\
+\hline
+OpenPDF & 1.3.39 & Generación de documentos PDF (boletas, estados de cuenta). \\
+\hline
+Jakarta Mail & 2.0.1 & Envío de correos transaccionales (SMTP). \\
+\hline
+Thumbnailator & 0.4.20 & Redimensionamiento de imágenes (avatares, evidencias). \\
+\hline
+Log4j~2 (Core + SLF4J) & 2.23.1 & Registro de eventos (\textit{logging}) estructurado. \\
+\hline
+SLF4J API & 2.0.13 & Fachada de \textit{logging}. \\
+\hline
+Javalin OpenAPI Plugin & 6.7.0 & Generación automática de especificación OpenAPI~3 desde anotaciones. \\
+\hline
+Javalin Swagger Plugin & 6.7.0 & Interfaz Swagger~UI integrada para exploración interactiva de la API. \\
+
+\end{longtable}
+
+La configuración en tiempo de ejecución se maneja a través de variables de entorno, priorizando la seguridad (no \textit{hardcodear} credenciales). Las variables críticas definidas en \texttt{AppConfig} son: \texttt{DB\_URI}, \texttt{DB\_USER}, \texttt{DB\_PASSWORD} para la conexión JDBC; \texttt{JWT\_SECRET} para la firma de tokens; \texttt{BOX\_DEVELOPER\_TOKEN} y \texttt{BOX\_ROOT\_FOLDER\_ID} para el almacenamiento; \texttt{MAIL\_HOST}, \texttt{MAIL\_USER} y \texttt{MAIL\_PASSWORD} para el correo; y \texttt{APP\_SERVER\_PORT} para el puerto de despliegue (por defecto \textbf{8080}).
+
+\subsubsection*{Configuración del Frontend}
+El proyecto \texttt{domu-frontend} utiliza \textbf{Node.js} (v18+) como entorno de ejecución y \textbf{npm} para la gestión de paquetes. La configuración base se encuentra en \texttt{vite.config.js} y \texttt{package.json}. En entorno de desarrollo, Vite configura un \textit{proxy} que redirige todas las peticiones a \texttt{/api} hacia \texttt{http://localhost:8080}, eliminando problemas de CORS sin necesidad de configuración adicional en el backend.
+
+La Tabla~\ref{tab:deps-frontend} detalla las dependencias del frontend.
+
+\begin{longtable}{|p{0.32\textwidth}|p{0.12\textwidth}|p{0.48\textwidth}|}
+\caption{Dependencias del frontend}\label{tab:deps-frontend}\\
+\hline
+\textbf{Librería} & \textbf{Versión} & \textbf{Propósito} \\
+\hline
+\endfirsthead
+\hline
+\textbf{Librería} & \textbf{Versión} & \textbf{Propósito} \\
+\hline
+\endhead
+\hline
+\endfoot
+
+\multicolumn{3}{|l|}{\textit{\textbf{Dependencias de producción}}} \\
+\hline
+React & 19.1.1 & Biblioteca de construcción de interfaces de usuario. \\
+\hline
+React DOM & 19.1.1 & Renderizado de componentes React en el DOM. \\
+\hline
+React Router DOM & 7.9.4 & Enrutamiento declarativo para la SPA. \\
+\hline
+TanStack React Query & 5.90.21 & Gestión de estado del servidor, caché y sincronización. \\
+\hline
+pigeon-maps & 0.21.6 & Componente de mapas interactivos (ubicación de comunidades). \\
+\hline
+
+\multicolumn{3}{|l|}{\textit{\textbf{Dependencias de desarrollo}}} \\
+\hline
+Vite & 7.1.7 & Empaquetador con HMR y \textit{code splitting}. \\
+\hline
+@vitejs/plugin-react & 5.0.4 & Integración de React con Vite (Fast Refresh). \\
+\hline
+vite-plugin-pwa & 1.1.0 & Soporte PWA con \textit{Service Worker} y manifiesto. \\
+\hline
+Sass & 1.97.3 & Preprocesador CSS con variables y \textit{mixins}. \\
+\hline
+ESLint & 9.36.0 & Análisis estático de código JavaScript/JSX. \\
+
+\end{longtable}
+
+Se utiliza un archivo \texttt{.env} (basado en \texttt{.env.example}) para definir \texttt{VITE\_API\_BASE\_URL}, permitiendo cambiar el apuntamiento de la API entre el entorno de desarrollo local (proxy) y producción sin modificar el código fuente.
 
 \subsection{Arquitectura de Implementación Final}
+
+Esta sección describe cómo interactúan los componentes arquitectónicos presentados anteriormente durante la ejecución real del sistema, abordando el flujo de una petición HTTP típica, los canales WebSocket, la estrategia de almacenamiento y el mecanismo de migraciones.
+
+\subsubsection*{Flujo de una petición HTTP}
+
+Cada solicitud del cliente recorre las siguientes etapas antes de devolver una respuesta:
+
+\begin{enumerate}
+    \item \textbf{Cliente (React)}: El componente React invoca una función del módulo de servicios API, que utiliza \texttt{fetch} con las cabeceras \texttt{Authorization: Bearer~<token>} y \texttt{X-Building-Id:~<id>}.
+    \item \textbf{Proxy de desarrollo (Vite)}: En entorno local, Vite intercepta las rutas \texttt{/api/*} y las redirige a \texttt{http://localhost:8080}, eliminando restricciones de CORS.
+    \item \textbf{Javalin (Router)}: El servidor recibe la petición y la enruta al \textit{handler} correspondiente según el método HTTP y la ruta registrada.
+    \item \textbf{AuthenticationHandler (Middleware)}: Valida el token JWT, extrae el identificador de usuario y lo inyecta en el contexto de la petición. Las rutas públicas (login, registro, health) se excluyen de esta validación.
+    \item \textbf{Controller}: Deserializa el cuerpo de la petición mediante Jackson, valida los parámetros de entrada y delega la lógica al \textit{Service} correspondiente.
+    \item \textbf{Service}: Implementa la lógica de negocio, coordina múltiples repositorios cuando es necesario y aplica el filtrado por \texttt{buildingId} para garantizar el aislamiento multi-comunidad.
+    \item \textbf{Repository}: Ejecuta las consultas SQL parametrizadas contra MySQL a través del \textit{pool} de conexiones HikariCP y devuelve las entidades al \textit{Service}.
+    \item \textbf{Respuesta}: El \textit{Controller} serializa el resultado como JSON (con soporte JSR-310 para fechas) y lo devuelve al cliente con el código HTTP apropiado.
+\end{enumerate}
+
+\subsubsection*{Canales WebSocket}
+
+El sistema mantiene dos canales WebSocket persistentes, ambos autenticados mediante token JWT enviado como parámetro en la URL de conexión:
+
+\begin{itemize}
+    \item \texttt{/ws/chat}: Gestionado por \texttt{ChatWebSocketHandler}. Permite el envío y recepción de mensajes en tiempo real entre usuarios de una misma comunidad. El \textit{handler} mantiene un mapa de sesiones activas por usuario para la entrega inmediata.
+    \item \texttt{/ws/notifications}: Gestionado por \texttt{NotificationWebSocketHandler}. Emite alertas en tiempo real (nuevas encomiendas, incidentes asignados, pagos registrados, etc.) según las preferencias configuradas por cada usuario.
+\end{itemize}
+
+\subsubsection*{Estrategia de almacenamiento}
+
+Los archivos binarios (avatares, evidencias fotográficas, documentos de biblioteca) se almacenan externamente a través de \texttt{BoxStorageService}, que encapsula la interacción con la API de Box. Los servicios especializados (\texttt{UserProfileService}, \texttt{ParcelService}, \texttt{LibraryService}) delegan las operaciones de carga y descarga a esta capa centralizada, manteniendo en la base de datos únicamente la referencia (\texttt{fileId}) al recurso remoto. Las imágenes se redimensionan automáticamente mediante Thumbnailator antes de su almacenamiento.
+
+\subsubsection*{Migraciones de base de datos}
+
+Al arranque del servidor, Flyway escanea el directorio \texttt{db/migration} y ejecuta secuencialmente las migraciones pendientes. Cada archivo sigue la convención \texttt{V\{NNN\}\_\_descripcion.sql}, donde el prefijo numérico garantiza el orden de aplicación. El historial de migraciones se registra en la tabla interna \texttt{flyway\_schema\_history}, lo que permite detectar modificaciones manuales no autorizadas y garantizar la consistencia entre entornos.
+
+\subsubsection*{Documentación de la API (Swagger UI)}
+
+La API REST se documenta de forma automática mediante el plugin comunitario \textbf{javalin-openapi}, que genera una especificación OpenAPI~3 a partir de anotaciones en el código fuente. La interfaz interactiva \textbf{Swagger~UI} se encuentra disponible en la ruta \texttt{/swagger}, permitiendo a los desarrolladores explorar los endpoints, probar peticiones y consultar los esquemas de entrada/salida sin herramientas externas. La especificación JSON se expone en \texttt{/openapi} para su consumo programático.
+
+\subsubsection*{Serialización y manejo de fechas}
+
+La serialización JSON se configura globalmente mediante \texttt{AppConfig.CustomJsonMapper}, que registra el módulo \texttt{JavaTimeModule} de Jackson y desactiva la escritura de fechas como \textit{timestamps} numéricos. Esto permite que los tipos \texttt{LocalDate} y \texttt{LocalDateTime} se representen como cadenas ISO-8601 (e.g., \texttt{"2025-03-15"}, \texttt{"2025-03-15T14:30:00"}), facilitando su procesamiento tanto en el frontend como en integraciones externas.

@@ -1,6 +1,160 @@
-Por cada incremento y/o iteración:
-\begin{itemize}
-    \item Funcionalidad
-    \item Fecha
-    \item Retroalimentación del cliente/usuario
-\end{itemize}
+% -----------------------------------------------------------
+%  Iteraciones en el Desarrollo
+% -----------------------------------------------------------
+
+Este anexo detalla las iteraciones (fases) en que se organizó el desarrollo del sistema DOMU, describiendo la funcionalidad principal implementada en cada una, su período aproximado y la retroalimentación obtenida. Las fases corresponden a las descritas en el Capítulo~\ref{cap:desarrollo}.
+
+\section{Resumen de Iteraciones}
+
+La Tabla~\ref{tab:iteraciones} presenta las siete fases de desarrollo del proyecto, cada una orientada a un conjunto cohesivo de funcionalidades.
+
+\begin{longtable}{|c|p{0.22\textwidth}|p{0.34\textwidth}|p{0.12\textwidth}|p{0.16\textwidth}|}
+\caption{Iteraciones del desarrollo del sistema DOMU}\label{tab:iteraciones}\\
+\hline
+\textbf{Fase} & \textbf{Funcionalidad principal} & \textbf{Detalle} & \textbf{Período} & \textbf{Feedback / Validación} \\
+\hline
+\endfirsthead
+\hline
+\textbf{Fase} & \textbf{Funcionalidad principal} & \textbf{Detalle} & \textbf{Período} & \textbf{Feedback / Validación} \\
+\hline
+\endhead
+\hline
+\endfoot
+
+1 & Fundamentos y Autenticación &
+Estructura del proyecto (Gradle, Flyway), modelo de usuario, registro con confirmación por correo electrónico, inicio de sesión con JWT, recuperación de contraseña. &
+Semanas 1--2 &
+Login y registro funcionales; flujo de correo validado con Gmail SMTP. \\
+\hline
+
+2 & Comunidades y Multi-tenancy &
+Registro de comunidades con aprobación por correo, soporte multi-comunidad (\texttt{X-Building-Id}), gestión de roles RBAC, unidades habitacionales, invitación de administradores. &
+Semanas 3--4 &
+Flujo de aprobación validado; cambio de comunidad activa operativo en el frontend. \\
+\hline
+
+3 & Operaciones Comunitarias &
+Módulo de incidentes (tablero Kanban), reservas de áreas comunes con control de disponibilidad, votaciones con cierre automático, control de acceso con escaneo QR (modo HID). &
+Semanas 5--7 &
+Integración QR exitosa sin drivers adicionales; tablero Kanban aprobado; votación con cierre programado funcional. \\
+\hline
+
+4 & Módulo Financiero &
+Períodos de gasto común, cargos por unidad con prorrateo, registro de pagos, generación de boletas y estados de cuenta en PDF (OpenPDF), flujo de pago simulado. &
+Semanas 8--10 &
+Generación de estados de cuenta PDF validada; flujo de pago completo en modo simulado; decisión de diferir CUs a v2.0. \\
+\hline
+
+5 & Comunicación y Contenido &
+Chat en tiempo real vía WebSocket (\texttt{/ws/chat}), foro con categorías e hilos, marketplace de artículos con imágenes, encomiendas con evidencia fotográfica, biblioteca de documentos en Box. &
+Semanas 11--13 &
+Chat WebSocket operativo en tiempo real; marketplace con subida de imágenes validado; biblioteca integrada con Box API. \\
+\hline
+
+6 & Personal y Notificaciones &
+Módulo de personal y tareas con asignación, evidencia y seguimiento por estado, canal WebSocket de notificaciones en tiempo real (\texttt{/ws/notifications}), preferencias de notificación por usuario. &
+Semanas 14--15 &
+WebSocket de notificaciones validado; asignación y seguimiento de tareas funcional con evidencia fotográfica. \\
+\hline
+
+7 & Proveedores y Documentación &
+Portal de proveedores (CRUD), órdenes de servicio con flujo de estados, cotizaciones, portal de acceso para proveedores externos, generación automática de documentación OpenAPI y Swagger~UI. &
+Semanas 16--17 &
+Portal proveedor operativo con flujo aceptar/rechazar; API completamente documentada en Swagger~UI (\texttt{/swagger}). \\
+
+\end{longtable}
+
+\textit{Nota: Los períodos indicados son aproximaciones basadas en la carta Gantt del proyecto (ver Anexo~\ref{anexo:gestion}). Algunas fases se solaparon parcialmente.}
+
+% === PLACEHOLDER: Reemplazar con imagen generada ===
+% PROMPT para generador de imágenes (Gemini/GPT/DALL-E):
+%
+% "Genera un DIAGRAMA DE LÍNEA DE TIEMPO (timeline/roadmap) horizontal para un proyecto de software.
+%
+% NOTACIÓN:
+% - LÍNEA TEMPORAL: una flecha horizontal gruesa de izquierda a derecha, marcada con 'Semana 1' a 'Semana 17'.
+% - FASES: rectángulos horizontales sobre la línea temporal, cada uno con largo proporcional a su duración.
+%   Cada rectángulo tiene borde negro sólido y relleno de color pastel. El nombre de la fase está dentro en negrita.
+% - ENTREGABLES: debajo de cada rectángulo, 2-3 etiquetas pequeñas en rectángulos blancos con borde fino
+%   (como tags/chips), indicando los entregables clave.
+% - HITO: un diamante negro (◆) sobre la línea temporal en la Semana 8 con etiqueta
+%   'Decisión: diferir 5 CUs a v2.0' apuntando con una línea.
+%
+% FASES (7 bloques sobre la línea temporal):
+% Fase 1 'Fundamentos y Auth' (Sem 1-2, azul claro) → Entregables: JWT, Registro, Email
+% Fase 2 'Comunidades' (Sem 3-4, verde agua) → Entregables: Multi-tenancy, RBAC, Invitaciones
+% Fase 3 'Operaciones Comunitarias' (Sem 5-7, verde, bloque más ancho) → Entregables: QR, Kanban, Votaciones, Reservas
+% Fase 4 'Módulo Financiero' (Sem 8-10, naranja) → Entregables: Gastos Comunes, PDF, Pagos
+%   ◆ HITO en Semana 8
+% Fase 5 'Comunicación' (Sem 11-13, morado) → Entregables: WebSocket Chat, Foro, Marketplace
+% Fase 6 'Personal y Notif.' (Sem 14-15, rosado) → Entregables: Tareas, WS Notificaciones
+% Fase 7 'Proveedores y Docs' (Sem 16-17, azul oscuro) → Entregables: Órdenes, Cotizaciones, Swagger UI
+%
+% ESTILO: Fondo blanco, sin gradientes, tipografía sans-serif. Orientación horizontal (landscape).
+% Profesional para tesis universitaria. Etiquetas en español. Formato: PNG 300dpi."
+\begin{figure}[H]
+  \centering
+  \fbox{\parbox{0.85\textwidth}{\centering\vspace{3cm}
+  \textit{[Insertar diagrama: Línea de tiempo de las 7 fases de desarrollo --- Semanas 1 a 17 con hitos]}
+  \vspace{3cm}}}
+  \caption{Línea de tiempo de las iteraciones de desarrollo del proyecto DOMU.}
+  \label{fig:timeline-iteraciones}
+\end{figure}
+
+\section{Detalle por Iteración}
+
+\subsection{Fase 1: Fundamentos y Autenticación (Semanas 1--2)}
+
+Esta fase estableció la infraestructura base del proyecto: estructura de directorios, configuración de Gradle con Kotlin~DSL, integración de Flyway para migraciones y el primer ciclo completo de autenticación. Se implementaron las migraciones iniciales (\texttt{V001} a \texttt{V005}) para las tablas de usuarios, roles, confirmaciones y tokens de recuperación.
+
+\textbf{Entregables:} Registro con confirmación por correo $\rightarrow$ Login JWT $\rightarrow$ Recuperación de contraseña $\rightarrow$ Middleware de autenticación.
+
+\textbf{Validación:} Se verificó el flujo completo: registro $\rightarrow$ correo de confirmación $\rightarrow$ activación $\rightarrow$ login $\rightarrow$ token JWT válido. Se confirmó el rechazo de acceso sin token y con token expirado.
+
+\subsection{Fase 2: Comunidades y Multi-tenancy (Semanas 3--4)}
+
+Se construyó el modelo de comunidades con aprobación por correo electrónico, la lógica de multi-comunidad mediante el header \texttt{X-Building-Id} y el sistema RBAC con cinco roles. Se implementaron las migraciones para edificios, unidades habitacionales y la relación usuarios-edificios.
+
+\textbf{Entregables:} Solicitud de comunidad $\rightarrow$ Aprobación por correo $\rightarrow$ Invitación de administrador $\rightarrow$ Cambio de comunidad activa $\rightarrow$ CRUD de unidades habitacionales.
+
+\textbf{Validación:} Se verificó que un usuario pueda pertenecer a múltiples comunidades y que los datos se filtren correctamente por \texttt{buildingId} en cada petición.
+
+\subsection{Fase 3: Operaciones Comunitarias (Semanas 5--7)}
+
+Fase más extensa, que incorporó cuatro módulos funcionales: incidentes con tablero Kanban y estados de avance, reservas de áreas comunes con verificación de disponibilidad y control de aforo, votaciones con cierre automático y exportación de resultados, y control de acceso con integración de pistola lectora QR.
+
+\textbf{Entregables:} Tablero de incidentes $\rightarrow$ Gestión de amenidades y reservas $\rightarrow$ Votaciones $\rightarrow$ Registro de visitas con QR.
+
+\textbf{Validación:} La integración QR mediante modo HID (la pistola simula un teclado) funcionó sin necesidad de drivers, confirmando la viabilidad de la solución de bajo costo. El cierre automático de votaciones se validó con temporizadores programados.
+
+\subsection{Fase 4: Módulo Financiero (Semanas 8--10)}
+
+Se implementó el módulo de administración financiera: períodos de gasto común, cargos individuales por unidad con coeficiente de prorrata, registro de pagos y generación de documentos PDF mediante OpenPDF. Al inicio de esta fase se tomó la decisión de diferir los CU\_06, CU\_08, CU\_11, CU\_12 y CU\_18 a v2.0.
+
+\textbf{Entregables:} Períodos contables $\rightarrow$ Cargos con prorrateo $\rightarrow$ Registro de pagos $\rightarrow$ Boletas PDF $\rightarrow$ Estados de cuenta PDF.
+
+\textbf{Validación:} Se verificó la generación correcta de PDFs con datos financieros reales. El flujo de pago se validó en modo simulado, preparando la arquitectura para la futura integración con Mercado Pago.
+
+\subsection{Fase 5: Comunicación y Contenido (Semanas 11--13)}
+
+Se implementaron los módulos de comunicación comunitaria: chat en tiempo real mediante WebSocket, foro con categorías e hilos de discusión, marketplace de artículos entre vecinos con soporte para imágenes, gestión de encomiendas con evidencia fotográfica, y biblioteca de documentos integrada con Box API.
+
+\textbf{Entregables:} Chat WebSocket $\rightarrow$ Foro comunitario $\rightarrow$ Marketplace $\rightarrow$ Encomiendas $\rightarrow$ Biblioteca documental.
+
+\textbf{Validación:} Se verificó la entrega de mensajes en tiempo real entre dos sesiones concurrentes. El marketplace se validó con publicaciones que incluyen múltiples imágenes redimensionadas automáticamente.
+
+\subsection{Fase 6: Personal y Notificaciones (Semanas 14--15)}
+
+Se construyó el módulo de gestión de personal con creación y asignación de tareas, evidencia fotográfica y seguimiento por estados. Paralelamente, se implementó el canal WebSocket de notificaciones en tiempo real con preferencias configurables por tipo de evento.
+
+\textbf{Entregables:} CRUD de personal $\rightarrow$ Asignación de tareas $\rightarrow$ Canal \texttt{/ws/notifications} $\rightarrow$ Preferencias de notificación.
+
+\textbf{Validación:} Se verificó que las notificaciones se entregan inmediatamente al usuario conectado y se persisten para consulta posterior. La asignación de tareas genera notificaciones automáticas al personal asignado.
+
+\subsection{Fase 7: Proveedores y Documentación (Semanas 16--17)}
+
+Última fase de desarrollo, que incorporó el módulo de proveedores con CRUD completo, órdenes de servicio con flujo de estados (pendiente $\rightarrow$ aceptada/rechazada $\rightarrow$ en progreso $\rightarrow$ completada), gestión de cotizaciones y un portal de acceso para proveedores externos. Se completó la documentación automatizada de la API mediante el plugin javalin-openapi y Swagger~UI.
+
+\textbf{Entregables:} CRUD proveedores $\rightarrow$ Órdenes de servicio $\rightarrow$ Cotizaciones $\rightarrow$ Portal proveedor $\rightarrow$ Swagger UI.
+
+\textbf{Validación:} Se verificó el flujo completo: administrador crea orden $\rightarrow$ proveedor recibe notificación $\rightarrow$ acepta/rechaza $\rightarrow$ sube cotización $\rightarrow$ marca completada. La documentación Swagger se confirmó accesible en \texttt{/swagger} con todos los endpoints registrados.

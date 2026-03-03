@@ -1,8 +1,177 @@
+% -----------------------------------------------------------
+%  Retrospectiva del Proyecto
+% -----------------------------------------------------------
+
+Este anexo presenta un análisis retrospectivo del proyecto DOMU, evaluando el grado de cumplimiento de los requerimientos, los riesgos que se materializaron y la comparación entre la planificación, el esfuerzo real y la estimación por puntos de casos de uso.
+
+\section{Cumplimiento de Requerimientos por Módulo}
+
+La Tabla~\ref{tab:cumplimiento} sintetiza el porcentaje de implementación alcanzado para cada módulo funcional del sistema, en relación con los requerimientos funcionales (RF) definidos en el Capítulo~\ref{cap:requerimientos}.
+
+\begin{longtable}{|p{0.25\textwidth}|p{0.20\textwidth}|c|p{0.30\textwidth}|}
+\caption{Cumplimiento de requerimientos por módulo}\label{tab:cumplimiento}\\
+\hline
+\textbf{Módulo} & \textbf{RFs cubiertos} & \textbf{\% Impl.} & \textbf{Observación} \\
+\hline
+\endfirsthead
+\hline
+\textbf{Módulo} & \textbf{RFs cubiertos} & \textbf{\% Impl.} & \textbf{Observación} \\
+\hline
+\endhead
+\hline
+\endfoot
+
+Control de Accesos & RF\_01, RF\_03 & 100\% & Visitas, QR y pre-autorización operativos. \\
+\hline
+Encomiendas & RF\_04 & 100\% & Registro, seguimiento y notificación completos. \\
+\hline
+Tareas y Personal & RF\_05, RF\_06 & $\sim$70\% & Asignación y seguimiento implementados; CU\_08 (turnos) diferido a v2.0. \\
+\hline
+Finanzas & RF\_07, RF\_08 & $\sim$85\% & Gastos comunes, pagos y PDFs operativos; CU\_06 (conciliación bancaria) diferido. \\
+\hline
+Reservas & RF\_09 & 100\% & Amenidades, disponibilidad y reservas completos. \\
+\hline
+Votaciones & RF\_10 & 100\% & Creación, sufragio y cierre automático operativos. \\
+\hline
+Comunicación & RF\_11, RF\_17 & 100\% & Foro con categorías y chat WebSocket en tiempo real. \\
+\hline
+Tickets / Incidentes & RF\_12 & 100\% & Reporte, asignación y seguimiento de incidencias. \\
+\hline
+Proveedores & RF\_13 & 100\% & CRUD completo, órdenes y cotizaciones. \\
+\hline
+Mantenimiento & RF\_14 & 0\% & CU\_11 y CU\_18 diferidos íntegramente a v2.0. \\
+\hline
+Dashboards / KPI & RF\_15 & $\sim$50\% & Estadísticas de incidentes implementadas; dashboard financiero parcial. \\
+\hline
+RBAC & RF\_16 & 100\% & Cinco roles, permisos y aprobación de comunidades. \\
+\hline
+Marketplace & RF\_18 & 100\% & Publicación, edición e imágenes operativas. \\
+\hline
+Biblioteca & RF\_19 & 100\% & Documentos comunitarios con almacenamiento en Box. \\
+\hline
+Notificaciones RT & RF\_20 & 100\% & WebSocket de notificaciones con preferencias por usuario. \\
+
+\end{longtable}
+
+% === PLACEHOLDER: Reemplazar con imagen generada ===
+% PROMPT para generador de imágenes (Gemini/GPT/DALL-E):
+%
+% "Genera un GRÁFICO DE BARRAS HORIZONTALES mostrando el porcentaje de implementación por módulo.
+%
+% NOTACIÓN:
+% - GRÁFICO: barras horizontales, eje X = porcentaje (0% a 100%), eje Y = nombres de módulos.
+% - BARRAS: rectangulares, sin bordes redondeados, relleno sólido.
+% - COLORES: verde (#4CAF50) para 100%, naranja (#FF9800) para 50-99%, rojo (#F44336) para 0%.
+% - ETIQUETAS: el porcentaje exacto al final de cada barra.
+% - LÍNEA DE META: línea vertical punteada negra en 80% con etiqueta 'Meta mínima (80%)'.
+%
+% DATOS (15 módulos, de arriba a abajo):
+% Control de Accesos: 100% (verde)
+% Encomiendas: 100% (verde)
+% Tareas/Personal: 70% (naranja)
+% Finanzas: 85% (naranja)
+% Reservas: 100% (verde)
+% Votaciones: 100% (verde)
+% Comunicación: 100% (verde)
+% Tickets: 100% (verde)
+% Proveedores: 100% (verde)
+% Mantenimiento: 0% (rojo)
+% Dashboards: 50% (naranja)
+% RBAC: 100% (verde)
+% Marketplace: 100% (verde)
+% Biblioteca: 100% (verde)
+% Notificaciones: 100% (verde)
+%
+% TÍTULO del gráfico: 'Porcentaje de implementación por módulo - DOMU v1.0'
+% ESTILO: Fondo blanco, ejes en negro, sin grilla de fondo, tipografía sans-serif.
+% Profesional para tesis universitaria. Etiquetas en español. Formato: PNG 300dpi."
+\begin{figure}[H]
+  \centering
+  \fbox{\parbox{0.85\textwidth}{\centering\vspace{3cm}
+  \textit{[Insertar gráfico: Porcentaje de implementación por módulo --- barras horizontales con codificación por color]}
+  \vspace{3cm}}}
+  \caption{Porcentaje de implementación por módulo del sistema DOMU.}
+  \label{fig:cumplimiento-modulos}
+\end{figure}
+
+\section{Análisis de Éxito y Fracaso}
+
+El proyecto DOMU alcanzó la implementación completa de \textbf{22 de los 27 casos de uso} definidos, lo que representa un \textbf{81\% de cumplimiento funcional}. Los cinco casos de uso diferidos a la versión~2.0 corresponden a funcionalidades de menor prioridad (conciliación bancaria, turnos de personal, mantenimiento preventivo, estacionamientos y bitácora de ascensores), cuya postergación fue una decisión deliberada para asegurar la calidad de los módulos entregados.
+
+\textbf{Indicadores de éxito:}
 \begin{itemize}
-    \item Síntesis del porcentaje de cumplimiento de los requerimientos por cada módulo.
-    \item Análisis éxito/fracaso del proyecto
-    \item Riesgos que se concretaron en el proyecto y efectos/consecuencias
-    \item Análisis de ajuste entre planificación, esfuerzo real gastado y estimación de CU
-    \item Compare y analice los resultados extraídos desde los tiempos de la Gantt, de esfuerzo requerido y estimación de CU.
-    \item Concluya respecto a los resultados.
+    \item Sistema funcional con más de 130 endpoints REST operativos y 2 canales WebSocket.
+    \item 54 vistas frontend segmentadas por rol, cubriendo todos los flujos implementados.
+    \item Arquitectura modular (Controller-Service-Repository) que facilita la extensión futura.
+    \item Documentación de API automatizada mediante Swagger UI.
+    \item Desviación de esfuerzo global de solo +3\% respecto a la planificación inicial.
 \end{itemize}
+
+\textbf{Aspectos a mejorar:}
+\begin{itemize}
+    \item La integración con Box API requiere renovación manual del token de desarrollador, limitando la autonomía del sistema en ambiente de producción.
+    \item El módulo de dashboards quedó parcialmente implementado, ofreciendo solo estadísticas de incidentes.
+    \item La pasarela de pago opera en modo simulado; la integración real con Mercado Pago queda pendiente para v2.0.
+\end{itemize}
+
+\section{Riesgos Materializados y sus Efectos}
+
+De los ocho riesgos identificados en la etapa de planificación (ver Tabla~\ref{tab:riesgos} del Anexo~\ref{anexo:gestion}), dos se materializaron completamente y dos de forma parcial:
+
+\begin{itemize}
+    \item \textbf{R01 --- Complejidad del modelo financiero:} La necesidad de modelar 35~entidades en 9~dominios funcionales (frente a las $\sim$20 estimadas) extendió la fase de diseño de base de datos en aproximadamente una semana (+20\%). El impacto se absorbió parcialmente durante la implementación del frontend, que resultó más eficiente de lo previsto gracias a TanStack React Query.
+
+    \item \textbf{R02 --- Postergación de funcionalidades:} La decisión de diferir 5~CUs se tomó en la semana~8 del desarrollo, tras evaluar que la implementación completa comprometería la calidad del software entregado. Esta decisión permitió dedicar más tiempo a la estabilización de los módulos financiero y de proveedores.
+
+    \item \textbf{R05 --- Dependencia de Box API (parcial):} El token de desarrollador de Box tiene una vigencia limitada (60~minutos), lo que obligó a implementar un flujo de renovación manual durante el desarrollo. Para producción, se recomienda migrar a autenticación OAuth~2.0 con tokens de larga duración.
+
+    \item \textbf{R07 --- Curva de aprendizaje (parcial):} La adopción de Javalin y TanStack React Query requirió un sprint inicial dedicado a prototipos. Sin embargo, la documentación oficial de ambas tecnologías resultó suficiente para alcanzar productividad plena a partir de la segunda semana.
+\end{itemize}
+
+\section{Comparación: Planificación, Esfuerzo Real y Estimación UCP}
+
+La Tabla~\ref{tab:comparacion-retro} contrasta las tres fuentes de estimación del proyecto:
+
+\begin{table}[H]
+\centering
+\begin{tabular}{|p{0.25\textwidth}|c|c|p{0.30\textwidth}|}
+\hline
+\textbf{Fuente} & \textbf{Horas} & \textbf{Desv. vs.\ Real} & \textbf{Método} \\
+\hline
+Carta Gantt & 340 & $-$3\% & Estimación por descomposición de fases \\
+\hline
+Esfuerzo real & 350 & --- & Medición directa por fase \\
+\hline
+UCP (LOE=20) & 5{,}218 & +1{,}391\% & Método estándar de Karner \\
+\hline
+UCP (LOE ajustado) & $\approx$350 & $\approx$0\% & LOE empírico = 1.34~hrs/UCP \\
+\hline
+\end{tabular}
+\caption{Comparación de las tres fuentes de estimación.}
+\label{tab:comparacion-retro}
+\end{table}
+
+\textbf{Análisis:}
+\begin{itemize}
+    \item La \textbf{carta Gantt} proporcionó la estimación más precisa (340~hrs vs.\ 350~hrs reales), con una desviación de apenas $-$3\%. Esto se debe a que la descomposición por fases se basó en la experiencia previa del equipo con tecnologías similares.
+
+    \item El \textbf{método UCP estándar} (LOE=20~hrs/UCP) sobreestimó significativamente el esfuerzo, arrojando 5{,}218~horas. Esta divergencia es habitual en proyectos académicos donde el LOE calibrado para equipos empresariales no refleja las condiciones reales del desarrollo.
+
+    \item Al aplicar un \textbf{LOE empírico de 1.34~hrs/UCP}, la estimación UCP converge con el esfuerzo real. Este valor es coherente con estudios que reportan LOE entre 1 y 5~hrs/UCP para proyectos académicos con alta reutilización de frameworks.
+
+    \item Las \textbf{desviaciones internas} más significativas se dieron en diseño de BD (+20\%) y backend (+20\%), compensadas por frontend ($-$19\%) y PWA ($-$25\%), resultando en un balance global casi neutro.
+\end{itemize}
+
+\section{Conclusiones de la Retrospectiva}
+
+\begin{enumerate}
+    \item El proyecto \textbf{cumplió su objetivo general}: entregar un sistema funcional de administración de comunidades residenciales con cobertura del 81\% de los casos de uso planificados.
+
+    \item Las \textbf{desviaciones de alcance} se manejaron mediante re-priorización oportuna (semana~8), comunicada a la profesora guía, sin afectar la fecha de cierre global.
+
+    \item La \textbf{estimación por carta Gantt} resultó la más precisa para este tipo de proyecto, mientras que el método UCP requiere calibración del LOE para contextos académicos.
+
+    \item La \textbf{arquitectura modular} adoptada facilitó la postergación de funcionalidades sin afectar los módulos implementados, validando la decisión de diseño.
+
+    \item Para la \textbf{versión 2.0}, se recomienda priorizar: conciliación bancaria (CU\_06), turnos de personal (CU\_08) e integración real con pasarela de pagos, aprovechando la base arquitectónica ya establecida.
+\end{enumerate}

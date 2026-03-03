@@ -1,7 +1,7 @@
 % --------------------------------------------------------------
 %  Capítulo 3 – Especificación de Requerimientos – Producto SW
 % --------------------------------------------------------------
-Este capítulo detalla los límites, restricciones y los requerimientos funcionales y no funcionales del sistema \textit{DOMU}.  
+Este capítulo detalla los límites, restricciones y los requerimientos funcionales y no funcionales del sistema \textit{DOMU}.
 Los requisitos se agrupan según los módulos principales: Control de Accesos, Gestión Operativa, Finanzas, Comunicación y Soporte.
 
 \section{Límites del Proyecto}
@@ -12,8 +12,8 @@ En esta sección se definen los límites técnicos y operacionales del sistema, 
 Se detallan aquí las condiciones mínimas requeridas en términos de dispositivos y sistemas operativos, tanto para usuarios móviles como para el entorno de ejecución del backend.
 
 \begin{itemize}
-    \item El aplicativo móvil soporta \textbf{Android 11 o superior} y \textbf{iOS 14 o superior}. Dispositivos con versiones anteriores acceden únicamente al portal web \textit{responsive}.
-    \item El lector de cédulas debe ser compatible con QR ISO/IEC 18004 y Código~128; otros formatos quedan fuera de alcance.
+    \item La aplicación móvil se implementa como una \textbf{Progressive Web App (PWA)} accesible desde cualquier navegador moderno (Chrome, Safari, Firefox) en dispositivos Android e iOS. Los usuarios pueden instalarla en la pantalla de inicio de su dispositivo para una experiencia similar a una aplicación nativa.
+    \item El lector de cédulas debe ser compatible con QR ISO/IEC 18004~\cite{iso18004} y Código~128; otros formatos quedan fuera de alcance.
     \item El back-end se despliega sobre arquitecturas \textbf{x86\_64}; no se certifica compatibilidad con ARM en ambientes productivos.
 \end{itemize}
 
@@ -30,15 +30,15 @@ Esta sección define los requisitos mínimos de red necesarios para garantizar u
 Se especifican las tecnologías y formatos de integración aceptados por el sistema, junto con las restricciones relacionadas con servicios de terceros.
 
 \begin{itemize}
-    \item Las integraciones se realizan exclusivamente mediante \textbf{API REST + JSON} sobre HTTPS. SOAP, GraphQL, WebSockets u otras interfaces no están contempladas.
-    \item Únicamente se soporta la pasarela de pagos \textbf{Mercado Pago}.
+    \item Las integraciones con servicios externos se realizan mediante \textbf{API REST + JSON} sobre HTTPS. Adicionalmente, el sistema utiliza \textbf{WebSocket nativo de Javalin} para comunicación bidireccional en tiempo real (chat y notificaciones).
+    \item La pasarela de pagos prevista es \textbf{Mercado Pago}. En la versión 1.0 (MVP), el flujo de pago opera en modo simulado; la integración con la API de producción de Mercado Pago se realizará en una iteración posterior.
 \end{itemize}
 
 \subsection{Límites de Datos y Retención}
 Aquí se describen las restricciones relacionadas con el almacenamiento, el volumen de datos y las políticas de retención a largo plazo.
 
 \begin{itemize}
-    \item En caso de que sea necesario un respaldo, se coordinara almacenamiento en Google Drive de archivos comprimidos respaldando la información.
+    \item En caso de que sea necesario un respaldo, se coordinará almacenamiento en Google Drive de archivos comprimidos respaldando la información.
     \item Base de datos soportada: \textbf{MySQL}. Otros motores (PostgreSQL, MariaDB, SQL Server, etc.) no se consideran.
     \item Tamaño lógico máximo de la base de datos: 500 GB; para volúmenes mayores se requerirá particionamiento y revisión de arquitectura.
 \end{itemize}
@@ -56,11 +56,11 @@ Se presentan las capacidades máximas del sistema en cuanto a número de usuario
 En esta sección se presentan las restricciones técnicas que condicionan el desarrollo y despliegue del sistema. Estas restricciones están asociadas a decisiones de infraestructura, arquitectura y tecnologías obligatorias que deben cumplirse a lo largo del proyecto.
 
 \begin{itemize}
-    \item La infraestructura para el MVP serán los mismos equipos en los que el código fue escrito.
-    \item En caso de que los desarrolladores lo consideren, se expondrá el Frontend en una pagina web con un hosting adquirido por ellos. Al igual que el servidor que alojara el backend y frontend.
+    \item La infraestructura para el MVP será los mismos equipos en los que el código fue escrito.
+    \item En caso de que los desarrolladores lo consideren, se expondrá el Frontend en una página web con un hosting adquirido por ellos, al igual que el servidor que alojará el backend y el frontend.
 \end{itemize}
 
-\section{Identificación de usuario}
+\section{Identificación de Usuario}
 Para el módulo de identificación y control de acceso, se diseñó e implementó un mecanismo de autenticación \textit{stateless} (sin estado) basado en el estándar \textbf{JSON Web Tokens (JWT)}. Esta decisión arquitectónica se fundamenta en la necesidad de desacoplar el estado de la sesión del servidor, permitiendo una mayor escalabilidad horizontal y facilitando la comunicación entre el cliente (SPA) y la API REST.
 
 El flujo de identificación se compone de las siguientes etapas:
@@ -98,10 +98,14 @@ RF\_09 & Gestionar \textbf{reservas de espacios comunes} con reglas de aforo, ti
 RF\_10 & Implementar un \textbf{sistema de votaciones} (elecciones de comité, decisiones de gasto) con anonimato y trazabilidad. \\ \hline
 RF\_11 & Habilitar \textbf{foro/chat comunitario} categorizado (avisos, eventos, reclamos, sugerencias). \\ \hline
 RF\_12 & Registrar \textbf{tickets de reclamos/sugerencias} y permitir su seguimiento por estado (abierto, en progreso, cerrado). \\ \hline
-RF\_13 & Proveer un \textbf{formulario de gastos comunes}: Incluyendo una descripcion breve, periodicidad (¿Se repite mensualmente?), fecha de inicio y termino, etc. \\ \hline
-RF\_14 & Registrar \textbf{mantenimientos preventivos}; programar alertas de vencimiento. \\ \hline
-RF\_15 & Emitir \textbf{dashboards} con KPIs de seguridad (conteo de incidentes), finanzas (ingresos/egresos) y desempeño de tareas. \\ \hline
-RF\_16 & Permitir al ADMINISTRADOR configurar \textbf{roles y permisos} granularmente (\ac{RBAC}). \\ \hline
+RF\_13 & Gestionar \textbf{proveedores y servicios externos}: CRUD de proveedores, órdenes de servicio, cotizaciones y seguimiento. \\ \hline
+RF\_14 & Registrar \textbf{mantenimientos preventivos}; programar alertas de vencimiento (planificado para v2.0). \\ \hline
+RF\_15 & Emitir \textbf{dashboards} con KPIs de seguridad (conteo de incidentes), finanzas (ingresos/egresos) y desempeño de tareas (parcial en v1.0: estadísticas de incidentes). \\ \hline
+RF\_16 & Permitir al ADMINISTRADOR configurar \textbf{roles y permisos} granularmente (RBAC). \\ \hline
+RF\_17 & Habilitar \textbf{chat en tiempo real} entre residentes mediante WebSocket. \\ \hline
+RF\_18 & Proveer un \textbf{marketplace comunitario} para compraventa entre vecinos. \\ \hline
+RF\_19 & Gestionar una \textbf{biblioteca de documentos} comunitarios. \\ \hline
+RF\_20 & Entregar \textbf{notificaciones en tiempo real} mediante WebSocket con preferencias configurables. \\ \hline
 \caption{Requerimientos Funcionales del sistema DOMU}
 \label{tab:rf}
 \end{longtable}
@@ -114,7 +118,7 @@ Los siguientes requerimientos no funcionales definen las condiciones de calidad 
     \item \textbf{RNF\_01 Disponibilidad}: \(\ge\) 99{,}0\,\% mensual.
     \item \textbf{RNF\_02 Rendimiento}: 95\,\% de las peticiones REST responden \(\le\) 500\,ms bajo 50\,RPS.
     \item \textbf{RNF\_03 Accesibilidad}: contraste mínimo 4{,}5:1 y navegación por teclado.
-    \item \textbf{RNF\_04 Mantenibilidad}: cobertura de tests \(\ge\) 80\,\%, código backend documentado con \texttt{Swagger / OpenAPI~3}.
+    \item \textbf{RNF\_04 Mantenibilidad}: cobertura de tests \(\ge\) 80\,\%, API REST documentada con \textbf{Swagger UI} mediante el plugin \texttt{javalin-openapi}, accesible en \texttt{/swagger}.
 \end{itemize}
 
 \section{Interfaces Externas de Entrada}

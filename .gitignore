@@ -1,0 +1,17 @@
+.DS_Store
+
+# LaTeX build artifacts
+*.aux
+*.bbl
+*.blg
+*.fdb_latexmk
+*.fls
+*.lof
+*.log
+*.lot
+*.out
+*.toc
+texput.log
+
+# Generated main document output
+Proyecto_de_Titulo/InformeFinal-SW/acuna_rivas-informe-SW.pdf

@@ -1,0 +1,113 @@
+% Capítulo 9 – Conclusión
+
+Este capítulo presenta las conclusiones del proyecto DOMU, evaluando el grado de cumplimiento de los objetivos planteados, las competencias desarrolladas, las dificultades enfrentadas y las líneas de trabajo futuro.
+
+\section{Cumplimiento de los Objetivos}
+
+\subsection{Evaluación de los Objetivos Específicos}
+
+A continuación se evalúa el cumplimiento de cada uno de los seis objetivos específicos definidos en el Capítulo~1:
+
+\begin{enumerate}
+    \item \textbf{Comparar los sistemas actuales de administración de edificios, identificando sus fortalezas y limitaciones, para definir los requerimientos funcionales de la propuesta.}
+
+    \textit{Cumplido.} Se investigaron y documentaron cuatro plataformas del mercado chileno: ComunidadFeliz, Edifito, Edipro y GastoComunChile (Capítulo~1, §1.4). Se identificaron sus fortalezas (digitalización financiera, comunicación con residentes) y sus debilidades (modularización comercial, falta de integración operativa). A partir de este análisis y de la retroalimentación recogida, se definieron 20~requerimientos funcionales (Capítulo~3, §3.4) que abordan las brechas detectadas.
+
+    \item \textbf{Definir tecnologías y metodologías que permitan desarrollar el sistema de registro con escaneo QR, página web y backend.}
+
+    \textit{Cumplido.} Se seleccionó un stack tecnológico compuesto por Java~21 con Javalin~6 para el backend, React con JavaScript y SCSS para el frontend web, una Progressive Web App (PWA) para la experiencia móvil y MySQL~8.0 como motor de base de datos (Capítulo~2, §2.5). Se adoptó una metodología híbrida Cascada--Iterativa (Capítulo~2, §2.2) que combinó la rigurosidad documental de la fase de análisis con la flexibilidad de ciclos cortos de construcción. Se evaluó e integró exitosamente una pistola escáner QR como periférico de captura, verificando su compatibilidad con el estándar ISO/IEC~18004 y el formato de la cédula de identidad chilena.
+
+    \item \textbf{Diseñar la estructura de software que incorpora módulos de control de acceso, seguimiento de encomiendas, asignación de tareas al personal y comunicación con los residentes.}
+
+    \textit{Cumplido.} Se diseñó una arquitectura cliente--servidor desacoplada con API REST (Capítulo~6, §6.4), un modelo de datos compuesto por 35~entidades organizadas en 9~dominios (Capítulo~6, §6.2), diagramas BPMN~2.0 de los procesos clave (Capítulo~1, §1.2), un modelo entidad--relación completo (Capítulo~6, §6.2.2) y 9~mockups de las interfaces principales (Capítulo~6, §6.3.5). La arquitectura integra los módulos de control de acceso, encomiendas, finanzas, incidentes, votaciones, reservas, chat, foro, marketplace, tareas, personal y proveedores en un diseño cohesivo.
+
+    \item \textbf{Implementar un prototipo funcional que integre los módulos diseñados en una plataforma inicial.}
+
+    \textit{Cumplido.} El sistema fue construido en siete fases de implementación progresiva (Capítulo~7, §7.2), alcanzando un estado funcional completo con más de 130~endpoints REST, 2~canales WebSocket, 35~migraciones de base de datos y 54~vistas de interfaz de usuario. Todos los módulos se encuentran operativos e integrados, y la API se documenta de forma interactiva mediante Swagger~UI.
+
+    \item \textbf{Integrar el software de registro con el hardware de escaneo QR, verificando la correcta captura, parseo y envío de los datos de la cédula de identidad.}
+
+    \textit{Cumplido.} Se implementó exitosamente la integración del escáner QR con el módulo de control de accesos (Capítulo~7, §7.3.1). La pistola lectora opera en modo de emulación de teclado, capturando la cadena de texto codificada en el QR de la cédula chilena. El software realiza el \textit{parsing} del contenido, extrayendo los campos relevantes (RUT, nombre, apellidos) y registrando el acceso en la base de datos en menos de cinco segundos. Se validó la precisión de la captura con múltiples cédulas de identidad.
+
+    \item \textbf{Realizar pruebas finales, validación y ajuste del sistema DOMU.}
+
+    \textit{Cumplido parcialmente.} Se diseñaron y ejecutaron pruebas funcionales durante cada fase de desarrollo, verificando el correcto funcionamiento de los módulos implementados. Las pruebas de aceptación de usuario se presentan en el Anexo~B. Sin embargo, las pruebas en un entorno productivo real con usuarios finales de una comunidad se encuentran pendientes para la etapa de marcha blanca (Capítulo~8, §8.3).
+\end{enumerate}
+
+\subsection{Evaluación del Objetivo General}
+
+El objetivo general del proyecto consistía en desarrollar una plataforma web integral para la administración de comunidades residenciales que integrara y optimizara los procesos críticos: registro y verificación de visitas con pre-autorización y control de acceso, trazabilidad de encomiendas, gestión de gastos comunes, asignación y seguimiento de tareas, reporte de incidentes, reserva de áreas comunes, y comunicación interna mediante foro, chat y marketplace comunitario.
+
+Se concluye que el objetivo general ha sido \textbf{alcanzado en su totalidad} en lo que respecta al desarrollo del software. La plataforma DOMU integra todos los módulos planificados en un entorno centralizado, con trazabilidad de la información y acceso diferenciado para administradores, conserjes y residentes. El sistema se encuentra funcional y listo para su despliegue en producción.
+
+\section{Tiempo y Esfuerzo}
+
+El proyecto fue planificado para un periodo de desarrollo de cuatro meses con dedicación parcial (40~horas mensuales por integrante), totalizando 320~horas--persona de desarrollo directo.
+
+La distribución real del esfuerzo evidenció que las fases de implementación del backend y la integración de módulos demandaron más tiempo del estimado inicialmente, debido a la complejidad de la lógica financiera (cálculo de gastos comunes, generación de PDF, gestión de períodos contables) y la integración del almacenamiento con Box. En contrapartida, el desarrollo del frontend fue más ágil de lo previsto gracias a la adopción de TanStack React Query para la gestión del estado del servidor, lo que redujo significativamente el código \textit{boilerplate}.
+
+La carta Gantt del Anexo~A refleja las desviaciones entre la planificación original (anteproyecto) y la ejecución real del proyecto, evidenciando ajustes en la priorización de módulos pero manteniendo la fecha de cierre global.
+
+\section{Competencias Desarrolladas}
+
+El desarrollo de este proyecto de título permitió fortalecer y aplicar competencias clave del perfil de egreso de Ingeniería Civil en Informática de la Universidad del Bío-Bío:
+
+\begin{itemize}
+    \item \textbf{Diseño y desarrollo de soluciones de software:} Se diseñó e implementó un sistema completo desde la especificación de requerimientos hasta el despliegue, aplicando patrones de arquitectura (API REST, inyección de dependencias, DTOs) y buenas prácticas de ingeniería de software.
+
+    \item \textbf{Gestión de proyectos:} Se planificó y ejecutó el proyecto utilizando una metodología híbrida, gestionando plazos, priorizando funcionalidades y documentando el proceso conforme a estándares IEEE.
+
+    \item \textbf{Modelado de procesos de negocio:} Se utilizó BPMN~2.0 para representar los procesos del ámbito residencial, vinculando los flujos de negocio con los requerimientos del software.
+
+    \item \textbf{Evaluación de factibilidad:} Se realizó un análisis de factibilidad técnica, operativa y económica completo, incluyendo proyecciones financieras, cálculo de VAN y estimación de costos de desarrollo.
+
+    \item \textbf{Integración de tecnologías:} Se logró integrar múltiples tecnologías heterogéneas (Java, React, PWA, MySQL, WebSocket, Box, OpenPDF, Flyway, escáner QR) en una solución cohesiva.
+
+    \item \textbf{Comunicación técnica:} La elaboración del presente informe y la documentación del sistema contribuyeron a desarrollar la capacidad de comunicar decisiones técnicas de forma clara y fundamentada.
+\end{itemize}
+
+\section{Dificultades Encontradas}
+
+Durante el desarrollo del proyecto se enfrentaron diversas dificultades que requirieron adaptación y creatividad para su resolución:
+
+\begin{itemize}
+    \item \textbf{Complejidad del módulo financiero:} La lógica de cálculo de gastos comunes, con sus múltiples tipos de cargos (fijos, proporcionales, extraordinarios), la generación de estados de cuenta en PDF y la gestión de períodos contables resultó significativamente más compleja de lo previsto. Se requirieron varias iteraciones de diseño para lograr un modelo de datos flexible y correcto.
+
+    \item \textbf{Integración del escáner QR:} El \textit{parsing} de la cadena de texto del código QR de la cédula chilena presentó variaciones de formato entre emisiones de distintos años del Servicio de Registro Civil e Identificación, lo que obligó a implementar una lógica de extracción robusta con múltiples patrones de reconocimiento.
+
+    \item \textbf{Comunicación en tiempo real:} La implementación de WebSocket para el chat y las notificaciones requirió resolver problemas de autenticación de conexiones, reconexión automática ante caídas y sincronización del estado entre el WebSocket y el cache de React Query en el frontend.
+
+    \item \textbf{Almacenamiento en la nube:} La integración con Box como proveedor de almacenamiento presentó limitaciones en la velocidad de subida y en la gestión de tokens de autenticación, lo que motivó la implementación de un sistema de caché de identificadores de carpetas.
+
+    \item \textbf{Alcance del proyecto:} La amplitud funcional del sistema (17~módulos integrados) representó un desafío constante en la priorización de funcionalidades. Se decidió postergar cinco casos de uso para la versión 2.0 del sistema (CU\_06, CU\_08, CU\_11, CU\_12, CU\_18) para garantizar la calidad de los módulos entregados en la versión 1.0.
+\end{itemize}
+
+\section{Trabajo Futuro}
+
+El sistema DOMU cuenta con líneas de evolución claramente identificadas para su versión 2.0:
+
+\begin{itemize}
+    \item \textbf{Conciliación bancaria automática (CU\_06):} Integración con la API de instituciones financieras para conciliar automáticamente los pagos de gastos comunes con los movimientos bancarios de la cuenta del edificio.
+
+    \item \textbf{Control de turnos del personal (CU\_08):} Implementación de un módulo de marcación de inicio y fin de jornada para el personal de conserjería y mantención, con reportes de asistencia y horas trabajadas.
+
+    \item \textbf{Mantenimiento preventivo (CU\_11):} Sistema de planificación y seguimiento de mantenciones periódicas de equipamiento e infraestructura del edificio, con alertas automáticas ante vencimientos.
+
+    \item \textbf{Gestión de estacionamientos (CU\_12):} Módulo de asignación de estacionamientos a titulares y emisión de pases para visitantes, con control de disponibilidad en tiempo real.
+
+    \item \textbf{Bitácora de ascensores (CU\_18):} Registro digital de mantenciones de ascensores conforme a la normativa chilena, con alertas ante vencimientos de certificaciones.
+
+    \item \textbf{Integración con pasarela de pagos:} Sustitución del flujo de pago simulado por una integración completa con la API de producción de Mercado Pago u otro proveedor, habilitando el pago en línea de gastos comunes.
+
+    \item \textbf{Pipeline CI/CD:} Implementación de integración y despliegue continuos mediante GitHub Actions, automatizando las pruebas, el \textit{build} de imágenes Docker y el despliegue en el entorno de producción.
+
+    \item \textbf{Mejoras a la PWA:} Implementación de notificaciones push mediante la API Push del navegador, mejora del soporte offline con \textit{service workers} y optimización del rendimiento para dispositivos de gama baja.
+\end{itemize}
+
+\section{Reflexión Personal}
+
+El desarrollo de DOMU representó un desafío integral que nos permitió aplicar de manera práctica los conocimientos adquiridos a lo largo de la carrera de Ingeniería Civil en Informática. La construcción de un sistema de esta envergadura ---con más de 190~clases en el backend, 92~archivos en el frontend, 35~migraciones de base de datos y una PWA para dispositivos móviles--- nos enfrentó a problemas reales de ingeniería de software: desde la toma de decisiones arquitectónicas hasta la gestión del tiempo y la priorización de funcionalidades.
+
+Más allá del componente técnico, este proyecto nos acercó a un dominio de negocio concreto ---la administración de comunidades residenciales--- que nos obligó a comprender procesos operativos, normativas legales y dinámicas sociales propias de la convivencia en copropiedad. Esta experiencia confirmó que el rol del ingeniero informático trasciende la escritura de código: implica entender el contexto, dialogar con los usuarios y diseñar soluciones que generen valor real.
+
+Consideramos que DOMU tiene potencial como producto comercial viable en el mercado chileno de proptech, y aspiramos a continuar su desarrollo más allá del contexto académico, incorporando las funcionalidades planificadas para la versión~2.0 y validando el sistema con comunidades reales.

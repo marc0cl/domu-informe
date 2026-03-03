@@ -1,5 +1,5 @@
 % ---------------------------------------------
-% Capítulo 4 — Análisis
+% Capítulo 5 — Análisis
 % ---------------------------------------------
 
 % ==== Estilo CU sin color + ajuste de ancho ====
@@ -14,7 +14,7 @@
 % Cabecera Actor / Sistema
 \newcommand{\cuheader}[2]{\textbf{#1} & \textbf{#2}\\\hline}
 
-% Tamaño y padding locales para TODO el capítulo 4
+% Tamaño y padding locales para todo el capítulo 5
 \begingroup
 \small
 \setlength{\tabcolsep}{4pt}
@@ -26,10 +26,37 @@
 
 % ====== 4.1 Historias de usuario ======
 \section{Historias de usuario}
+
+A continuación se presentan las principales historias de usuario que guiaron el diseño del sistema, organizadas por actor:
+
+\subsubsection*{Administrador}
 \begin{itemize}
-  \item Como \textbf{residente}, quiero recibir notificaciones de mis encomiendas para retirarlas a tiempo.
-  \item Como \textbf{administrador}, quiero generar reportes financieros para tomar decisiones de gestión.
-  \item Como \textbf{conserje}, quiero registrar ingreso/salida de visitas para resguardar la seguridad.
+  \item Como \textbf{administrador}, quiero generar estados de cuenta mensuales en PDF para distribuirlos a los residentes y mantener transparencia financiera.
+  \item Como \textbf{administrador}, quiero asignar y monitorear tareas del personal operativo para asegurar el cumplimiento de las labores de mantenimiento.
+  \item Como \textbf{administrador}, quiero gestionar proveedores y órdenes de servicio para controlar los costos de mantención del edificio.
+  \item Como \textbf{administrador}, quiero crear votaciones con cierre programado para facilitar la toma de decisiones comunitarias de forma transparente.
+\end{itemize}
+
+\subsubsection*{Conserje}
+\begin{itemize}
+  \item Como \textbf{conserje}, quiero registrar el ingreso y salida de visitas escaneando la cédula de identidad con la pistola QR para agilizar el control de acceso.
+  \item Como \textbf{conserje}, quiero verificar si una visita tiene pre-autorización vigente para permitir el ingreso sin necesidad de contactar al residente.
+  \item Como \textbf{conserje}, quiero registrar la recepción de encomiendas con fotografía de evidencia para garantizar la trazabilidad de los paquetes.
+\end{itemize}
+
+\subsubsection*{Residente}
+\begin{itemize}
+  \item Como \textbf{residente}, quiero recibir notificaciones cuando llegue una encomienda a mi nombre para retirarla oportunamente.
+  \item Como \textbf{residente}, quiero pre-autorizar visitas generando un código QR temporal para evitar demoras en el ingreso de mis invitados.
+  \item Como \textbf{residente}, quiero reservar áreas comunes desde la aplicación para planificar eventos sin tener que acudir a conserjería.
+  \item Como \textbf{residente}, quiero consultar mi estado de cuenta y registrar pagos de gastos comunes desde la plataforma para evitar trámites presenciales.
+  \item Como \textbf{residente}, quiero comunicarme con otros vecinos mediante el chat en tiempo real para coordinar asuntos comunitarios.
+  \item Como \textbf{residente}, quiero registrar reclamos y sugerencias con seguimiento de estado para tener visibilidad sobre la resolución de mis solicitudes.
+\end{itemize}
+
+\subsubsection*{Comité}
+\begin{itemize}
+  \item Como \textbf{miembro del comité}, quiero acceder a reportes financieros y de gestión para fiscalizar la labor del administrador.
 \end{itemize}
 
 % ====== 4.2 Actores de Casos de Uso ======
@@ -68,7 +95,49 @@ Básico & Bajo (interacciones asignadas) \\\hline
 
 % ====== 4.3 Diagramas y especificación de casos de uso ======
 \section{Diagramas y especificación de casos de uso}
-% Inserten aquí sus diagramas (uno o más) y referéncienlos con \ref.
+
+% === PLACEHOLDER: Reemplazar con imagen generada ===
+% PROMPT para generador de imágenes (Gemini/GPT/DALL-E):
+%
+% "Genera un DIAGRAMA UML DE CASOS DE USO para un sistema llamado DOMU (gestión de condominios).
+%
+% NOTACIÓN OBLIGATORIA (UML 2.0 estricto):
+% - ACTORES: figuras de palito (stick figures) con su nombre debajo. NO usar íconos, cajas ni avatares.
+% - CASOS DE USO: elipses/óvalos horizontales con el nombre del CU dentro (ej: 'CU_01 Gestionar visitas').
+% - SISTEMA: un gran rectángulo con borde sólido que encierra todos los óvalos, etiquetado 'Sistema DOMU' arriba.
+% - RELACIONES: líneas sólidas entre actor y caso de uso. Flechas punteadas con etiqueta <<include>> o <<extend>> entre CUs.
+% - DIFERIDOS: los CUs diferidos a v2.0 deben tener óvalos con borde punteado y texto gris.
+%
+% ACTORES (5 stick figures):
+% - LADO IZQUIERDO: Administrador (arriba), Conserje (medio), Personal (abajo)
+% - LADO DERECHO: Residente (arriba), Proveedor (abajo)
+%
+% CASOS DE USO dentro del rectángulo, agrupados visualmente por área:
+% Grupo 'Control Accesos': CU_01 Gestionar visitas (→Conserje), CU_15 Ingreso QR (→Conserje, →Residente)
+%   Relación: CU_01 --<<extend>>--> CU_15
+% Grupo 'Encomiendas': CU_02 Registrar encomiendas (→Conserje)
+% Grupo 'Finanzas': CU_04 Pagar gastos comunes (→Residente), CU_09 Reportes financieros (→Administrador)
+%   Relación: CU_04 --<<include>>--> CU_09
+% Grupo 'Operaciones': CU_07 Asignar tareas (→Administrador), CU_13 Marcar tarea completada (→Personal)
+%   Relación: CU_07 --<<extend>>--> CU_13
+% Grupo 'Comunidad': CU_05 Reservar área, CU_10 Votaciones, CU_16 Foro, CU_20 Chat,
+%   CU_21 Marketplace, CU_22 Biblioteca, CU_23 Notificaciones (todos →Residente)
+% Grupo 'Administración': CU_14 RBAC, CU_24 Registrar comunidad (→Administrador)
+% Grupo 'Proveedores': CU_19 Gestionar proveedores, CU_25 CRUD extendido, CU_26 Órdenes de servicio (→Administrador),
+%   CU_27 Consultar órdenes (→Proveedor)
+% DIFERIDOS (óvalos punteados, texto gris): CU_06, CU_08, CU_11, CU_12, CU_18 con nota 'v2.0'
+%
+% ESTILO: Fondo blanco, líneas negras, sin colores de relleno (solo blanco), tipografía sans-serif.
+% No sobrecargues: agrupa los CUs con separación visual. Estilo profesional para tesis universitaria.
+% Etiquetas en español. Formato: PNG 300dpi orientación horizontal (landscape)."
+\begin{figure}[H]
+  \centering
+  \fbox{\parbox{0.85\textwidth}{\centering\vspace{4cm}
+  \textit{[Insertar diagrama: Diagrama UML de Casos de Uso con los 5 actores (stick figures) y 27 CUs (elipses) agrupados por módulo]}
+  \vspace{4cm}}}
+  \caption{Diagrama de casos de uso del sistema DOMU.}
+  \label{fig:diagrama-cu}
+\end{figure}
 
 % ====== 4.3.1 Tablas de Casos de Uso (19 CU) ======
 \subsection{Especificación detallada de Casos de Uso}
@@ -78,7 +147,7 @@ Básico & Bajo (interacciones asignadas) \\\hline
 \begin{table}[H]\centering
 \begin{tabular}{|p{0.475\linewidth}|p{0.475\linewidth}|}\hline
 \cutop{CU\_01}{Gestionar ingreso y salida de visitas}
-\cusec{Precondiciones}{Visitante se presenta en tótem de acceso. Tótem operativo y con conexión.}
+\cusec{Precondiciones}{Visitante se presenta en la estación de conserjería equipada con pistola lectora de códigos QR. Estación operativa y con conexión.\footnote{En futuras versiones se contempla la integración de un tótem de autoservicio para el registro de visitantes.}}
 \cusec{Includes}{—}
 \cusec{Extends}{CU\_15 Ingreso controlado (QR), cuando la visita fue pre-registrada.}
 \cuheader{Conserje}{Sistema}
@@ -128,7 +197,7 @@ Básico & Bajo (interacciones asignadas) \\\hline
 5a. Archivo $>$ 10 MB. & Rechaza y muestra aviso. \\\hline
 \cusec{Post condiciones}{Bitácora actualizada; visible para el administrador.}
 \end{tabular}
-\caption{CU\_03 — Mantener bitácora de incidentes y turnos}
+\caption{CU\_03 — Mantener bitácora de incidentes y turnos\newline\footnotesize\textit{Nota: funcionalidad cubierta parcialmente por el módulo de Incidentes y Tareas.}}
 \label{tab:cu03}
 \end{table}
 
@@ -185,7 +254,7 @@ Básico & Bajo (interacciones asignadas) \\\hline
 5a. Archivo bancario inválido. & Muestra error y permite reintentar. \\\hline
 \cusec{Post condiciones}{Morosidad actualizada; bitácora de conciliación.}
 \end{tabular}
-\caption{CU\_06 — Gestionar morosidad y conciliación}
+\caption{CU\_06 — Gestionar morosidad y conciliación\newline\footnotesize\textit{Nota: planificado para v2.0; en v1.0 el sistema registra cargos y pagos sin conciliación automática.}}
 \label{tab:cu06}
 \end{table}
 
@@ -222,7 +291,7 @@ Básico & Bajo (interacciones asignadas) \\\hline
 1a. Sin conexión. & Guarda local y sincroniza luego. \\\hline
 \cusec{Post condiciones}{Marcación registrada y visible para el administrador.}
 \end{tabular}
-\caption{CU\_08 — Registrar inicio/fin de jornada del personal}
+\caption{CU\_08 — Registrar inicio/fin de jornada del personal\newline\footnotesize\textit{Nota: planificado para v2.0; en v1.0 se gestiona el personal sin marcación de turnos.}}
 \label{tab:cu08}
 \end{table}
 
@@ -240,7 +309,7 @@ Básico & Bajo (interacciones asignadas) \\\hline
  & 2a. Falta información $\rightarrow$ alerta “Datos incompletos”. \\\hline
 \cusec{Post condiciones}{Reporte generado y almacenado en histórico.}
 \end{tabular}
-\caption{CU\_09 — Generar reportes financieros}
+\caption{CU\_09 — Generar reportes financieros\newline\footnotesize\textit{Nota: parcial en v1.0: se generan PDFs individuales y estadísticas de incidentes.}}
 \label{tab:cu09}
 \end{table}
 
@@ -276,7 +345,7 @@ Básico & Bajo (interacciones asignadas) \\\hline
 3a. Orden rechazada/reprogramada. & Ajusta fecha y reprograma. \\\hline
 \cusec{Post condiciones}{Órdenes programadas y ejecutadas con evidencias.}
 \end{tabular}
-\caption{CU\_11 — Mantenimiento preventivo}
+\caption{CU\_11 — Mantenimiento preventivo\newline\footnotesize\textit{Nota: planificado para v2.0.}}
 \label{tab:cu11}
 \end{table}
 
@@ -294,7 +363,7 @@ Básico & Bajo (interacciones asignadas) \\\hline
 2a. Estacionamiento ocupado. & Sugiere alternativa/reprograma. \\\hline
 \cusec{Post condiciones}{Asignación/pase registrado y trazable.}
 \end{tabular}
-\caption{CU\_12 — Gestionar estacionamientos (titulares y pases)}
+\caption{CU\_12 — Gestionar estacionamientos (titulares y pases)\newline\footnotesize\textit{Nota: planificado para v2.0.}}
 \label{tab:cu12}
 \end{table}
 
@@ -338,11 +407,11 @@ Básico & Bajo (interacciones asignadas) \\\hline
 \begin{table}[H]\centering
 \begin{tabular}{|p{0.475\linewidth}|p{0.475\linewidth}|}\hline
 \cutop{CU\_15}{Ingreso controlado (QR)}
-\cusec{Precondiciones}{QR generado por Residente; tótem activo.}
+\cusec{Precondiciones}{QR generado por Residente; estación de conserjería con pistola lectora activa.}
 \cusec{Includes}{—}
 \cusec{Extends}{Puede extender CU\_01.}
 \cuheader{Visita/Delivery/Proveedor}{Sistema}
-1) Escanea QR en tótem. & 2) Verifica vigencia. \\\hline
+1) Escanea QR en estación de conserjería. & 2) Verifica vigencia. \\\hline
  & 3) Registra entrada. \\\hline
  & 4) Notifica residente. \\\hline
 \multicolumn{2}{|l|}{\textbf{Flujo de eventos alternativos}}\\\hline
@@ -362,8 +431,8 @@ Básico & Bajo (interacciones asignadas) \\\hline
 \cusec{Extends}{—}
 \cuheader{Residente}{Sistema}
 1) Ingresa a Foro/Marketplace. & 2) Muestra categorías y anuncios. \\\hline
-3) Publica/explora anuncios. & 3) Registra entrada. \\\hline
- & 4) Despliega formulario de publicación. \\\hline
+3) Publica/explora anuncios. & 4) Registra entrada. \\\hline
+ & 5) Despliega formulario de publicación. \\\hline
  & 6) Valida y guarda anuncio. \\\hline
 \multicolumn{2}{|l|}{\textbf{Flujo de eventos alternativos}}\\\hline
  & 4a. Campo obligatorio vacío $\rightarrow$ error. \\\hline
@@ -409,7 +478,7 @@ Básico & Bajo (interacciones asignadas) \\\hline
  & 5b. Falla de red $\rightarrow$ reintenta/sincroniza. \\\hline
 \cusec{Post condiciones}{Bitácora actualizada; administrador notificado.}
 \end{tabular}
-\caption{CU\_18 — Registrar mantención de ascensor en bitácora}
+\caption{CU\_18 — Registrar mantención de ascensor en bitácora\newline\footnotesize\textit{Nota: planificado para v2.0.}}
 \label{tab:cu18}
 \end{table}
 
@@ -434,6 +503,283 @@ Básico & Bajo (interacciones asignadas) \\\hline
 \label{tab:cu19}
 \end{table}
 
+% CU_20
+\begin{table}[H]\centering
+\begin{tabular}{|p{0.475\linewidth}|p{0.475\linewidth}|}\hline
+\cutop{CU\_20}{Enviar y recibir mensajes en chat}
+\cusec{Precondiciones}{Residente autenticado; módulo de chat habilitado.}
+\cusec{Includes}{—}
+\cusec{Extends}{—}
+\cuheader{Residente}{Sistema}
+1) Solicita conversación con vecino. & 2) Crea sala de chat y notifica al destinatario. \\\hline
+3) Escribe mensaje. & 4) Transmite vía WebSocket en tiempo real. \\\hline
+5) Recibe respuestas. & 6) Persiste mensajes y actualiza estado de lectura. \\\hline
+\multicolumn{2}{|l|}{\textbf{Flujo de eventos alternativos}}\\\hline
+2a. Destinatario rechaza solicitud. & Notifica al solicitante. \\\hline
+\cusec{Post condiciones}{Conversación activa con historial persistido.}
+\end{tabular}
+\caption{CU\_20 — Enviar y recibir mensajes en chat}
+\label{tab:cu20}
+\end{table}
+
+% CU_21
+\begin{table}[H]\centering
+\begin{tabular}{|p{0.475\linewidth}|p{0.475\linewidth}|}\hline
+\cutop{CU\_21}{Publicar artículo en marketplace}
+\cusec{Precondiciones}{Residente autenticado; módulo marketplace habilitado.}
+\cusec{Includes}{—}
+\cusec{Extends}{—}
+\cuheader{Residente}{Sistema}
+1) Crea nuevo anuncio con fotos. & 2) Valida campos y almacena imágenes. \\\hline
+3) Publica anuncio. & 4) Muestra en listado comunitario. \\\hline
+5) Edita o elimina anuncio. & 6) Actualiza/elimina y notifica interesados. \\\hline
+\multicolumn{2}{|l|}{\textbf{Flujo de eventos alternativos}}\\\hline
+2a. Imagen $>$ 5 MB. & Rechaza y solicita imagen menor. \\\hline
+\cusec{Post condiciones}{Anuncio visible en el marketplace comunitario.}
+\end{tabular}
+\caption{CU\_21 — Publicar artículo en marketplace}
+\label{tab:cu21}
+\end{table}
+
+% CU_22
+\begin{table}[H]\centering
+\begin{tabular}{|p{0.475\linewidth}|p{0.475\linewidth}|}\hline
+\cutop{CU\_22}{Consultar biblioteca de documentos}
+\cusec{Precondiciones}{Residente autenticado; documentos cargados por administrador.}
+\cusec{Includes}{—}
+\cusec{Extends}{—}
+\cuheader{Residente}{Sistema}
+1) Ingresa al módulo Biblioteca. & 2) Lista documentos por categoría. \\\hline
+3) Selecciona documento. & 4) Permite visualizar/descargar el archivo. \\\hline
+\multicolumn{2}{|l|}{\textbf{Flujo de eventos alternativos}}\\\hline
+4a. Archivo no disponible. & Muestra error y sugiere contactar administrador. \\\hline
+\cusec{Post condiciones}{Documento visualizado/descargado por el residente.}
+\end{tabular}
+\caption{CU\_22 — Consultar biblioteca de documentos}
+\label{tab:cu22}
+\end{table}
+
+% CU_23
+\begin{table}[H]\centering
+\begin{tabular}{|p{0.475\linewidth}|p{0.475\linewidth}|}\hline
+\cutop{CU\_23}{Gestionar notificaciones}
+\cusec{Precondiciones}{Usuario autenticado.}
+\cusec{Includes}{—}
+\cusec{Extends}{—}
+\cuheader{Residente}{Sistema}
+1) Abre centro de notificaciones. & 2) Lista notificaciones ordenadas por fecha. \\\hline
+3) Marca como leída / lee todas. & 4) Actualiza estado de lectura. \\\hline
+5) Configura preferencias. & 6) Guarda preferencias por tipo de notificación. \\\hline
+\multicolumn{2}{|l|}{\textbf{Flujo de eventos alternativos}}\\\hline
+ & 2a. Sin notificaciones $\rightarrow$ muestra estado vacío. \\\hline
+\cusec{Post condiciones}{Notificaciones gestionadas; preferencias actualizadas.}
+\end{tabular}
+\caption{CU\_23 — Gestionar notificaciones}
+\label{tab:cu23}
+\end{table}
+
+% CU_24
+\begin{table}[H]\centering
+\begin{tabular}{|p{0.475\linewidth}|p{0.475\linewidth}|}\hline
+\cutop{CU\_24}{Registrar y aprobar comunidad}
+\cusec{Precondiciones}{Solicitante con datos de la comunidad y documentos de respaldo.}
+\cusec{Includes}{—}
+\cusec{Extends}{—}
+\cuheader{Administrador}{Sistema}
+1) Completa formulario de solicitud. & 2) Valida datos y almacena documentos. \\\hline
+3) Envía solicitud. & 4) Notifica al aprobador por correo con enlace. \\\hline
+5) Aprobador revisa y aprueba/rechaza. & 6) Crea comunidad y envía invitación al administrador. \\\hline
+\multicolumn{2}{|l|}{\textbf{Flujo de eventos alternativos}}\\\hline
+5a. Solicitud rechazada. & Notifica motivo al solicitante. \\\hline
+\cusec{Post condiciones}{Comunidad creada; administrador invitado a registrarse.}
+\end{tabular}
+\caption{CU\_24 — Registrar y aprobar comunidad}
+\label{tab:cu24}
+\end{table}
+
+% CU_25
+\begin{table}[H]\centering
+\begin{tabular}{|p{0.475\linewidth}|p{0.475\linewidth}|}\hline
+\cutop{CU\_25}{Gestionar proveedores (CRUD extendido)}
+\cusec{Precondiciones}{Administrador autenticado; módulo Proveedores habilitado.}
+\cusec{Includes}{CU\_19}
+\cusec{Extends}{CU\_26}
+\cuheader{Administrador}{Sistema}
+1) Lista proveedores activos. & 2) Muestra tabla con búsqueda y filtros. \\\hline
+3) Crea/edita proveedor con categoría. & 4) Valida RUT duplicado y guarda. \\\hline
+5) Activa/desactiva proveedor. & 6) Actualiza estado y notifica. \\\hline
+\multicolumn{2}{|l|}{\textbf{Flujo de eventos alternativos}}\\\hline
+4a. RUT duplicado en la comunidad. & Muestra error ``Proveedor ya existe''. \\\hline
+\cusec{Post condiciones}{Proveedor disponible para asignación de órdenes.}
+\end{tabular}
+\caption{CU\_25 — Gestionar proveedores (CRUD extendido)}
+\label{tab:cu25}
+\end{table}
+
+% CU_26
+\begin{table}[H]\centering
+\begin{tabular}{|p{0.475\linewidth}|p{0.475\linewidth}|}\hline
+\cutop{CU\_26}{Gestionar órdenes de servicio}
+\cusec{Precondiciones}{Administrador autenticado; al menos un proveedor registrado.}
+\cusec{Includes}{CU\_25}
+\cusec{Extends}{CU\_27}
+\cuheader{Administrador}{Sistema}
+1) Crea orden de servicio. & 2) Valida proveedor y guarda orden en estado PENDING. \\\hline
+3) Asigna prioridad y fecha. & 4) Notifica al proveedor. \\\hline
+5) Cambia estado (cancelar). & 6) Valida transición de estado y actualiza. \\\hline
+\multicolumn{2}{|l|}{\textbf{Flujo de eventos alternativos}}\\\hline
+2a. Proveedor inactivo. & Rechaza asignación. \\\hline
+\cusec{Post condiciones}{Orden creada y asignada al proveedor.}
+\end{tabular}
+\caption{CU\_26 — Gestionar órdenes de servicio}
+\label{tab:cu26}
+\end{table}
+
+% CU_27
+\begin{table}[H]\centering
+\begin{tabular}{|p{0.475\linewidth}|p{0.475\linewidth}|}\hline
+\cutop{CU\_27}{Consultar órdenes asignadas (Proveedor)}
+\cusec{Precondiciones}{Proveedor autenticado; órdenes asignadas existentes.}
+\cusec{Includes}{—}
+\cusec{Extends}{—}
+\cuheader{Proveedor}{Sistema}
+1) Consulta órdenes asignadas. & 2) Lista órdenes con estado y prioridad. \\\hline
+3) Acepta o rechaza orden. & 4) Valida transición y actualiza estado. \\\hline
+5) Sube cotización. & 6) Almacena cotización vinculada a la orden. \\\hline
+7) Marca orden como completada. & 8) Registra finalización con timestamp. \\\hline
+\multicolumn{2}{|l|}{\textbf{Flujo de eventos alternativos}}\\\hline
+3a. Orden ya no está en PENDING. & Muestra error de estado. \\\hline
+\cusec{Post condiciones}{Orden aceptada/rechazada/completada con trazabilidad.}
+\end{tabular}
+\caption{CU\_27 — Consultar órdenes asignadas (Proveedor)}
+\label{tab:cu27}
+\end{table}
+
+% ====== 4.3.2 Diagramas UML de casos de uso por módulo ======
+\subsection{Diagramas de casos de uso por módulo}
+
+A continuación se presentan los diagramas UML de casos de uso agrupados por módulo funcional. Cada diagrama muestra los actores involucrados, los casos de uso correspondientes y sus relaciones \texttt{<<include>>} y \texttt{<<extend>>}.
+
+% --- Diagrama 1: Visitas y Acceso ---
+% PROMPT para generador de imágenes:
+% "Genera un DIAGRAMA UML DE CASOS DE USO (UML 2.0 estricto) para el módulo de Visitas y Acceso del sistema DOMU.
+% ACTORES (stick figures): Conserje (izquierda), Residente (derecha), Sistema (abajo-derecha).
+% SISTEMA: rectángulo 'Módulo Visitas y Acceso'.
+% CASOS DE USO (elipses):
+%   - CU_01 Gestionar ingreso y salida de visitas (→Conserje)
+%   - CU_03 Mantener bitácora de incidentes y turnos (→Conserje)
+%   - CU_15 Ingreso controlado QR (→Conserje, →Residente)
+% RELACIONES: CU_01 --<<extend>}--> CU_15
+% ESTILO: Fondo blanco, líneas negras, tipografía sans-serif, etiquetas en español.
+% PNG 300dpi orientación horizontal."
+\begin{figure}[H]
+  \centering
+  \fbox{\parbox{0.85\textwidth}{\centering\vspace{3.5cm}
+  \textit{[Insertar diagrama UML de casos de uso: Módulo Visitas y Acceso --- CU\_01, CU\_03, CU\_15.
+  Actores: Conserje, Residente, Sistema. Relación: CU\_01 $\longrightarrow$ <<extend>> CU\_15]}
+  \vspace{3.5cm}}}
+  \caption{Diagrama de casos de uso --- Módulo Visitas y Acceso.}
+  \label{fig:cu-modulo-visitas}
+\end{figure}
+
+% --- Diagrama 2: Encomiendas y Reclamos ---
+% PROMPT para generador de imágenes:
+% "Genera un DIAGRAMA UML DE CASOS DE USO (UML 2.0 estricto) para el módulo de Encomiendas y Reclamos del sistema DOMU.
+% ACTORES (stick figures): Conserje (izquierda), Residente (derecha), Administrador (izquierda-abajo).
+% SISTEMA: rectángulo 'Módulo Encomiendas y Reclamos'.
+% CASOS DE USO (elipses):
+%   - CU_02 Registrar encomiendas y notificar a residentes (→Conserje)
+%   - CU_17 Registrar reclamo por ruidos molestos (→Residente)
+% Sin relaciones <<include>>/ <<extend>> entre estos CUs.
+% ESTILO: Fondo blanco, líneas negras, tipografía sans-serif, etiquetas en español.
+% PNG 300dpi orientación horizontal."
+\begin{figure}[H]
+  \centering
+  \fbox{\parbox{0.85\textwidth}{\centering\vspace{3.5cm}
+  \textit{[Insertar diagrama UML de casos de uso: Módulo Encomiendas y Reclamos --- CU\_02, CU\_17.
+  Actores: Conserje, Residente, Administrador]}
+  \vspace{3.5cm}}}
+  \caption{Diagrama de casos de uso --- Módulo Encomiendas y Reclamos.}
+  \label{fig:cu-modulo-encomiendas}
+\end{figure}
+
+% --- Diagrama 3: Financiero ---
+% PROMPT para generador de imágenes:
+% "Genera un DIAGRAMA UML DE CASOS DE USO (UML 2.0 estricto) para el módulo Financiero del sistema DOMU.
+% ACTORES (stick figures): Residente (derecha), Administrador (izquierda), Sistema (abajo).
+% SISTEMA: rectángulo 'Módulo Financiero'.
+% CASOS DE USO (elipses):
+%   - CU_04 Pagar gastos comunes (→Residente)
+%   - CU_09 Generar reportes financieros (→Administrador)
+% RELACIONES: CU_04 --<<include>}--> CU_09
+% ESTILO: Fondo blanco, líneas negras, tipografía sans-serif, etiquetas en español.
+% PNG 300dpi orientación horizontal."
+\begin{figure}[H]
+  \centering
+  \fbox{\parbox{0.85\textwidth}{\centering\vspace{3.5cm}
+  \textit{[Insertar diagrama UML de casos de uso: Módulo Financiero --- CU\_04, CU\_09.
+  Actores: Residente, Administrador, Sistema. Relación: CU\_04 $\longrightarrow$ <<include>> CU\_09]}
+  \vspace{3.5cm}}}
+  \caption{Diagrama de casos de uso --- Módulo Financiero.}
+  \label{fig:cu-modulo-financiero}
+\end{figure}
+
+% --- Diagrama 4: Comunicación y Comunidad ---
+% PROMPT para generador de imágenes:
+% "Genera un DIAGRAMA UML DE CASOS DE USO (UML 2.0 estricto) para el módulo de Comunicación y Comunidad del sistema DOMU.
+% ACTORES (stick figures): Residente (izquierda y derecha, duplicado para legibilidad).
+% SISTEMA: rectángulo 'Módulo Comunicación y Comunidad'.
+% CASOS DE USO (elipses):
+%   - CU_10 Votaciones de comité (→Residente)
+%   - CU_16 Participar en foro/marketplace (→Residente)
+%   - CU_20 Enviar y recibir mensajes en chat (→Residente)
+%   - CU_21 Publicar artículo en marketplace (→Residente)
+%   - CU_22 Consultar biblioteca de documentos (→Residente)
+% Sin relaciones <<include>>/ <<extend>> entre estos CUs.
+% ESTILO: Fondo blanco, líneas negras, tipografía sans-serif, etiquetas en español.
+% PNG 300dpi orientación horizontal."
+\begin{figure}[H]
+  \centering
+  \fbox{\parbox{0.85\textwidth}{\centering\vspace{3.5cm}
+  \textit{[Insertar diagrama UML de casos de uso: Módulo Comunicación y Comunidad --- CU\_10, CU\_16, CU\_20, CU\_21, CU\_22.
+  Actor: Residente]}
+  \vspace{3.5cm}}}
+  \caption{Diagrama de casos de uso --- Módulo Comunicación y Comunidad.}
+  \label{fig:cu-modulo-comunidad}
+\end{figure}
+
+% --- Diagrama 5: Administración ---
+% PROMPT para generador de imágenes:
+% "Genera un DIAGRAMA UML DE CASOS DE USO (UML 2.0 estricto) para el módulo de Administración del sistema DOMU.
+% ACTORES (stick figures): Administrador (izquierda), Personal (izquierda-abajo), Proveedor (derecha).
+% SISTEMA: rectángulo 'Módulo Administración'.
+% CASOS DE USO (elipses):
+%   - CU_07 Asignar tareas a personal (→Administrador)
+%   - CU_13 Marcar tarea completada (→Personal)
+%   - CU_14 Configurar roles y permisos RBAC (→Administrador)
+%   - CU_19 Gestionar proveedores (→Administrador)
+%   - CU_24 Registrar y aprobar comunidad (→Administrador)
+%   - CU_25 Gestionar proveedores CRUD extendido (→Administrador)
+%   - CU_26 Gestionar órdenes de servicio (→Administrador)
+%   - CU_27 Consultar órdenes asignadas (→Proveedor)
+% RELACIONES:
+%   CU_07 --<<extend>}--> CU_13
+%   CU_25 --<<include>}--> CU_19
+%   CU_25 --<<extend>}--> CU_26
+%   CU_26 --<<extend>}--> CU_27
+% ESTILO: Fondo blanco, líneas negras, tipografía sans-serif, etiquetas en español.
+% PNG 300dpi orientación horizontal."
+\begin{figure}[H]
+  \centering
+  \fbox{\parbox{0.85\textwidth}{\centering\vspace{3.5cm}
+  \textit{[Insertar diagrama UML de casos de uso: Módulo Administración --- CU\_07, CU\_13, CU\_14, CU\_19, CU\_24, CU\_25, CU\_26, CU\_27.
+  Actores: Administrador, Personal, Proveedor.
+  Relaciones: CU\_07$\rightarrow$<<extend>>CU\_13, CU\_25$\rightarrow$<<include>>CU\_19, CU\_25$\rightarrow$<<extend>>CU\_26, CU\_26$\rightarrow$<<extend>>CU\_27]}
+  \vspace{3.5cm}}}
+  \caption{Diagrama de casos de uso --- Módulo Administración.}
+  \label{fig:cu-modulo-admin}
+\end{figure}
+
 % ====== 4.4 Matriz de trazabilidad RF ↔ CU ======
 \section{Matriz de trazabilidad RF–CU}
 
@@ -442,57 +788,135 @@ Básico & Bajo (interacciones asignadas) \\\hline
 \hline
 \textbf{RF} & \textbf{Casos de Uso relacionados} \\\hline
 RF\_01 (Visitas) & CU\_01, CU\_15 \\\hline
-RF\_02 (Notificaciones) & CU\_01, CU\_02, CU\_04, CU\_05, CU\_07, CU\_13, CU\_15, CU\_17, CU\_18, CU\_19 \\\hline
+RF\_02 (Notificaciones push) & CU\_01, CU\_02, CU\_04, CU\_05, CU\_07, CU\_13, CU\_15, CU\_17, CU\_23 \\\hline
 RF\_03 (Pre-autorizar visitas/QR) & CU\_15 \\\hline
 RF\_04 (Encomiendas) & CU\_02 \\\hline
-RF\_05 (Tareas/turnos) & CU\_07, CU\_08, CU\_13 \\\hline
+RF\_05 (Tareas/turnos) & CU\_07, CU\_13 \\\hline
 RF\_06 (Inicio/fin jornada) & CU\_08 \\\hline
-RF\_07 (Estado de cuenta/pago) & CU\_04, CU\_06, CU\_09 \\\hline
+RF\_07 (Estado de cuenta/pago) & CU\_04, CU\_09 \\\hline
 RF\_08 (Morosidad/conciliación) & CU\_06 \\\hline
 RF\_09 (Reservas) & CU\_05, CU\_12 \\\hline
 RF\_10 (Votaciones) & CU\_10 \\\hline
-RF\_11 (Foro/chat) & CU\_16 \\\hline
+RF\_11 (Foro/chat comunitario) & CU\_16 \\\hline
 RF\_12 (Tickets reclamos) & CU\_17 \\\hline
-RF\_13 (Proveedores/servicios) & CU\_19, CU\_18 \\\hline
+RF\_13 (Proveedores/servicios) & CU\_25, CU\_26, CU\_27 \\\hline
 RF\_14 (Mantenimiento preventivo) & CU\_11, CU\_18 \\\hline
 RF\_15 (Dashboards/KPI) & CU\_09 \\\hline
-RF\_16 (Estacionamientos) & CU\_12, CU\_01 \\\hline
-RF\_17 (Backup automático) & (proceso batch; no CU interactivo directo) \\\hline
-RF\_18 (RBAC) & CU\_14 \\\hline
+RF\_16 (RBAC) & CU\_14, CU\_24 \\\hline
+RF\_17 (Chat en tiempo real) & CU\_20 \\\hline
+RF\_18 (Marketplace) & CU\_21 \\\hline
+RF\_19 (Biblioteca documentos) & CU\_22 \\\hline
+RF\_20 (Notificaciones RT) & CU\_23 \\\hline
 \caption{Matriz de trazabilidad RF–CU (vista compacta).}
 \label{tab:traza-compacta}
 \end{longtable}
 
 % --- Opción B (cuadrícula “X”) en página apaisada ---
 \begin{landscape}
-\small
-\setlength{\tabcolsep}{3pt}
+\scriptsize
+\setlength{\tabcolsep}{2pt}
 \renewcommand{\arraystretch}{1.1}
-\begin{longtable}{|l|*{19}{c|}}
+\begin{longtable}{|l|*{27}{c|}}
 \hline
-\textbf{RF \textbackslash\ CU} & \textbf{01} & \textbf{02} & \textbf{03} & \textbf{04} & \textbf{05} & \textbf{06} & \textbf{07} & \textbf{08} & \textbf{09} & \textbf{10} & \textbf{11} & \textbf{12} & \textbf{13} & \textbf{14} & \textbf{15} & \textbf{16} & \textbf{17} & \textbf{18} & \textbf{19}\\\hline
-RF\_01 & X &  &  &  &  &  &  &  &  &  &  &  &  &  & X &  &  &  &  \\\hline
-RF\_02 & X & X &  &  & X &  & X &  & X &  &  &  & X &  & X &  & X & X & X \\\hline
-RF\_03 &  &  &  &  &  &  &  &  &  &  &  &  &  &  & X &  &  &  &  \\\hline
-RF\_04 &  & X &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  \\\hline
-RF\_05 &  &  &  &  &  &  & X & X &  &  &  &  & X &  &  &  &  &  &  \\\hline
-RF\_06 &  &  &  &  &  &  &  & X &  &  &  &  &  &  &  &  &  &  &  \\\hline
-RF\_07 &  &  &  & X &  & X &  &  &  &  &  &  &  &  &  &  &  &  &  \\\hline
-RF\_08 &  &  &  &  &  & X &  &  &  &  &  &  &  &  &  &  &  &  &  \\\hline
-RF\_09 &  &  &  &  & X &  &  &  &  &  &  & X &  &  &  &  &  &  &  \\\hline
-RF\_10 &  &  &  &  &  &  &  &  &  & X &  &  &  &  &  &  &  &  &  \\\hline
-RF\_11 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & X &  &  &  \\\hline
-RF\_12 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & X &  &  \\\hline
-RF\_13 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & X & X \\\hline
-RF\_14 &  &  &  &  &  &  &  &  &  &  & X &  &  &  &  &  &  & X &  \\\hline
-RF\_15 &  &  &  &  &  &  &  &  & X &  &  &  &  &  &  &  &  &  &  \\\hline
-RF\_16 & X &  &  &  &  &  &  &  &  &  &  & X &  &  &  &  &  &  &  \\\hline
-RF\_17 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  \\\hline
-RF\_18 &  &  &  &  &  &  &  &  &  &  &  &  &  & X &  &  &  &  &  \\\hline
+\textbf{RF \textbackslash\ CU} & \textbf{01} & \textbf{02} & \textbf{03} & \textbf{04} & \textbf{05} & \textbf{06} & \textbf{07} & \textbf{08} & \textbf{09} & \textbf{10} & \textbf{11} & \textbf{12} & \textbf{13} & \textbf{14} & \textbf{15} & \textbf{16} & \textbf{17} & \textbf{18} & \textbf{19} & \textbf{20} & \textbf{21} & \textbf{22} & \textbf{23} & \textbf{24} & \textbf{25} & \textbf{26} & \textbf{27}\\\hline
+RF\_01 & X &  &  &  &  &  &  &  &  &  &  &  &  &  & X &  &  &  &  &  &  &  &  &  &  &  &  \\\hline
+RF\_02 & X & X &  & X & X &  & X &  &  &  &  &  & X &  & X &  & X &  &  &  &  &  & X &  &  &  &  \\\hline
+RF\_03 &  &  &  &  &  &  &  &  &  &  &  &  &  &  & X &  &  &  &  &  &  &  &  &  &  &  &  \\\hline
+RF\_04 &  & X &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  \\\hline
+RF\_05 &  &  &  &  &  &  & X &  &  &  &  &  & X &  &  &  &  &  &  &  &  &  &  &  &  &  &  \\\hline
+RF\_06 &  &  &  &  &  &  &  & X &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  \\\hline
+RF\_07 &  &  &  & X &  &  &  &  & X &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  \\\hline
+RF\_08 &  &  &  &  &  & X &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  \\\hline
+RF\_09 &  &  &  &  & X &  &  &  &  &  &  & X &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  \\\hline
+RF\_10 &  &  &  &  &  &  &  &  &  & X &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  \\\hline
+RF\_11 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & X &  &  &  &  &  &  &  &  &  &  &  \\\hline
+RF\_12 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & X &  &  &  &  &  &  &  &  &  &  \\\hline
+RF\_13 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & X & X & X \\\hline
+RF\_14 &  &  &  &  &  &  &  &  &  &  & X &  &  &  &  &  &  & X &  &  &  &  &  &  &  &  &  \\\hline
+RF\_15 &  &  &  &  &  &  &  &  & X &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  \\\hline
+RF\_16 &  &  &  &  &  &  &  &  &  &  &  &  &  & X &  &  &  &  &  &  &  &  &  & X &  &  &  \\\hline
+RF\_17 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & X &  &  &  &  &  &  &  \\\hline
+RF\_18 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & X &  &  &  &  &  &  \\\hline
+RF\_19 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & X &  &  &  &  &  \\\hline
+RF\_20 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & X &  &  &  &  \\\hline
 \caption{Matriz de trazabilidad RF–CU (cuadrícula).}
 \label{tab:traza-grid}
 \end{longtable}
 \end{landscape}
+
+% ====== 4.5 Matriz de trazabilidad CU → Vistas ======
+\section{Matriz de trazabilidad CU -- Vistas}
+
+La Tabla~\ref{tab:traza-cu-vistas} vincula cada caso de uso con las vistas del frontend donde se materializa, completando la cadena de trazabilidad RF~$\rightarrow$~CU~$\rightarrow$~Pantalla. Las vistas se detallan en la Sección~\ref{subsec:vistas-por-rol} del Capítulo~\ref{cap:diseno}.
+
+\begin{longtable}{|p{0.07\textwidth}|p{0.25\textwidth}|p{0.42\textwidth}|p{0.18\textwidth}|}
+\caption{Matriz de trazabilidad CU -- Vistas del frontend}\label{tab:traza-cu-vistas}\\
+\hline
+\textbf{CU} & \textbf{Nombre} & \textbf{Vista(s) Frontend} & \textbf{Rol principal} \\
+\hline
+\endfirsthead
+\hline
+\textbf{CU} & \textbf{Nombre} & \textbf{Vista(s) Frontend} & \textbf{Rol principal} \\
+\hline
+\endhead
+\hline
+\endfoot
+
+CU\_01 & Gestionar ingreso/salida visitas & VisitRegistrationPanel, ConciergeVisitLog & Conserje \\
+\hline
+CU\_02 & Registrar encomiendas & ConciergeParcels, AdminParcels, ResidentParcels & Conserje, Admin \\
+\hline
+CU\_03 & Mantener bitácora & ConciergeVisitLog & Conserje \\
+\hline
+CU\_04 & Pagar gastos comunes & ResidentCartola, ResidentChargesDetail, ResidentPaymentFlow, AdminCommonExpenses & Residente, Admin \\
+\hline
+CU\_05 & Reservar área común & ResidentAmenities, AdminAmenities & Residente, Admin \\
+\hline
+CU\_06 & Gestionar morosidad & \textit{Diferido a v2.0} & Admin \\
+\hline
+CU\_07 & Asignar tareas & AdminTasks, AdminStaff & Admin \\
+\hline
+CU\_08 & Registrar jornada & \textit{Diferido a v2.0} & Personal \\
+\hline
+CU\_09 & Generar reportes financieros & AdminDashboard, AdminIncidentStats, AdminCommonExpenses & Admin \\
+\hline
+CU\_10 & Votaciones & ResidentVotaciones, ResidentVoteDetail & Residente \\
+\hline
+CU\_11 & Mantenimiento preventivo & \textit{Diferido a v2.0} & Admin \\
+\hline
+CU\_12 & Gestionar estacionamientos & \textit{Diferido a v2.0} & Admin \\
+\hline
+CU\_13 & Marcar tarea completada & ResidentTasks & Personal \\
+\hline
+CU\_14 & Configurar roles (RBAC) & AdminCreateUser, AdminResidents & Admin \\
+\hline
+CU\_15 & Ingreso controlado (QR) & VisitRegistrationPanel, ResidentVisits & Conserje, Residente \\
+\hline
+CU\_16 & Participar en foro/marketplace & ResidentPublications & Residente \\
+\hline
+CU\_17 & Registrar reclamo & ResidentIncidents, AdminIncidentsBoard & Residente, Admin \\
+\hline
+CU\_18 & Bitácora de ascensor & \textit{Diferido a v2.0} & Conserje \\
+\hline
+CU\_19 & Gestionar proveedores & AdminProviders & Admin \\
+\hline
+CU\_20 & Chat en tiempo real & ChatHub, ChatRoom & Residente \\
+\hline
+CU\_21 & Publicar en marketplace & ResidentMarketplace, ResidentMarketplaceCreate & Residente \\
+\hline
+CU\_22 & Consultar biblioteca & ResidentLibrary & Residente \\
+\hline
+CU\_23 & Gestionar notificaciones & NotificationCenter & Todos los roles \\
+\hline
+CU\_24 & Registrar/aprobar comunidad & AdminCreateUser, RegisterByInvite, CommunitySelector, AdminHousingUnits & Admin \\
+\hline
+CU\_25 & Proveedores (CRUD extendido) & AdminProviders, UserTypeSelector & Admin \\
+\hline
+CU\_26 & Órdenes de servicio & AdminServiceOrders & Admin \\
+\hline
+CU\_27 & Consultar órdenes (Proveedor) & ProviderPortal, ProviderServiceOrders & Proveedor \\
+
+\end{longtable}
 
 % Cierra el ámbito local de tamaño/padding del capítulo
 \endgroup

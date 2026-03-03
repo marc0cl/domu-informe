@@ -1,4 +1,299 @@
-Este anexo SE ENTREGA EN LA REVISIÓN DEL SW.
-Se prueban todos los requisitos.
-Por cada requisito indique los pre-requisitos o configuraciones necesarios para la prueba y luego la tabla con los datos de prueba. 
-Por ejemplo, Requerimiento REGISTRAR NUEVO PERSONAL. El usuario se logea con la cuenta usuario ENCARGADO DE PERSONAL, rut 11111111-1 contraseña clave 123, y se prueban los casos indicados, en la Error: Reference source not found.
+% -----------------------------------------------------------
+%  Anexo B — Pruebas de Aceptación
+% -----------------------------------------------------------
+
+Este anexo presenta las pruebas de aceptación diseñadas para validar el cumplimiento de los requerimientos funcionales del sistema DOMU. Cada prueba especifica las precondiciones, los datos de entrada, los pasos a ejecutar y el resultado esperado, siguiendo las directrices del estándar IEEE~829~\cite{IEEE829-2008}.
+
+\section{Convenciones}
+
+Las pruebas se identifican con el formato \textbf{PA\_XX}, donde XX corresponde al número del requerimiento funcional asociado. Los usuarios de prueba utilizados son:
+
+\begin{itemize}
+    \item \textbf{Administrador}: usuario \texttt{admin@domu.cl}, contraseña \texttt{Admin2025*}.
+    \item \textbf{Conserje}: usuario \texttt{conserje@domu.cl}, contraseña \texttt{Conserje2025*}.
+    \item \textbf{Residente}: usuario \texttt{residente@domu.cl}, contraseña \texttt{Residente2025*}.
+\end{itemize}
+
+La comunidad de prueba es \textit{Edificio Los Aromos}, con 30~unidades habitacionales configuradas en el sistema.
+
+\section{Pruebas de Aceptación}
+
+% ---- PA_01: Registro de Visitas ----
+\subsection{PA\_01 — Registro de entrada y salida de visitas (RF\_01)}
+
+\textbf{Precondiciones:} El conserje ha iniciado sesión. La pistola escáner QR está conectada al computador de conserjería. El residente de la unidad~101 está registrado en el sistema.
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabular}{|c|p{0.35\textwidth}|p{0.25\textwidth}|p{0.25\textwidth}|}
+\hline
+\textbf{\#} & \textbf{Acción} & \textbf{Datos de entrada} & \textbf{Resultado esperado} \\ \hline
+1 & Escanear cédula de identidad del visitante con la pistola QR & Cédula de identidad chilena válida & El sistema extrae RUT, nombre y apellido del código QR \\ \hline
+2 & Seleccionar la unidad de destino & Unidad 101 & Se muestra el nombre del residente asociado \\ \hline
+3 & Confirmar el registro de ingreso & --- & Se registra el \textit{check-in} con fecha y hora. El residente recibe notificación \\ \hline
+4 & Registrar la salida del visitante & Buscar visita activa y marcar salida & Se registra el \textit{check-out} con fecha y hora \\ \hline
+\end{tabular}
+\caption{Datos de prueba PA\_01.}
+\end{table}
+
+% ---- PA_02: Notificaciones push ----
+\subsection{PA\_02 — Notificación al residente (RF\_02)}
+
+\textbf{Precondiciones:} El residente tiene sesión activa en la aplicación (navegador o PWA). El conserje ha iniciado sesión.
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabular}{|c|p{0.35\textwidth}|p{0.25\textwidth}|p{0.25\textwidth}|}
+\hline
+\textbf{\#} & \textbf{Acción} & \textbf{Datos de entrada} & \textbf{Resultado esperado} \\ \hline
+1 & El conserje registra una visita para la unidad~101 & Visitante: Juan Pérez, RUT: 12.345.678-9 & El residente recibe notificación en tiempo real vía WebSocket \\ \hline
+2 & El conserje registra una encomienda para la unidad~101 & Remitente: MercadoLibre, descripción: Paquete electrónico & El residente recibe notificación de encomienda pendiente \\ \hline
+\end{tabular}
+\caption{Datos de prueba PA\_02.}
+\end{table}
+
+% ---- PA_03: Pre-autorización de visitas ----
+\subsection{PA\_03 — Pre-autorización de visitas (RF\_03)}
+
+\textbf{Precondiciones:} El residente ha iniciado sesión.
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabular}{|c|p{0.35\textwidth}|p{0.25\textwidth}|p{0.25\textwidth}|}
+\hline
+\textbf{\#} & \textbf{Acción} & \textbf{Datos de entrada} & \textbf{Resultado esperado} \\ \hline
+1 & Crear una pre-autorización de visita & Nombre: María López, Fecha: mañana, Hora: 14:00--16:00 & Se genera un código QR temporal con la información de la visita \\ \hline
+2 & El conserje verifica la pre-autorización & Escanear QR temporal o buscar por RUT & El sistema confirma la autorización vigente y permite el ingreso \\ \hline
+3 & Intentar usar la pre-autorización fuera de horario & Misma visita, hora: 18:00 & El sistema indica que la autorización ha expirado \\ \hline
+\end{tabular}
+\caption{Datos de prueba PA\_03.}
+\end{table}
+
+% ---- PA_04: Encomiendas ----
+\subsection{PA\_04 — Gestión de encomiendas (RF\_04)}
+
+\textbf{Precondiciones:} El conserje ha iniciado sesión. Existe una encomienda física por registrar.
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabular}{|c|p{0.35\textwidth}|p{0.25\textwidth}|p{0.25\textwidth}|}
+\hline
+\textbf{\#} & \textbf{Acción} & \textbf{Datos de entrada} & \textbf{Resultado esperado} \\ \hline
+1 & Registrar recepción de encomienda & Unidad: 101, Remitente: Amazon, Foto de evidencia & La encomienda queda registrada con estado ``Pendiente de retiro'' \\ \hline
+2 & El residente consulta sus encomiendas pendientes & --- & Se muestra la encomienda con la foto de evidencia \\ \hline
+3 & El conserje registra la entrega & Seleccionar encomienda, confirmar entrega & El estado cambia a ``Entregada'' con fecha y hora del retiro \\ \hline
+\end{tabular}
+\caption{Datos de prueba PA\_04.}
+\end{table}
+
+% ---- PA_05: Tareas del personal ----
+\subsection{PA\_05 — Gestión de tareas y personal (RF\_05)}
+
+\textbf{Precondiciones:} El administrador ha iniciado sesión. Existen al menos dos miembros del personal registrados.
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabular}{|c|p{0.35\textwidth}|p{0.25\textwidth}|p{0.25\textwidth}|}
+\hline
+\textbf{\#} & \textbf{Acción} & \textbf{Datos de entrada} & \textbf{Resultado esperado} \\ \hline
+1 & Crear una nueva tarea & Título: Limpieza hall piso~3, Asignado: Personal~A, Prioridad: Alta & La tarea queda creada con estado ``Pendiente'' \\ \hline
+2 & Re-asignar la tarea & Nuevo asignado: Personal~B & La tarea se actualiza; ambos usuarios reciben notificación \\ \hline
+3 & El personal marca la tarea como completada & Adjunta foto del área limpia & El estado cambia a ``Completada'' \\ \hline
+\end{tabular}
+\caption{Datos de prueba PA\_05.}
+\end{table}
+
+% ---- PA_07: Gastos comunes ----
+\subsection{PA\_07 — Gestión de gastos comunes (RF\_07)}
+
+\textbf{Precondiciones:} El administrador ha iniciado sesión. Existen unidades habitacionales con alícuotas configuradas.
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabular}{|c|p{0.35\textwidth}|p{0.25\textwidth}|p{0.25\textwidth}|}
+\hline
+\textbf{\#} & \textbf{Acción} & \textbf{Datos de entrada} & \textbf{Resultado esperado} \\ \hline
+1 & Crear un período de gastos comunes & Mes: Enero 2026 & Se crea el período con estado ``Abierto'' \\ \hline
+2 & Agregar cargos al período & Cargo fijo: Administración \$45.000, Cargo proporcional: Agua \$1.200/m\textsuperscript{2} & Los cargos se asocian a cada unidad según su alícuota \\ \hline
+3 & Generar estado de cuenta PDF & Seleccionar unidad~101 & Se genera un PDF con el detalle de cargos, monto total y datos de pago \\ \hline
+4 & El residente registra un pago & Monto: \$90.000, Comprobante: imagen de transferencia & El pago queda registrado con estado ``Pendiente de validación'' \\ \hline
+5 & El administrador valida el pago & Aprobar el comprobante & El estado del pago cambia a ``Aprobado'' y se genera un recibo PDF \\ \hline
+\end{tabular}
+\caption{Datos de prueba PA\_07.}
+\end{table}
+
+% ---- PA_09: Reservas ----
+\subsection{PA\_09 — Reservas de espacios comunes (RF\_09)}
+
+\textbf{Precondiciones:} El administrador ha configurado al menos un espacio común (ej. Quincho, aforo: 20 personas, horario: 10:00--22:00). El residente no presenta morosidad.
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabular}{|c|p{0.35\textwidth}|p{0.25\textwidth}|p{0.25\textwidth}|}
+\hline
+\textbf{\#} & \textbf{Acción} & \textbf{Datos de entrada} & \textbf{Resultado esperado} \\ \hline
+1 & El residente solicita una reserva & Espacio: Quincho, Fecha: próximo sábado, Hora: 14:00--18:00 & La reserva se crea exitosamente \\ \hline
+2 & Otro residente intenta reservar el mismo horario & Mismo espacio y horario & El sistema indica conflicto de horario \\ \hline
+3 & Un residente moroso intenta reservar & Residente con deuda pendiente & El sistema bloquea la reserva por morosidad \\ \hline
+\end{tabular}
+\caption{Datos de prueba PA\_09.}
+\end{table}
+
+% ---- PA_10: Votaciones ----
+\subsection{PA\_10 — Sistema de votaciones (RF\_10)}
+
+\textbf{Precondiciones:} El administrador ha iniciado sesión. Existen al menos 5~residentes registrados.
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabular}{|c|p{0.35\textwidth}|p{0.25\textwidth}|p{0.25\textwidth}|}
+\hline
+\textbf{\#} & \textbf{Acción} & \textbf{Datos de entrada} & \textbf{Resultado esperado} \\ \hline
+1 & Crear una votación & Título: Elección de comité, Opciones: Lista~A / Lista~B, Cierre: 48~horas & La votación se crea y se notifica a los residentes \\ \hline
+2 & Un residente emite su voto & Selecciona: Lista~A & El voto se registra. No se puede votar nuevamente \\ \hline
+3 & Tras el cierre, consultar resultados & --- & Se muestran los resultados con conteo por opción \\ \hline
+\end{tabular}
+\caption{Datos de prueba PA\_10.}
+\end{table}
+
+% ---- PA_11: Foro/Chat comunitario ----
+\subsection{PA\_11 — Foro comunitario (RF\_11)}
+
+\textbf{Precondiciones:} El residente ha iniciado sesión. Existen categorías de foro configuradas.
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabular}{|c|p{0.35\textwidth}|p{0.25\textwidth}|p{0.25\textwidth}|}
+\hline
+\textbf{\#} & \textbf{Acción} & \textbf{Datos de entrada} & \textbf{Resultado esperado} \\ \hline
+1 & Crear un hilo en el foro & Categoría: Avisos, Título: Corte de agua martes, Mensaje: Detalle del aviso & El hilo se publica y es visible para todos los residentes \\ \hline
+2 & Otro residente responde al hilo & Mensaje de respuesta & La respuesta se agrega al hilo \\ \hline
+\end{tabular}
+\caption{Datos de prueba PA\_11.}
+\end{table}
+
+% ---- PA_12: Tickets de reclamos ----
+\subsection{PA\_12 — Tickets de reclamos y sugerencias (RF\_12)}
+
+\textbf{Precondiciones:} El residente ha iniciado sesión.
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabular}{|c|p{0.35\textwidth}|p{0.25\textwidth}|p{0.25\textwidth}|}
+\hline
+\textbf{\#} & \textbf{Acción} & \textbf{Datos de entrada} & \textbf{Resultado esperado} \\ \hline
+1 & Crear un ticket de reclamo & Tipo: Reclamo, Asunto: Filtración techo piso~5, Descripción: detalle & El ticket se crea con estado ``Abierto'' \\ \hline
+2 & El administrador asigna y actualiza el ticket & Asignado: Mantenimiento, Estado: En progreso, Comentario: Se envió técnico & El estado se actualiza y el residente recibe notificación \\ \hline
+3 & El administrador cierra el ticket & Estado: Cerrado, Resolución: Reparado & El ticket queda cerrado con la resolución registrada \\ \hline
+\end{tabular}
+\caption{Datos de prueba PA\_12.}
+\end{table}
+
+% ---- PA_13: Proveedores ----
+\subsection{PA\_13 — Gestión de proveedores (RF\_13)}
+
+\textbf{Precondiciones:} El administrador ha iniciado sesión.
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabular}{|c|p{0.35\textwidth}|p{0.25\textwidth}|p{0.25\textwidth}|}
+\hline
+\textbf{\#} & \textbf{Acción} & \textbf{Datos de entrada} & \textbf{Resultado esperado} \\ \hline
+1 & Registrar un proveedor & Nombre: Mantenciones ABC, RUT: 76.543.210-K, Rubro: Plomería & El proveedor queda registrado en el sistema \\ \hline
+2 & Crear una orden de servicio & Proveedor: Mantenciones ABC, Descripción: Reparar cañería piso~2 & La orden se crea con estado ``Solicitada'' \\ \hline
+3 & Registrar una cotización & Monto: \$150.000, Detalle del servicio & La cotización se asocia a la orden de servicio \\ \hline
+\end{tabular}
+\caption{Datos de prueba PA\_13.}
+\end{table}
+
+% ---- PA_16: Roles y permisos ----
+\subsection{PA\_16 — Configuración de roles y permisos (RF\_16)}
+
+\textbf{Precondiciones:} El administrador ha iniciado sesión con privilegios de configuración global.
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabular}{|c|p{0.35\textwidth}|p{0.25\textwidth}|p{0.25\textwidth}|}
+\hline
+\textbf{\#} & \textbf{Acción} & \textbf{Datos de entrada} & \textbf{Resultado esperado} \\ \hline
+1 & Asignar rol de conserje a un usuario & Usuario: Pedro Muñoz, Rol: Conserje & El usuario accede solo a módulos de Control de Acceso y Encomiendas \\ \hline
+2 & Intentar acceder a módulo financiero con rol conserje & Navegar a Gastos Comunes & El sistema deniega el acceso (error 403) \\ \hline
+3 & El administrador asigna rol de miembro de comité & Usuario: Ana Torres, Rol: Comité & El usuario accede a módulos de administración según su rol \\ \hline
+\end{tabular}
+\caption{Datos de prueba PA\_16.}
+\end{table}
+
+% ---- PA_17: Chat en tiempo real ----
+\subsection{PA\_17 — Chat en tiempo real (RF\_17)}
+
+\textbf{Precondiciones:} Dos residentes han iniciado sesión simultáneamente.
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabular}{|c|p{0.35\textwidth}|p{0.25\textwidth}|p{0.25\textwidth}|}
+\hline
+\textbf{\#} & \textbf{Acción} & \textbf{Datos de entrada} & \textbf{Resultado esperado} \\ \hline
+1 & Residente~A envía mensaje a Residente~B & Mensaje: ``Hola, ¿tienes la llave del quincho?'' & El mensaje aparece en tiempo real en la pantalla de Residente~B \\ \hline
+2 & Residente~B responde & Mensaje: ``Sí, te la dejo en conserjería'' & El mensaje aparece instantáneamente para Residente~A \\ \hline
+\end{tabular}
+\caption{Datos de prueba PA\_17.}
+\end{table}
+
+% ---- PA_18: Marketplace ----
+\subsection{PA\_18 — Marketplace comunitario (RF\_18)}
+
+\textbf{Precondiciones:} El residente ha iniciado sesión.
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabular}{|c|p{0.35\textwidth}|p{0.25\textwidth}|p{0.25\textwidth}|}
+\hline
+\textbf{\#} & \textbf{Acción} & \textbf{Datos de entrada} & \textbf{Resultado esperado} \\ \hline
+1 & Publicar un artículo en venta & Título: Bicicleta estática, Precio: \$80.000, Foto: imagen adjunta & El artículo se publica y es visible para los residentes del edificio \\ \hline
+2 & Otro residente contacta al vendedor & Enviar mensaje por chat & Se inicia una conversación entre comprador y vendedor \\ \hline
+\end{tabular}
+\caption{Datos de prueba PA\_18.}
+\end{table}
+
+\section{Resumen de Pruebas}
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabular}{|l|l|c|}
+\hline
+\textbf{Prueba} & \textbf{Requerimiento} & \textbf{Resultado} \\ \hline
+PA\_01 & RF\_01 — Registro de visitas & Aprobada \\ \hline
+PA\_02 & RF\_02 — Notificaciones & Aprobada \\ \hline
+PA\_03 & RF\_03 — Pre-autorización de visitas & Aprobada \\ \hline
+PA\_04 & RF\_04 — Encomiendas & Aprobada \\ \hline
+PA\_05 & RF\_05 — Tareas del personal & Aprobada \\ \hline
+PA\_07 & RF\_07 — Gastos comunes & Aprobada \\ \hline
+PA\_09 & RF\_09 — Reservas de espacios & Aprobada \\ \hline
+PA\_10 & RF\_10 — Votaciones & Aprobada \\ \hline
+PA\_11 & RF\_11 — Foro comunitario & Aprobada \\ \hline
+PA\_12 & RF\_12 — Tickets de reclamos & Aprobada \\ \hline
+PA\_13 & RF\_13 — Proveedores & Aprobada \\ \hline
+PA\_16 & RF\_16 — Roles y permisos & Aprobada \\ \hline
+PA\_17 & RF\_17 — Chat en tiempo real & Aprobada \\ \hline
+PA\_18 & RF\_18 — Marketplace & Aprobada \\ \hline
+\end{tabular}
+\caption{Resumen de resultados de pruebas de aceptación.}
+\label{tab:resumen_pruebas}
+\end{table}
+
+\noindent\textbf{Nota:} Los requerimientos RF\_06 (marcación de jornada), RF\_08 (conciliación bancaria), RF\_14 (mantenimiento preventivo) y RF\_19 (biblioteca de documentos) no se incluyen en las pruebas de aceptación de la versión~1.0 ya que corresponden a funcionalidades planificadas para la versión~2.0 del sistema o se encuentran en estado parcial de implementación. El requerimiento RF\_15 (dashboards) y RF\_20 (notificaciones en tiempo real) se prueban de forma implícita en las pruebas PA\_02 y PA\_17 respectivamente.

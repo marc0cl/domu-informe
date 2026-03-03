@@ -1,45 +1,134 @@
- Este capítulo describe la estrategia técnica y operativa para el despliegue del sistema DOMU en un entorno
-      productivo, asegurando su disponibilidad y correcta adopción por parte de la comunidad.
-    5
-    6 \section{Arquitectura de Despliegue}
-    7 Para la puesta en marcha se ha diseñado una arquitectura basada en contenedores, lo que garantiza la portabilidad
-      facilita el escalado horizontal.
-    8
-    9 \begin{itemize}
-   10     \item \textbf{Servidor de Aplicaciones:} El backend Java se empaqueta en una imagen Docker basada en
-      \texttt{eclipse-temurin:21-alpine}, optimizada para bajo consumo de recursos. Se despliega en un servicio de
-      orquestación (como AWS ECS o un VPS con Docker Compose).
-   11     \item \textbf{Base de Datos:} Se utiliza una instancia gestionada de MySQL 8.0 en la nube (ej. AWS RDS o Googl
-      Cloud SQL) para garantizar copias de seguridad automáticas y alta disponibilidad.
-   12     \item \textbf{Frontend y Móvil:} La aplicación web se distribuye a través de una red de entrega de contenido
-      (CDN) como Vercel o Netlify. La aplicación móvil se genera mediante los servicios de \textit{build} de Expo (EAS)
-      para su distribución en tiendas de aplicaciones o como APK para instalación directa en dispositivos Android.
-   13     \item \textbf{Almacenamiento:} Los archivos estáticos (evidencias, boletas, fotos de perfil) se alojan en un
-      \textit{bucket} de Google Cloud Storage, configurado con políticas de acceso privado y URLs firmadas temporalmente
-   14 \end{itemize}
-   15
-   16 \section{Plan de Capacitación}
-   17 La adopción del sistema requiere nivelar las competencias digitales de los distintos usuarios.
-   18
-   19 \subsection{Administración y Comité}
-   20 Se realiza una sesión de inducción de 2 horas enfocada en la configuración inicial del edificio: carga de la nómin
-      de residentes, configuración de alícuotas y definición de áreas comunes. Se entrega un "Manual de Gestión" en
-      formato digital.
-   21
-   22 \subsection{Personal de Conserjería}
-   23 Capacitación práctica en terreno (30 minutos) centrada exclusivamente en el uso del módulo de "Control de Accesos"
-      la operación de la pistola lectora de QR. Se prioriza la rapidez operativa para no entorpecer el flujo de ingreso.
-   24
-   25 \subsection{Residentes}
-   26 Se distribuye un video tutorial de 3 minutos vía WhatsApp y correo electrónico, explicando cómo descargar la app,
-      recuperar la contraseña y registrar una visita o reserva.
-   27
-   28 \section{Estrategia de Lanzamiento}
-   29 Se recomienda una estrategia de \textbf{Marcha Blanca} de dos semanas.
-   30 \begin{enumerate}
-   31     \item \textbf{Semana 1 (Paralelo):} El sistema DOMU funciona simultáneamente con el libro de visitas manual. N
-      se bloquean accesos ni se cobran multas. Objetivo: Poblar la base de datos y habituar al personal.
-   32     \item \textbf{Semana 2 (Exclusividad):} Se elimina el registro en papel para visitas y encomiendas. Se habilit
-      el módulo de reservas.
-   33     \item \textbf{Lanzamiento Oficial:} Se habilita el módulo financiero para el siguiente ciclo de facturación.
-   34 \end{enumerate}
+Este capítulo describe la estrategia técnica y operativa para el despliegue del sistema DOMU en un entorno productivo, asegurando su disponibilidad, seguridad y correcta adopción por parte de la comunidad.
+
+\section{Arquitectura de Despliegue}
+
+Para la puesta en marcha se ha diseñado una arquitectura basada en contenedores Docker, lo que garantiza la portabilidad del sistema y facilita el escalado horizontal. La Figura~\ref{fig:despliegue} ilustra los componentes del despliegue.
+
+\begin{figure}[H]
+\centering
+\begin{tabular}{|p{0.92\linewidth}|}
+\hline
+\textbf{Diagrama de Despliegue --- DOMU} \\[4pt]
+\texttt{[Cliente Web]} $\longrightarrow$ \texttt{CDN (Vercel/Netlify)} $\longrightarrow$ \texttt{SPA React} \\[2pt]
+\texttt{[Cliente Móvil]} $\longrightarrow$ \texttt{PWA (navegador móvil, instalable en inicio)} \\[2pt]
+\texttt{[Conserjería]} $\longrightarrow$ \texttt{Navegador + Pistola QR} \\[6pt]
+\hfill $\downarrow$ \texttt{HTTPS / WSS} $\downarrow$ \hfill \\[4pt]
+\texttt{[Servidor de Aplicaciones]} \\
+\quad \texttt{Docker: eclipse-temurin:21-alpine} \\
+\quad \texttt{Javalin 6 (API REST + WebSocket)} \\
+\quad \texttt{Puerto 7070} \\[4pt]
+\hfill $\downarrow$ \texttt{JDBC} $\downarrow$ \hfill \\[4pt]
+\texttt{[Base de Datos]} \texttt{MySQL 8.0 (AWS RDS / Cloud SQL)} \\[4pt]
+\texttt{[Almacenamiento]} \texttt{Box (archivos, comprobantes, imágenes)} \\
+\hline
+\end{tabular}
+\caption{Arquitectura de despliegue del sistema DOMU.}
+\label{fig:despliegue}
+\end{figure}
+
+Los componentes principales del despliegue son los siguientes:
+
+\begin{itemize}
+    \item \textbf{Servidor de Aplicaciones:} El backend Java se empaqueta en una imagen Docker basada en \texttt{eclipse-temurin:21-alpine}, optimizada para bajo consumo de recursos. Se despliega en un servicio de orquestación como AWS ECS o en un VPS con Docker Compose. La imagen expone el puerto~7070 y se configura mediante variables de entorno para los parámetros de base de datos, JWT, correo electrónico y almacenamiento.
+
+    \item \textbf{Base de Datos:} Se utiliza una instancia gestionada de MySQL~8.0 en la nube (AWS RDS o Google Cloud SQL) para garantizar copias de seguridad automáticas, alta disponibilidad y mantenimiento delegado al proveedor. La conexión desde el servidor de aplicaciones se realiza mediante JDBC con HikariCP como pool de conexiones.
+
+    \item \textbf{Frontend Web:} La aplicación React se construye como una SPA (\textit{Single Page Application}) y se distribuye a través de una red de entrega de contenido (CDN) como Vercel o Netlify. El proceso de \textit{build} genera archivos estáticos optimizados que se sirven directamente desde la CDN, reduciendo la latencia para los usuarios finales.
+
+    \item \textbf{Aplicación Móvil (PWA):} La experiencia móvil se implementa como una \textit{Progressive Web App} (PWA). Los usuarios acceden desde el navegador de su dispositivo móvil y pueden instalar la aplicación en la pantalla de inicio para una experiencia similar a una app nativa, sin necesidad de distribución por tiendas de aplicaciones. La PWA se sirve desde la misma CDN que el frontend web, simplificando el despliegue y la actualización.
+
+    \item \textbf{Almacenamiento de Archivos:} Los archivos estáticos (evidencias, comprobantes de pago, fotos de perfil, imágenes del marketplace) se alojan en Box, configurado con políticas de acceso privado y URLs firmadas temporalmente para la descarga segura.
+\end{itemize}
+
+\subsection{Configuración Docker}
+
+El servidor de aplicaciones se despliega mediante un archivo \texttt{docker-compose.yml} que define los servicios, redes y volúmenes necesarios. La configuración incluye:
+
+\begin{itemize}
+    \item Servicio \texttt{domu-api}: imagen Docker del backend con variables de entorno para la configuración de base de datos, JWT, SMTP y Box.
+    \item Servicio \texttt{mysql}: instancia de MySQL~8.0 con volumen persistente para los datos (utilizado en desarrollo; en producción se reemplaza por una instancia gestionada).
+    \item Red interna \texttt{domu-network}: aísla la comunicación entre los servicios del sistema.
+\end{itemize}
+
+\subsection{Gestión de Migraciones}
+
+Al iniciar el contenedor del backend, Flyway ejecuta automáticamente las migraciones de base de datos pendientes (35~migraciones versionadas, V001 a V035). Este mecanismo asegura que el esquema de la base de datos esté siempre sincronizado con la versión del código desplegado, eliminando la necesidad de scripts manuales de actualización.
+
+\section{Plan de Capacitación}
+
+La adopción del sistema requiere nivelar las competencias digitales de los distintos usuarios. Se diseñó un plan de capacitación diferenciado por perfil de usuario.
+
+\subsection{Administración y Comité}
+Se realiza una sesión de inducción de 2~horas enfocada en la configuración inicial del edificio: carga de la nómina de residentes, configuración de alícuotas, definición de áreas comunes, creación de períodos de gastos comunes y generación de estados de cuenta. Se entrega un manual de gestión en formato digital que cubre todos los módulos administrativos del sistema.
+
+\subsection{Personal de Conserjería}
+Capacitación práctica en terreno (30~minutos) centrada exclusivamente en el uso del módulo de Control de Accesos y la operación de la pistola lectora de QR. Se prioriza la rapidez operativa para no entorpecer el flujo de ingreso de personas. La capacitación incluye:
+\begin{itemize}
+    \item Inicio de sesión y navegación básica.
+    \item Registro de visitas mediante escaneo QR de cédula de identidad.
+    \item Verificación de pre-autorizaciones de visitas.
+    \item Registro manual de visitas sin cédula (visitantes extranjeros o cédulas deterioradas).
+    \item Recepción y registro de encomiendas.
+\end{itemize}
+
+\subsection{Residentes}
+Se distribuye un video tutorial de 3~minutos vía WhatsApp y correo electrónico, explicando cómo descargar la aplicación, registrarse, recuperar la contraseña, pre-autorizar una visita, registrar una reserva de área común y consultar el estado de gastos comunes. Adicionalmente, se habilita una sección de ayuda dentro de la aplicación con preguntas frecuentes.
+
+\section{Estrategia de Lanzamiento}
+
+Se recomienda una estrategia de \textbf{marcha blanca} de dos semanas, diseñada para minimizar el riesgo de la transición y permitir una adopción gradual del sistema.
+
+\begin{enumerate}
+    \item \textbf{Semana~1 (Paralelo):} El sistema DOMU funciona simultáneamente con el libro de visitas manual y los procesos vigentes. No se bloquean accesos ni se cobran multas asociadas al sistema digital. El objetivo es poblar la base de datos con residentes, unidades habitacionales y contactos frecuentes, y habituar al personal de conserjería a la operación del escáner QR.
+
+    \item \textbf{Semana~2 (Transición):} Se elimina el registro en papel para visitas y encomiendas. Se habilita el módulo de reservas de áreas comunes. Los residentes comienzan a recibir notificaciones y a interactuar con la plataforma. Se monitorean incidencias y se resuelven en tiempo real.
+
+    \item \textbf{Lanzamiento Oficial:} Se habilita el módulo financiero para el siguiente ciclo de facturación mensual. Se genera el primer estado de cuenta a través del sistema y se activan los flujos de pago.
+\end{enumerate}
+
+\section{Respaldo y Recuperación}
+
+Para garantizar la integridad de la información, se implementa la siguiente estrategia de respaldo:
+
+\begin{itemize}
+    \item \textbf{Respaldo de base de datos:} Se configuran rutinas automáticas (\textit{cron jobs}) que ejecutan un respaldo completo diario (\texttt{mysqldump}) de la base de datos MySQL. Los archivos de respaldo se comprimen y almacenan en un \textit{bucket} de almacenamiento en la nube (Google Drive o AWS~S3) con retención de 30~días.
+
+    \item \textbf{Respaldo de archivos:} Los documentos almacenados en Box cuentan con la redundancia y versionado nativo del proveedor, garantizando la recuperación ante eliminaciones accidentales.
+
+    \item \textbf{Objetivo de punto de recuperación (RPO):} 24~horas. En caso de fallo, se puede restaurar la base de datos al estado del último respaldo diario.
+
+    \item \textbf{Objetivo de tiempo de recuperación (RTO):} 2~horas. El procedimiento de recuperación consiste en: (1)~restaurar el respaldo en una nueva instancia de MySQL, (2)~verificar la integridad de los datos, y (3)~reapuntar el servidor de aplicaciones a la nueva instancia.
+\end{itemize}
+
+\section{Monitoreo y Mantenimiento}
+
+\begin{itemize}
+    \item \textbf{Logs de aplicación:} El servidor Javalin registra todas las solicitudes HTTP y eventos del sistema en la salida estándar del contenedor Docker. Los logs se recopilan mediante el driver de logging de Docker y pueden integrarse con servicios de monitoreo como CloudWatch o Datadog.
+
+    \item \textbf{Métricas de salud:} Se expone un endpoint \texttt{/health} que verifica la conectividad con la base de datos y el estado del servidor. Este endpoint es utilizado por el orquestador de contenedores para detectar y reiniciar instancias no saludables.
+
+    \item \textbf{Mantenimiento correctivo:} Las correcciones de errores (\textit{hotfixes}) se despliegan mediante la construcción de una nueva imagen Docker y la actualización del servicio en el orquestador, proceso que no requiere tiempo de inactividad gracias al despliegue \textit{rolling}.
+
+    \item \textbf{Mantenimiento evolutivo:} Las nuevas funcionalidades se desarrollan en ramas independientes, se prueban en un entorno de staging y se despliegan en producción siguiendo el mismo proceso de actualización de imágenes Docker.
+\end{itemize}
+
+\section{Plan de Rollback}
+
+En caso de que el despliegue presente fallos críticos que afecten la operación del sistema, se ejecuta el siguiente procedimiento de reversión:
+
+\begin{enumerate}
+    \item Revertir la imagen Docker del servidor de aplicaciones a la versión anterior mediante el tag de la imagen previamente etiquetada.
+    \item Si la nueva versión incluyó migraciones de base de datos incompatibles, restaurar el respaldo diario más reciente de la base de datos.
+    \item Verificar el correcto funcionamiento del sistema con la versión anterior.
+    \item Comunicar a los usuarios afectados sobre la interrupción temporal del servicio.
+\end{enumerate}
+
+\section{Limitaciones del Despliegue}
+
+Se identifican las siguientes limitaciones en la estrategia de despliegue de la versión~1.0:
+
+\begin{itemize}
+    \item \textbf{Ausencia de pipeline CI/CD:} El proceso de construcción y despliegue de imágenes Docker se realiza de forma manual. La implementación de un pipeline automatizado mediante GitHub Actions se contempla como trabajo futuro.
+    \item \textbf{Limitaciones de la PWA:} Al ser una Progressive Web App, algunas funcionalidades nativas (como notificaciones push en iOS pre-16.4 y acceso a cierto hardware) no están disponibles. Sin embargo, la cobertura de navegadores modernos es suficiente para el público objetivo del sistema.
+    \item \textbf{Instancia única:} En la versión~1.0, el servidor de aplicaciones opera como instancia única sin balanceo de carga. Para escenarios de alta concurrencia, se requiere configurar múltiples réplicas del servicio.
+\end{itemize}
