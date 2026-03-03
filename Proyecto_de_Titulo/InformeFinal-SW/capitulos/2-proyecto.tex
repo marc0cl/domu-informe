@@ -17,23 +17,13 @@ Los siguientes objetivos específicos han sido definidos con el propósito de ab
     \item Agilizar la asignación de tareas al personal operativo, permitiendo un control eficiente de la carga laboral individual y optimizando la distribución de labores dentro de la comunidad.
 \end{itemize}
 
-% \section{Metodología de Desarrollo}
-% Para el desarrollo del proyecto se optó por la metodología \textbf{Cascada}, la cual se estructura en seis fases consecutivas: (1) Análisis, (2) Diseño, (3) Implementación, (4) Verificación y (5) Mantenimiento. La elección de este enfoque se justifica porque el proyecto cuenta con requerimientos funcionales claramente definidos desde el inicio, establecidos por la Ley 21.442 —que regula la copropiedad inmobiliaria en Chile—. Este nivel de claridad en los requerimientos permite un desarrollo lineal y estructurado, minimizando el riesgo de cambios significativos durante el ciclo de vida del sistema y facilitando una planificación más predecible y controlada.
-
-% \begin{figure}[H]
-%     \centering
-%     \includegraphics[height=7cm]{Proyecto_de_Titulo/InformeFinal-SW/images/MetodologiaCascada.png}
-%     \caption{Metodología Cascada de Desarrollo. \textit{Fuente:} Metodologías de Cascada por Fernando Arciniega \url{https://fernandoarciniega.com/}.}
-%     \label{fig:metodologia-cascada}
-% \end{figure}
-
 \section{Metodología de Trabajo}
-Para el desarrollo del sistema \textbf{DOMU}, se ha optado por una \textbf{metodología híbrida} que combina la estructura secuencial del modelo en Cascada con la flexibilidad del desarrollo Iterativo e Incremental.
+Para el desarrollo del sistema \textbf{DOMU}, se ha optado por una \textbf{metodología híbrida} que combina la estructura secuencial del modelo en Cascada~\cite{royce1970} con la flexibilidad del desarrollo Iterativo e Incremental.
 
 Esta decisión se fundamenta en la naturaleza del proyecto:
 \begin{itemize}
     \item \textbf{Componente Estructural (Cascada):} Las fases de definición de requerimientos y análisis de factibilidad requieren una aprobación formal y documentación exhaustiva antes de iniciar la construcción, alineándose con los estándares académicos de la Universidad.
-    \item \textbf{Componente de Construcción (Iterativo):} Dado que el stack tecnológico incluye un Backend (Spring Boot) y un Frontend (React) desacoplados, el desarrollo se beneficia de ciclos cortos donde se implementan, integran y prueban módulos funcionales paso a paso (ej. primero el módulo de autenticación, luego el control de visitas, etc.).
+    \item \textbf{Componente de Construcción (Iterativo):} Dado que el stack tecnológico incluye un Backend (Javalin) y un Frontend (React) desacoplados, el desarrollo se beneficia de ciclos cortos donde se implementan, integran y prueban módulos funcionales paso a paso (ej. primero el módulo de autenticación, luego el control de visitas, etc.).
 \end{itemize}
 
 El ciclo de vida del proyecto se define en las siguientes fases:
@@ -44,44 +34,38 @@ El ciclo de vida del proyecto se define en las siguientes fases:
 \end{enumerate}
 
 \section{Estándares de Documentación}
-Para asegurar la trazabilidad, consistencia y calidad en el proceso de desarrollo, se emplean adaptaciones de los siguientes estándares del \textbf{IEEE}:
+Para asegurar la trazabilidad, consistencia y calidad en el proceso de desarrollo, se emplean adaptaciones de los siguientes estándares internacionales:
 \begin{itemize}
-    \item \textbf{IEEE~829–1998}: Estandariza la documentación de pruebas, permitiendo planificar, diseñar y reportar los procesos de validación del software.
-    \item \textbf{IEEE~830–1998}: Define lineamientos para la especificación de requerimientos, facilitando su redacción clara y verificable.
+    \item \textbf{IEEE~829-2008}~\cite{IEEE829-2008}: Estándar para la documentación de pruebas de software y sistemas. Se utiliza como referencia para estructurar los casos de prueba de aceptación presentados en el Anexo~\ref{anexo:pruebas}, asegurando que cada prueba cuente con precondiciones, pasos y resultados esperados claramente definidos.
+    \item \textbf{ISO/IEC/IEEE~29148:2018} (sucesor de IEEE~830-1998)~\cite{IEEE830-1998}: Define lineamientos para la especificación de requerimientos de software. Se adopta como guía para la redacción de los requerimientos funcionales y no funcionales del Capítulo~\ref{cap:requerimientos}, siguiendo la estructura de clasificación por categoría y la nomenclatura RF/RNF.
 \end{itemize}
 
 \section{Técnicas y Notaciones}
-En esta sección se describe la técnicas y notacion empleada para representar de forma clara el funcionamiento del sistema y sus componentes. El objetivo de su uso es facilitar la comprensión de los procesos y de la arquitectura del software.
-\newline\newline % O simplemente un párrafo nuevo
-La técnicas seleccionada es la siguiente:
+En esta sección se describe la técnica y notación empleada para representar de forma clara el funcionamiento del sistema y sus componentes. El objetivo de su uso es facilitar la comprensión de los procesos y de la arquitectura del software.
+
+La técnica seleccionada es la siguiente:
 \begin{itemize}
     \item \textbf{BPMN~2.0}: Para modelar los procesos de negocio.
     \begin{itemize}
-        \item \textit{Justificación:} Se adopta esta notación por ser un estándar global (ISO/IEC 19510) que ofrece un lenguaje visual e inequívoco. Su uso es crucial ya que facilita la comunicación y el análisis de los flujos de trabajo entre todos los involucrados en el proyecto (equipo de desarrollo, profesor guía y usuarios finales), asegurando un entendimiento común del proceso que el software debe soportar.
+        \item \textit{Justificación:} Se adopta esta notación por ser un estándar global (ISO/IEC 19510~\cite{iso19510}) que ofrece un lenguaje visual e inequívoco. Su uso es crucial ya que facilita la comunicación y el análisis de los flujos de trabajo entre todos los involucrados en el proyecto (equipo de desarrollo, profesor guía y usuarios finales), asegurando un entendimiento común del proceso que el software debe soportar.
     \end{itemize}
-%   \item \textbf{UML~2.5}: Para la representación de casos de uso, diagramas de clases y diagramas de secuencia.
-%    \item \textbf{C4-Model}: Para la visualización de la arquitectura de software a diferentes niveles de abstracción.
 \end{itemize}
 
 \section{Tecnologías Utilizadas}
 Para el desarrollo del sistema propuesto se seleccionaron tecnologías modernas y ampliamente adoptadas, que permiten asegurar un rendimiento óptimo, escalabilidad y facilidad de mantenimiento. A continuación, se detallan las tecnologías a utilizar según cada área del desarrollo del proyecto:
 \begin{itemize}
-  \item \textbf{Back-end}: Java~21 con Javalin.
-  \item \textbf{Front-end web}: React con JavaScript y SCSS.
-  \item \textbf{Aplicación móvil}: React Native~0.73 con Expo.
+  \item \textbf{Back-end}: Java~21 con Javalin~\cite{javalin2025}.
+  \item \textbf{Front-end web}: React~\cite{react2025} con JavaScript y SCSS.
+  \item \textbf{Aplicación móvil}: Progressive Web App (PWA) accesible desde el navegador móvil, instalable en la pantalla de inicio del dispositivo.
   \item \textbf{Hardware de Registro}: Computador de Conserjería (infraestructura existente) con pistola escáner de código QR (periférico de captura).
-  \item \textbf{Base de datos relacional}: MySQL~8.0+.
+  \item \textbf{Base de datos relacional}: MySQL~8.0+~\cite{mysql2025}.
 \end{itemize}
-
-
-
 
 \section{Herramientas y Lenguajes}
 Durante el desarrollo del sistema se utilizarán herramientas y lenguajes que facilitarán tanto la programación como el diseño, las pruebas y la automatización de tareas. Estas herramientas fueron seleccionadas por su compatibilidad con las tecnologías elegidas y por la experiencia previa en su uso. A continuación, se detallan las principales:
 \begin{itemize}
-    \item \textbf{Visual Studio Code} con extensiones \textit{ESLint} y \textit{Prettier}: para editar el código y mantener una estructura ordenada y consistente  
-    \item \textbf{Docker~24}: para ejecutar los servicios del sistema de forma local y reproducible.
-    %\item \textbf{GitHub Actions}: para automatizar procesos de integración y despliegue continuo (CI/CD).
+    \item \textbf{Visual Studio Code} con extensiones \textit{ESLint} y \textit{Prettier}: para editar el código y mantener una estructura ordenada y consistente.
+    \item \textbf{Docker~24}~\cite{docker2025}: para ejecutar los servicios del sistema de forma local y reproducible.
     \item \textbf{Figma}: para diseñar las interfaces del sistema antes de su implementación.
     \item \textbf{Postman}: para realizar pruebas a las APIs y verificar su correcto funcionamiento.
 \end{itemize}

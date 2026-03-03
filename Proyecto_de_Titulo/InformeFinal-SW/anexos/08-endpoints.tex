@@ -1,0 +1,242 @@
+% Anexo — Contratos de la API REST
+% Documenta los endpoints principales agrupados por módulo funcional.
+
+Este anexo presenta los contratos de los endpoints principales de la API REST del sistema DOMU, organizados por módulo funcional. Para cada módulo se incluye una tabla con los métodos HTTP, rutas, descripción y los \textit{Data Transfer Objects} (DTOs) de solicitud y respuesta, seguida de la definición de los campos principales de cada DTO en formato de clase Java.
+
+% ============================================================
+\section{Módulo A --- Visitas}
+% ============================================================
+
+El módulo de visitas gestiona el registro de ingreso y salida de visitantes, la verificación de pre-autorizaciones mediante código QR y la creación rápida de visitas desde contactos frecuentes.
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabular}{|p{0.08\textwidth}|p{0.35\textwidth}|p{0.25\textwidth}|p{0.12\textwidth}|p{0.12\textwidth}|}
+\hline
+\textbf{Método} & \textbf{Ruta} & \textbf{Descripción} & \textbf{Request} & \textbf{Response} \\\hline
+POST & \texttt{/api/visits} & Registrar nueva visita & CreateVisit\-Request & Visit\-Response \\\hline
+POST & \texttt{/api/visits/qr-check} & Verificar QR de pre-autorización & QrCheck\-Request & QrCheck\-Response \\\hline
+POST & \texttt{/api/visits/\{id\}/check-in} & Registrar check-in de visita & --- & Visit\-Response \\\hline
+POST & \texttt{/api/visit-contacts/\{id\}/register} & Crear visita desde contacto frecuente & --- & Visit\-Response \\\hline
+\end{tabular}
+\caption{Endpoints del módulo de Visitas.}
+\label{tab:endpoints-visitas}
+\end{table}
+
+\begin{lstlisting}[style=javadto, title={\texttt{CreateVisitRequest}}]
+public class CreateVisitRequest {
+    private String visitorName;           // Nombre completo del visitante
+    private String visitorRut;            // RUT o pasaporte del visitante
+    private Long unitId;                  // ID de la unidad habitacional destino
+    private String reason;                // Motivo de la visita
+    private LocalDateTime scheduledDate;  // Fecha programada (opcional, pre-autorizacion)
+}
+\end{lstlisting}
+
+\begin{lstlisting}[style=javadto, title={\texttt{VisitResponse}}]
+public class VisitResponse {
+    private Long id;                      // Identificador de la visita
+    private String visitorName;           // Nombre completo del visitante
+    private String visitorRut;            // RUT o pasaporte del visitante
+    private String status;                // Estado: PENDING, CHECKED_IN, CHECKED_OUT
+    private LocalDateTime checkInTime;    // Marca temporal de ingreso
+    private LocalDateTime checkOutTime;   // Marca temporal de salida
+    private String unitNumber;            // Numero de la unidad destino
+}
+\end{lstlisting}
+
+\begin{lstlisting}[style=javadto, title={\texttt{QrCheckRequest}}]
+public class QrCheckRequest {
+    private String qrPayload;  // Cadena leida del codigo QR de la cedula
+}
+\end{lstlisting}
+
+\begin{lstlisting}[style=javadto, title={\texttt{QrCheckResponse}}]
+public class QrCheckResponse {
+    private boolean authorized;  // Indica si la pre-autorizacion es vigente
+    private Long visitId;        // ID de la visita asociada (si existe)
+    private String visitorName;  // Nombre del visitante pre-autorizado
+    private String visitorRut;   // RUT del visitante
+}
+\end{lstlisting}
+
+% === PLACEHOLDER: Captura de pantalla Visitas ===
+\begin{figure}[H]
+  \centering
+  \fbox{\parbox{0.85\textwidth}{\centering\vspace{2.5cm}
+  \textit{[Insertar captura de pantalla: Vista del conserje --- panel de registro de visitas con lectura QR]}
+  \vspace{2.5cm}}}
+  \caption{Vista del módulo de Visitas en el Frontend.}
+  \label{fig:anexo-visitas-frontend}
+\end{figure}
+
+% ============================================================
+\section{Módulo B --- Encomiendas}
+% ============================================================
+
+El módulo de encomiendas permite al conserje registrar paquetes con evidencia fotográfica, actualizar su estado y al residente consultar sus encomiendas pendientes.
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabular}{|p{0.08\textwidth}|p{0.35\textwidth}|p{0.25\textwidth}|p{0.12\textwidth}|p{0.12\textwidth}|}
+\hline
+\textbf{Método} & \textbf{Ruta} & \textbf{Descripción} & \textbf{Request} & \textbf{Response} \\\hline
+POST & \texttt{/api/parcels} & Registrar nueva encomienda & CreateParcel\-Request & Parcel\-Response \\\hline
+PUT & \texttt{/api/parcels/\{id\}/status} & Actualizar estado de encomienda & UpdateStatus\-Request & Parcel\-Response \\\hline
+GET & \texttt{/api/parcels/my} & Listar encomiendas del residente & --- & List<Parcel\-Response> \\\hline
+\end{tabular}
+\caption{Endpoints del módulo de Encomiendas.}
+\label{tab:endpoints-encomiendas}
+\end{table}
+
+\begin{lstlisting}[style=javadto, title={\texttt{CreateParcelRequest}}]
+public class CreateParcelRequest {
+    private Long unitId;            // Unidad habitacional destinataria
+    private String description;     // Descripcion del paquete
+    private String senderName;      // Nombre del remitente o empresa de envio
+    private MultipartFile photo;    // Fotografia de evidencia (opcional)
+}
+\end{lstlisting}
+
+\begin{lstlisting}[style=javadto, title={\texttt{ParcelResponse}}]
+public class ParcelResponse {
+    private Long id;                       // Identificador de la encomienda
+    private String description;            // Descripcion del paquete
+    private String senderName;             // Nombre del remitente
+    private String status;                 // Estado: RECEIVED, NOTIFIED, DELIVERED
+    private String photoUrl;               // URL de la foto almacenada en Box
+    private LocalDateTime receivedAt;      // Marca temporal de recepcion
+    private LocalDateTime deliveredAt;     // Marca temporal de entrega
+}
+\end{lstlisting}
+
+\begin{lstlisting}[style=javadto, title={\texttt{UpdateStatusRequest}}]
+public class UpdateStatusRequest {
+    private String status;  // Nuevo estado de la encomienda
+}
+\end{lstlisting}
+
+% === PLACEHOLDER: Captura de pantalla Encomiendas ===
+\begin{figure}[H]
+  \centering
+  \fbox{\parbox{0.85\textwidth}{\centering\vspace{2.5cm}
+  \textit{[Insertar captura de pantalla: Vista del conserje --- registro de encomienda con foto de evidencia]}
+  \vspace{2.5cm}}}
+  \caption{Vista del módulo de Encomiendas en el Frontend.}
+  \label{fig:anexo-encomiendas-frontend}
+\end{figure}
+
+% ============================================================
+\section{Módulo C --- Gastos Comunes}
+% ============================================================
+
+El módulo financiero gestiona la creación de períodos de gasto común, el procesamiento de pagos, la generación de documentos PDF y la subida de comprobantes de transferencia.
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabular}{|p{0.08\textwidth}|p{0.35\textwidth}|p{0.25\textwidth}|p{0.12\textwidth}|p{0.12\textwidth}|}
+\hline
+\textbf{Método} & \textbf{Ruta} & \textbf{Descripción} & \textbf{Request} & \textbf{Response} \\\hline
+POST & \texttt{/api/common-expenses/periods} & Crear período de gasto común & CreatePeriod\-Request & Period\-Response \\\hline
+POST & \texttt{/api/payments/pay-simulated} & Procesar pago simulado & PaySimulated\-Request & Payment\-Response \\\hline
+GET & \texttt{/api/common-expenses/\{id\}/pdf} & Descargar estado de cuenta PDF & --- & Archivo PDF \\\hline
+POST & \texttt{/api/payments/\{id\}/receipt} & Subir comprobante de transferencia & Multipart\-File & Payment\-Response \\\hline
+\end{tabular}
+\caption{Endpoints del módulo de Gastos Comunes.}
+\label{tab:endpoints-gastos}
+\end{table}
+
+\begin{lstlisting}[style=javadto, title={\texttt{CreatePeriodRequest}}]
+public class CreatePeriodRequest {
+    private int month;                  // Mes del periodo (1--12)
+    private int year;                   // Ano del periodo
+    private List<ChargeItem> charges;   // Lista de cargos por unidad
+    // ChargeItem: unitId, amount, description
+}
+\end{lstlisting}
+
+\begin{lstlisting}[style=javadto, title={\texttt{PeriodResponse}}]
+public class PeriodResponse {
+    private Long id;                          // Identificador del periodo
+    private int month;                        // Mes del periodo
+    private int year;                         // Ano del periodo
+    private BigDecimal totalAmount;           // Monto total del periodo
+    private List<ChargeResponse> charges;     // Detalle de cargos por unidad
+}
+\end{lstlisting}
+
+\begin{lstlisting}[style=javadto, title={\texttt{PaySimulatedRequest}}]
+public class PaySimulatedRequest {
+    private List<Long> chargeIds;     // IDs de los cargos a pagar (pago parcial)
+    private String paymentMethod;     // Metodo de pago: CARD, TRANSFER
+}
+\end{lstlisting}
+
+\begin{lstlisting}[style=javadto, title={\texttt{PaymentResponse}}]
+public class PaymentResponse {
+    private Long id;                    // Identificador del pago
+    private BigDecimal amount;          // Monto pagado
+    private String status;              // Estado: PENDING, COMPLETED
+    private String receiptUrl;          // URL del comprobante almacenado
+    private LocalDateTime paidAt;       // Marca temporal del pago
+}
+\end{lstlisting}
+
+% === PLACEHOLDER: Captura de pantalla Gastos Comunes ===
+\begin{figure}[H]
+  \centering
+  \fbox{\parbox{0.85\textwidth}{\centering\vspace{2.5cm}
+  \textit{[Insertar captura de pantalla: Vista del residente --- flujo de pago de gastos comunes]}
+  \vspace{2.5cm}}}
+  \caption{Vista del módulo de Gastos Comunes en el Frontend.}
+  \label{fig:anexo-gastos-frontend}
+\end{figure}
+
+% ============================================================
+\section{Módulo D --- Residentes y Comunidad}
+% ============================================================
+
+El módulo de residentes y comunidad cubre la invitación de administradores y la consulta del directorio de residentes vinculados a una comunidad.
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabular}{|p{0.08\textwidth}|p{0.35\textwidth}|p{0.25\textwidth}|p{0.12\textwidth}|p{0.12\textwidth}|}
+\hline
+\textbf{Método} & \textbf{Ruta} & \textbf{Descripción} & \textbf{Request} & \textbf{Response} \\\hline
+POST & \texttt{/api/buildings/invite-admin} & Invitar administrador a comunidad & InviteAdmin\-Request & Message\-Response \\\hline
+GET & \texttt{/api/buildings/\{id\}/residents} & Listar residentes de la comunidad & --- & List<Resident\-Response> \\\hline
+\end{tabular}
+\caption{Endpoints del módulo de Residentes y Comunidad.}
+\label{tab:endpoints-residentes}
+\end{table}
+
+\begin{lstlisting}[style=javadto, title={\texttt{InviteAdminRequest}}]
+public class InviteAdminRequest {
+    private String email;       // Correo electronico del administrador a invitar
+    private Long buildingId;    // Identificador de la comunidad
+}
+\end{lstlisting}
+
+\begin{lstlisting}[style=javadto, title={\texttt{ResidentResponse}}]
+public class ResidentResponse {
+    private Long id;              // Identificador del usuario
+    private String fullName;      // Nombre completo del residente
+    private String email;         // Correo electronico
+    private String unitNumber;    // Numero de la unidad habitacional asignada
+    private String role;          // Rol del usuario dentro de la comunidad
+}
+\end{lstlisting}
+
+% === PLACEHOLDER: Captura de pantalla Residentes ===
+\begin{figure}[H]
+  \centering
+  \fbox{\parbox{0.85\textwidth}{\centering\vspace{2.5cm}
+  \textit{[Insertar captura de pantalla: Vista del administrador --- listado de residentes de la comunidad]}
+  \vspace{2.5cm}}}
+  \caption{Vista del módulo de Residentes y Comunidad en el Frontend.}
+  \label{fig:anexo-residentes-frontend}
+\end{figure}

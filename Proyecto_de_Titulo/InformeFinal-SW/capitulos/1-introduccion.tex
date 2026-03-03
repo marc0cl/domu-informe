@@ -2,7 +2,7 @@
 
 El presente informe corresponde al desarrollo del  proyecto de título para optar al grado de Ingeniero Civil en Informática de la Universidad del Bío-Bío. Este trabajo presenta DOMU, una plataforma integral para la administración y gestión de copropiedades que busca competir en el mercado chileno, ofreciendo una solución caracterizada por su alta integración, eficiencia operativa y accesibilidad económica.
 
-En la actualidad, numerosas comunidades residenciales en Chile enfrentan desafíos críticos en su gestión diaria, tales como deficiencias en el control de acceso de visitas, falta de trazabilidad en la recepción de encomiendas, opacidad en la administración financiera y debilidades en la comunicación interna. Estas problemáticas no solo generan ineficiencia, sino que derivan en conflictos de convivencia y desconfianza por parte de los residentes. Este escenario se vuelve más complejo ante el crecimiento sostenido del parque inmobiliario y las exigencias de la nueva Ley de Copropiedad Inmobiliaria N\textsuperscript{o}~21.442, la cual establece estándares estrictos de transparencia, seguridad y profesionalismo en la administración.
+En la actualidad, numerosas comunidades residenciales en Chile enfrentan desafíos críticos en su gestión diaria, tales como deficiencias en el control de acceso de visitas, falta de trazabilidad en la recepción de encomiendas, opacidad en la administración financiera y debilidades en la comunicación interna. Estas problemáticas no solo generan ineficiencia, sino que derivan en conflictos de convivencia y desconfianza por parte de los residentes. Este escenario se vuelve más complejo ante el crecimiento sostenido del parque inmobiliario y las exigencias de la nueva Ley de Copropiedad Inmobiliaria N\textsuperscript{o}~21.442~\cite{ley21442}, la cual establece estándares estrictos de transparencia, seguridad y profesionalismo en la administración.
 
 Ante esta necesidad, surge DOMU, una plataforma que centraliza y automatiza los procesos clave del ecosistema residencial. A diferencia de las soluciones locales existentes que suelen abordar la gestión de forma parcial o fragmentada, DOMU integra las funciones administrativas, operativas y de seguridad en un solo sistema, involucrando activamente a todos los actores: administradores, comités, conserjes, residentes, proveedores y personal operativo.
 
@@ -13,14 +13,32 @@ Más allá de su componente técnico, DOMU tiene como propósito fortalecer la c
 \section{Presentación del área y su problemática}
 Esta sección explica la situación actual e identifica los problemas que surgen de esta área.
 
-\subsection{Description del problema}
-La administración de comunidades residenciales en Chile enfrenta actualmente múltiples desafíos operativos, normativos y tecnológicos. El crecimiento sostenido del parque inmobiliario, junto con la entrada en vigor de la Ley de Copropiedad Inmobiliaria N\textsuperscript{o}~21.442 en abril de 2022, ha establecido nuevas exigencias en materia de trazabilidad, participación y transparencia en la gestión comunitaria. Sin embargo, en la práctica, muchas comunidades continúan funcionando con sistemas manuales y desarticulados, lo que afecta directamente la eficiencia del servicio y la calidad de vida de los residentes.
+\subsection{Presentación de la Empresa}
 
-Entre las principales dificultades se encuentra el registro de visitas, que en la mayoría de los casos aún se realiza mediante libros físicos y anotaciones informales. Este método carece de mecanismos de validación y seguimiento, es susceptible a errores y representa un riesgo crítico frente a la Ley N\textsuperscript{o}~19.628 sobre Protección de la Vida Privada, al dejar información sensible (como nombres, RUT, entre otros) expuesta sin protocolos de cifrado, políticas de almacenamiento o control de acceso restringido.
+\textit{DOMU SpA} es una empresa de base tecnológica en etapa de formación, orientada al desarrollo de soluciones digitales para la administración de comunidades residenciales en Chile. Fundada por los autores de este proyecto de título, tiene como propósito comercializar la plataforma DOMU como un servicio de suscripción mensual (SaaS) dirigido a administradores de edificios, condominios y comunidades habitacionales.
 
-Por otra parte la administración interna también presenta falencias importantes debido a la fragmentación de la data. La asignación de tareas al personal operativo (como personal de aseo, mayordomos, jardineros, etc) suele realizarse de forma informal (verbal), sin indicadores de desempeño (KPIs) ni seguimiento sistematizado. En el ámbito financiero, el uso de planillas de cálculo aisladas para la gestión de gastos comunes y morosidad dificulta la rendición de cuentas obligatoria que exige la ley de copropiedad, impidiendo una toma de decisiones basada en datos íntegros y actualizados.
+La empresa opera inicialmente desde la Región del Biobío, con proyección de cobertura nacional. Su propuesta de valor se centra en ofrecer una plataforma integral que unifique los procesos de control de acceso, gestión financiera, comunicación interna y coordinación operativa en un solo sistema, a un precio competitivo respecto a las soluciones existentes en el mercado chileno.
 
-En respuesta, han emergido diversas soluciones digitales en el mercado nacional que han liderado la digitalización del sector. No obstante, plataformas como \textit{ComunidadFeliz}, \textit{Edifito} y \textit{EdiPro} presentan modelos de servicio que imponen limitaciones críticas para una gestión integrada, operando mayoritariamente bajo un esquema de modularización comercial. En este modelo, funcionalidades esenciales (como la conciliación bancaria, el control de acceso, y otras) se encuentran segmentadas en diferentes niveles de suscripción, lo que obliga a las administraciones a combinar distintas herrmientas con el software para cumplir con las normas de la ley de copropiedad. Esta falta de integración no solo incrementa los costos operativos, sino que provoca una duplicidad de esfuerzos y una inconsistencia en la información almacenada, reduciendo la confiabilidad del sistema.
+\subsection{Marco Normativo y Cumplimiento Legal}
+
+El desarrollo de DOMU se enmarca en un contexto regulatorio que establece obligaciones específicas para la administración de comunidades residenciales y el tratamiento de datos personales en Chile. Las principales normas consideradas son:
+
+\begin{itemize}
+    \item \textbf{Ley N\textsuperscript{o}~21.442 de Copropiedad Inmobiliaria}~\cite{ley21442}: Vigente desde abril de 2022, establece exigencias de transparencia, rendición de cuentas y participación en la gestión de copropiedades. Su Reglamento~\cite{reglamento21442}, publicado en enero de 2025, introduce obligaciones concretas como el Registro Nacional de Administradores, registros digitales obligatorios y la posibilidad de asambleas virtuales, reforzando la necesidad de herramientas digitales como DOMU.
+
+    \item \textbf{Ley N\textsuperscript{o}~21.719 de Protección de Datos Personales}~\cite{ley21719}: Publicada en diciembre de 2024, entrará en vigencia en diciembre de 2026. Modifica la Ley N\textsuperscript{o}~19.628~\cite{ley19628} y crea la Agencia de Protección de Datos Personales. Exige consentimiento claro para el tratamiento de datos, protección por diseño y por defecto, y reconoce los derechos ARCO (acceso, rectificación, cancelación y oposición). DOMU procesa datos personales sensibles (RUT, nombres, fotografías, registros de acceso, datos financieros), por lo que implementa medidas técnicas de protección: cifrado de contraseñas con BCrypt, comunicaciones bajo TLS~1.3, autenticación mediante JWT con expiración temporal y control de acceso basado en roles (RBAC).
+
+    \item \textbf{Ley N\textsuperscript{o}~19.799 de Documentos Electrónicos y Firma Electrónica}~\cite{ley19799}: Establece la equivalencia legal del soporte electrónico con el papel. Los documentos PDF generados por DOMU (estados de cuenta, comprobantes de pago, boletas) tienen validez legal conforme a esta ley.
+\end{itemize}
+
+\subsection{Descripción del problema}
+La administración de comunidades residenciales en Chile enfrenta actualmente múltiples desafíos operativos, normativos y tecnológicos. El crecimiento sostenido del parque inmobiliario, junto con la entrada en vigor de la Ley de Copropiedad Inmobiliaria N\textsuperscript{o}~21.442~\cite{ley21442} en abril de 2022, ha establecido nuevas exigencias en materia de trazabilidad, participación y transparencia en la gestión comunitaria. Sin embargo, en la práctica, muchas comunidades continúan funcionando con sistemas manuales y desarticulados, lo que afecta directamente la eficiencia del servicio y la calidad de vida de los residentes.
+
+Entre las principales dificultades se encuentra el registro de visitas, que en la mayoría de los casos aún se realiza mediante libros físicos y anotaciones informales. Este método carece de mecanismos de validación y seguimiento, es susceptible a errores y representa un riesgo crítico frente a la Ley N\textsuperscript{o}~19.628 sobre Protección de la Vida Privada~\cite{ley19628}, al dejar información sensible (como nombres, RUT, entre otros) expuesta sin protocolos de cifrado, políticas de almacenamiento o control de acceso restringido.
+
+Por otra parte la administración interna también presenta falencias importantes debido a la fragmentación de la data. La asignación de tareas al personal operativo (como personal de aseo, mayordomos, jardineros, etc) suele realizarse de forma informal (verbal), sin indicadores de desempeño (KPIs) ni seguimiento sistematizado. En el ámbito financiero, el uso de planillas de cálculo aisladas para la gestión de gastos comunes y morosidad dificulta la rendición de cuentas obligatoria que exige la ley de copropiedad, impidiendo una toma de decisiones basada en datos íntegros y actualizados. Adicionalmente, la Ley N\textsuperscript{o}~21.719~\cite{ley21719}, que regula la protección y el tratamiento de datos personales, entrará en vigencia en diciembre de 2026, estableciendo obligaciones más estrictas para los sistemas que procesan información como RUT, nombres y datos financieros de los residentes.
+
+En respuesta, han emergido diversas soluciones digitales en el mercado nacional que han liderado la digitalización del sector. No obstante, plataformas como \textit{ComunidadFeliz}, \textit{Edifito} y \textit{EdiPro} presentan modelos de servicio que imponen limitaciones críticas para una gestión integrada, operando mayoritariamente bajo un esquema de modularización comercial. En este modelo, funcionalidades esenciales (como la conciliación bancaria, el control de acceso, y otras) se encuentran segmentadas en diferentes niveles de suscripción, lo que obliga a las administraciones a combinar distintas herramientas con el software para cumplir con las normas de la ley de copropiedad. Esta falta de integración no solo incrementa los costos operativos, sino que provoca una duplicidad de esfuerzos y una inconsistencia en la información almacenada, reduciendo la confiabilidad del sistema.
 
 En este contexto, la falta de una solución digital unificada, económica y escalable evidencia un problema estructural en la gestión comunitaria. La dependencia de sistemas manuales y la fragmentación tecnológica dificultan la implementación de una administración transparente y eficiente. Esto justifica la necesidad de \textit{DOMU}, una propuesta que centraliza los procesos clave, garantiza la integridad de los datos y fortalece la convivencia en las comunidades residenciales bajo el marco normativo actual.
 
@@ -34,7 +52,7 @@ El proceso de registro comienza cuando un residente solicita ser inscrito median
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.95\linewidth]{Proyecto_de_Titulo/InformeFinal-SW/images/ProcesoDeRegistroResidenteBPMN.png}
+\includegraphics[width=0.95\linewidth]{ProcesoDeRegistroResidenteBPMN.png}
 \caption{Proceso de registro de residente}
 \label{fig:bpmn-inicio-sesion}
 \end{figure}
@@ -45,7 +63,7 @@ El proceso de registro de visitas, común en comunidades sin plataformas digital
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.95\linewidth]{Proyecto_de_Titulo/InformeFinal-SW/images/ProcesoRegistroVisitaBPMN.jpg}
+\includegraphics[width=0.95\linewidth]{ProcesoRegistroVisitaBPMN.jpg}
 \caption{Proceso de registro de visitas en comunidades residenciales.}
 \label{fig:bpmn-registro-visita}
 \end{figure}
@@ -54,14 +72,14 @@ El proceso de registro de visitas, común en comunidades sin plataformas digital
 
 El proceso de recepción de encomiendas, común en comunidades que no cuentan con plataformas digitales o utilizan planes básicos, comienza cuando un repartidor entrega el paquete a un conserje. Este registra manualmente la recepción, anotando los datos disponibles —como destinatario, remitente y hora de entrega— en un cuaderno o planilla física.
 
-Luego de registrar la encomienda, el conserje notifica informalmente al residente, ya sea mediante una llamada telefónica, mensaje de texto o comunicación directa. El residente, al recibir la notificación, válida por su cuenta el envío con el proveedor para confirmar su origen y contenido. Una vez verificado, se dirige a retirar el paquete personalmente.
+Luego de registrar la encomienda, el conserje notifica informalmente al residente, ya sea mediante una llamada telefónica, mensaje de texto o comunicación directa. El residente, al recibir la notificación, valida por su cuenta el envío con el proveedor para confirmar su origen y contenido. Una vez verificado, se dirige a retirar el paquete personalmente.
 
 Finalmente, el residente firma un libro de recepción o documento similar como constancia de conformidad, completando así el proceso de entrega.
 
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.95\linewidth]{Proyecto_de_Titulo/InformeFinal-SW/images/ProcesoDeEncomiendasBPMN.jpg}
+\includegraphics[width=0.95\linewidth]{ProcesoDeEncomiendasBPMN.jpg}
 \caption{Proceso de encomiendas.}
 \label{fig:bpmn-encomienda}
 \end{figure}
@@ -76,11 +94,376 @@ Si el pago es correcto, la administración actualiza el estado de los gastos com
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.95\linewidth]{Proyecto_de_Titulo/InformeFinal-SW/images/ProcedoDePagoGgCcBPMN.png}
+\includegraphics[width=0.95\linewidth]{ProcedoDePagoGgCcBPMN.png}
 \caption{Proceso de pago de gastos comunes.}
 \label{fig:bpmn-pago-ggcc}
 \end{figure}
 
+\subsection{Procesos digitalizados con DOMU}
+
+Los diagramas anteriores representan los flujos manuales vigentes en comunidades sin plataformas digitales. A continuación se presentan los mismos cuatro procesos tal como son automatizados por DOMU, evidenciando la reducción de pasos manuales, la eliminación de papel y la incorporación de notificaciones en tiempo real.
+
+\subsubsection{Registro de residente con DOMU}
+
+Con DOMU, el registro de un nuevo residente se digitaliza completamente, eliminando formularios en papel y validaciones manuales. El sistema contempla dos modalidades de ingreso: un \textbf{registro autónomo}, donde el residente se inscribe directamente desde la plataforma, y un \textbf{registro por invitación}, donde el administrador envía un correo con un enlace de registro personalizado. En ambos casos, el sistema valida automáticamente la unicidad del email y el RUT antes de crear la cuenta. Tras la confirmación por correo electrónico, el administrador recibe una notificación con un enlace para aprobar o rechazar la solicitud mediante tokens seguros (\texttt{/approve/\{token\}} y \texttt{/reject/\{token\}}). Una vez aprobado, el administrador vincula al residente a una unidad habitacional específica, completando su incorporación a la comunidad. Este flujo reduce de 6~pasos manuales a un proceso mayormente automatizado, con intervención humana solo en la aprobación final.
+
+% === PLACEHOLDER: BPMN TO-BE — Registro de Residente con DOMU ===
+% PROMPT para generador de imágenes (Gemini/GPT/DALL-E):
+%
+% "Genera un DIAGRAMA BPMN 2.0 con swimlanes del proceso de registro de residente digitalizado con DOMU.
+%
+% NOTACIÓN BPMN 2.0 OBLIGATORIA:
+% - EVENTOS INICIO: círculo fino verde (o negro) con borde simple.
+% - EVENTOS FIN: círculo grueso negro con borde doble.
+% - TAREAS: rectángulos redondeados con nombre de la tarea dentro.
+% - GATEWAYS: diamantes (rombos) con X dentro para exclusivo, + para paralelo.
+% - FLUJO DE SECUENCIA: flechas con línea sólida y punta llena.
+% - FLUJO DE MENSAJE: flechas con línea PUNTEADA y punta abierta (entre swimlanes).
+% - SWIMLANES: franjas horizontales separadas por líneas, nombre del participante a la izquierda en vertical.
+%
+% 3 SWIMLANES HORIZONTALES:
+%
+% SWIMLANE 'Residente':
+% FLUJO 1 — Registro autónomo:
+% ○ Inicio 'Requiere registrarse' → [Completa formulario en DOMU (nombre, email, RUT, comunidad)]
+% → [Recibe correo de confirmación] → [Confirma email con clic en enlace] → [Espera aprobación del administrador]
+% → ◉ Fin 'Cuenta activa y vinculada a unidad'
+% FLUJO 2 — Registro por invitación (inicio alternativo):
+% ○ Inicio 'Recibe invitación por correo del administrador' → [Accede al enlace de registro personalizado]
+% → [Completa formulario pre-rellenado con datos de la invitación] → (continúa con confirmación de email)
+%
+% SWIMLANE 'Sistema DOMU':
+% ◇ ¿Registro por invitación o autónomo? (gateway exclusivo al inicio)
+%   → (Autónomo) [Valida datos y unicidad de email Y RUT] → ◇ ¿Datos válidos?
+%     → (No) [Muestra errores de validación] → vuelve a formulario (flecha de retorno)
+%     → (Sí) [Crea cuenta estado PENDIENTE] → [Envía correo confirmación con token]
+%   → (Invitación) [Valida token de invitación] → [Pre-rellena formulario con datos de invitación]
+%     → [Valida datos completados y unicidad email/RUT] → [Crea cuenta estado PENDIENTE]
+% → [Recibe confirmación email] → [Genera token de aprobación y envía correo al administrador]
+% → [Recibe respuesta del administrador (aprobación/rechazo)]
+%   → (Aprobado) [Activa cuenta y asigna rol Residente]
+%   → (Rechazado) [Marca cuenta como rechazada y notifica al solicitante]
+% Flujos de mensaje (punteados): correo confirmación, clic confirmación, correo aprobación al admin.
+%
+% SWIMLANE 'Administrador':
+% (Flujo de invitación — opcional):
+% ○ Inicio 'Desea invitar residente' → [Envía invitación desde DOMU (/api/buildings/{id}/invite-admin)]
+% → (flujo mensaje punteado al Residente)
+% (Flujo de aprobación — siempre):
+% [Recibe correo con enlace de aprobación] → ◇ ¿Aprueba solicitud?
+%   → (Sí) [Aprueba con clic en enlace /approve/{token}] → [Asigna residente a unidad habitacional específica]
+%     → ◉ Fin 'Residente asociado a comunidad'
+%   → (No) [Rechaza con clic en enlace /reject/{token}] → ◉ Fin 'Solicitud rechazada'
+%
+% NOTA BPMN (rectángulo con esquina doblada):
+% "Dos modalidades de ingreso: registro autónomo y registro por invitación del administrador.
+% Aprobación/rechazo mediante tokens seguros por correo electrónico."
+%
+% ESTILO: Fondo blanco, swimlanes con fondo gris muy claro (#F8F8F8), bordes negros.
+% Sin colores de relleno en las tareas (solo blanco). Tipografía sans-serif.
+% Profesional para tesis universitaria. Etiquetas en español.
+% Formato: PNG 300dpi orientación horizontal (landscape)."
+\begin{figure}[H]
+  \centering
+  \fbox{\parbox{0.90\textwidth}{\centering\vspace{3cm}
+  \textit{[Insertar diagrama BPMN: Proceso de registro de residente digitalizado con DOMU]}
+  \vspace{3cm}}}
+  \caption{Proceso de registro de residente --- digitalizado con DOMU.}
+  \label{fig:bpmn-registro-tobe}
+\end{figure}
+
+Las Figuras~\ref{fig:screen-registro-formulario} y~\ref{fig:screen-registro-aprobacion} muestran capturas de pantalla del sistema DOMU correspondientes a este proceso.
+
+\begin{figure}[H]
+  \centering
+  \fbox{\parbox{0.90\textwidth}{\centering\vspace{2.5cm}
+  \textit{[Insertar captura de pantalla: Formulario de registro de residente en DOMU]}
+  \vspace{2.5cm}}}
+  \caption{Captura de pantalla --- Formulario de registro de residente en DOMU.}
+  \label{fig:screen-registro-formulario}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \fbox{\parbox{0.90\textwidth}{\centering\vspace{2.5cm}
+  \textit{[Insertar captura de pantalla: Correo de aprobación/rechazo recibido por el administrador]}
+  \vspace{2.5cm}}}
+  \caption{Captura de pantalla --- Correo electrónico de aprobación o rechazo de solicitud de registro.}
+  \label{fig:screen-registro-aprobacion}
+\end{figure}
+
+\subsubsection{Registro de visitas con DOMU}
+
+DOMU transforma el proceso de registro de visitas al eliminar el formulario en papel y la comunicación informal entre conserje y residente. La plataforma ofrece \textbf{tres modalidades de ingreso}: (1)~pre-autorización mediante código QR con vigencia temporal, que el visitante presenta al llegar; (2)~confirmación en tiempo real vía WebSocket, donde el residente aprueba o rechaza desde la aplicación; y (3)~\textbf{visita rápida} desde un contacto frecuente previamente registrado, que permite al conserje registrar el ingreso de forma instantánea sin QR ni confirmación. Los residentes pueden gestionar un directorio de contactos frecuentes (CRUD completo) para agilizar futuras visitas. El sistema registra tanto la hora de \textit{check-in} como la de \textit{check-out} en la bitácora digital, proporcionando trazabilidad completa del tiempo de permanencia. Esto reduce los 10~pasos manuales del proceso AS-IS a un flujo mayormente automatizado.
+
+% === PLACEHOLDER: BPMN TO-BE — Registro de Visitas con DOMU ===
+% PROMPT para generador de imágenes (Gemini/GPT/DALL-E):
+%
+% "Genera un DIAGRAMA BPMN 2.0 con swimlanes del proceso de registro de visitas digitalizado con DOMU.
+%
+% NOTACIÓN BPMN 2.0 OBLIGATORIA:
+% - EVENTOS: ○ inicio (círculo fino), ◉ fin (círculo grueso doble).
+% - TAREAS: rectángulos redondeados con nombre dentro.
+% - GATEWAYS EXCLUSIVOS: diamantes (rombos) con X dentro y la pregunta como etiqueta.
+% - FLUJO SECUENCIA: flechas sólidas. FLUJO MENSAJE: flechas punteadas entre lanes.
+% - SWIMLANES: franjas horizontales, nombre del participante a la izquierda en vertical.
+%
+% 4 SWIMLANES HORIZONTALES:
+%
+% SWIMLANE 'Conserje':
+% ○ Inicio 'Visitante llega' → ◇ ¿Modalidad de ingreso? (gateway exclusivo con 3 ramas)
+%   → (QR pre-autorizado) [Escanea código QR de pre-autorización] → (flujo al Sistema para validación)
+%     → [Registra check-in automático] → ◉ Fin 'Ingreso permitido'
+%   → (Confirmación en tiempo real) [Escanea RUT con pistola QR] → [Selecciona residente destino en DOMU]
+%     → (flujo mensaje punteado al Residente) → [Espera confirmación] → ◇ ¿Residente confirma?
+%       → (Sí) [Registra check-in en DOMU] → ◉ Fin 'Ingreso permitido'
+%       → (No) [Registra rechazo en bitácora] → ◉ Fin 'Acceso denegado'
+%   → (Visita rápida) [Selecciona contacto frecuente del residente en DOMU]
+%     → [Registro instantáneo sin QR ni confirmación (/api/visit-contacts/{id}/register)]
+%     → ◉ Fin 'Ingreso permitido'
+% (Al final de cada visita, sin importar modalidad):
+% [Registra check-out cuando visitante se retira (/api/visits/{id}/checkout)] → ◉ Fin 'Visita cerrada'
+%
+% SWIMLANE 'Residente':
+% (Flujo previo — gestión de contactos):
+% [Gestiona contactos frecuentes en DOMU — CRUD completo (/api/visit-contacts)]
+% (Flujo de pre-autorización):
+% ○ Inicio 'Desea pre-autorizar' → [Ingresa datos del visitante en DOMU]
+% → [Sistema genera QR temporal con vigencia definida]
+% → [Envía QR al visitante por WhatsApp/email] → ◉ Fin 'QR enviado'
+% (Flujo de confirmación en tiempo real):
+% ← (recibe flujo de mensaje punteado del Conserje) → [Recibe notificación en tiempo real (WebSocket)]
+% → [Confirma o rechaza visita desde la app] → (flujo mensaje punteado de vuelta al Conserje)
+%
+% SWIMLANE 'Sistema DOMU':
+% [Valida QR y vigencia temporal] → ◇ ¿QR vigente?
+%   → (Sí) [Autoriza ingreso automáticamente]
+%   → (No) [Rechaza QR expirado, redirige a confirmación en tiempo real]
+% [Envía notificación push/WebSocket al residente]
+% [Registra check-in con timestamp en bitácora digital]
+% [Registra check-out con timestamp en bitácora digital]
+%
+% NOTA BPMN (rectángulo con esquina doblada):
+% "3 modalidades de ingreso: QR pre-autorizado con vigencia temporal,
+% confirmación en tiempo real vía WebSocket, y visita rápida desde contacto frecuente.
+% Se registra check-in y check-out con timestamp para trazabilidad completa."
+%
+% ESTILO: Fondo blanco, swimlanes gris muy claro, bordes negros, tareas blancas.
+% Tipografía sans-serif. Profesional para tesis universitaria. Etiquetas en español.
+% Formato: PNG 300dpi orientación horizontal (landscape)."
+\begin{figure}[H]
+  \centering
+  \fbox{\parbox{0.90\textwidth}{\centering\vspace{3cm}
+  \textit{[Insertar diagrama BPMN: Proceso de registro de visitas digitalizado con DOMU]}
+  \vspace{3cm}}}
+  \caption{Proceso de registro de visitas --- digitalizado con DOMU.}
+  \label{fig:bpmn-visitas-tobe}
+\end{figure}
+
+Las Figuras~\ref{fig:screen-visitas-conserje},~\ref{fig:screen-visitas-contactos} y~\ref{fig:screen-visitas-notificacion} muestran capturas del sistema DOMU correspondientes a este proceso.
+
+\begin{figure}[H]
+  \centering
+  \fbox{\parbox{0.90\textwidth}{\centering\vspace{2.5cm}
+  \textit{[Insertar captura de pantalla: Vista del conserje --- registro de visita y escaneo de RUT/QR]}
+  \vspace{2.5cm}}}
+  \caption{Captura de pantalla --- Vista del conserje registrando una visita en DOMU.}
+  \label{fig:screen-visitas-conserje}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \fbox{\parbox{0.90\textwidth}{\centering\vspace{2.5cm}
+  \textit{[Insertar captura de pantalla: Gestión de contactos frecuentes del residente]}
+  \vspace{2.5cm}}}
+  \caption{Captura de pantalla --- Gestión de contactos frecuentes de visita en DOMU.}
+  \label{fig:screen-visitas-contactos}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \fbox{\parbox{0.90\textwidth}{\centering\vspace{2.5cm}
+  \textit{[Insertar captura de pantalla: Notificación en tiempo real de solicitud de visita]}
+  \vspace{2.5cm}}}
+  \caption{Captura de pantalla --- Notificación de confirmación de visita en tiempo real.}
+  \label{fig:screen-visitas-notificacion}
+\end{figure}
+
+\subsubsection{Recepción y entrega de encomiendas con DOMU}
+
+DOMU digitaliza completamente la gestión de encomiendas, reemplazando el cuaderno físico y las llamadas telefónicas por un flujo trazable con evidencia fotográfica. El conserje registra cada paquete tomando una \textbf{fotografía de evidencia} (paso central del flujo), la cual es automáticamente optimizada (redimensionada) y almacenada en Box con un identificador único. El ciclo de vida de cada encomienda sigue tres estados explícitos: \textbf{RECIBIDO}~$\rightarrow$~\textbf{NOTIFICADO}~$\rightarrow$~\textbf{RETIRADO}, y cada transición queda registrada con su \textit{timestamp} correspondiente. La notificación al residente se envía en \textbf{tiempo real mediante WebSocket}, permitiéndole visualizar la foto de evidencia directamente en la aplicación antes de acudir a retirar el paquete. Esto elimina los 5~pasos manuales del proceso AS-IS, incluyendo la firma en papel como constancia.
+
+% === PLACEHOLDER: BPMN TO-BE — Encomiendas con DOMU ===
+% PROMPT para generador de imágenes (Gemini/GPT/DALL-E):
+%
+% "Genera un DIAGRAMA BPMN 2.0 con swimlanes del proceso de encomiendas digitalizado con DOMU.
+%
+% NOTACIÓN BPMN 2.0 OBLIGATORIA:
+% - EVENTOS: ○ inicio (círculo fino), ◉ fin (círculo grueso doble), ⏱ timer (círculo con reloj).
+% - TAREAS: rectángulos redondeados con nombre dentro.
+% - GATEWAYS: diamantes con X (exclusivo).
+% - FLUJO SECUENCIA: flechas sólidas. FLUJO MENSAJE: flechas punteadas entre lanes.
+% - SWIMLANES: franjas horizontales, nombre a la izquierda en vertical.
+%
+% 3 SWIMLANES HORIZONTALES:
+%
+% SWIMLANE 'Conserje':
+% ○ Inicio 'Repartidor entrega paquete' → [Registra encomienda en DOMU (destinatario, descripción)]
+% → [Toma fotografía de evidencia] → [Confirma registro]
+% → (el sistema automáticamente optimiza, almacena foto y envía notificación -- flujo mensaje punteado)
+% → ⏱ Timer 'Esperando retiro' → [Residente se presenta a retirar]
+% → [Marca encomienda como RETIRADO en DOMU] → ◉ Fin 'Encomienda entregada'
+%
+% SWIMLANE 'Sistema DOMU':
+% [Optimiza imagen (resize automático)] → [Almacena imagen en Box con ID único]
+% → [Cambia estado a RECIBIDO con timestamp] → [Envía notificación WebSocket en tiempo real al residente]
+% → [Cambia estado a NOTIFICADO con timestamp]
+% → ... (espera retiro) ...
+% → [Registra retiro con timestamp] → [Cambia estado a RETIRADO con timestamp]
+%
+% SWIMLANE 'Residente':
+% [Recibe notificación en tiempo real (WebSocket)] → [Visualiza foto de evidencia en la app]
+% → [Consulta detalle de encomienda] → [Se presenta en conserjería a retirar]
+% → ◉ Fin 'Paquete retirado'
+%
+% NOTA BPMN (rectángulo con esquina doblada):
+% "SIN cuaderno físico, SIN llamada telefónica, SIN firma en papel.
+% Estados: RECIBIDO → NOTIFICADO → RETIRADO, cada transición con timestamp.
+% Foto de evidencia optimizada y almacenada en Box."
+%
+% ESTILO: Fondo blanco, swimlanes gris muy claro, bordes negros, tareas blancas.
+% Tipografía sans-serif. Profesional para tesis universitaria. Etiquetas en español.
+% Formato: PNG 300dpi orientación horizontal (landscape)."
+\begin{figure}[H]
+  \centering
+  \fbox{\parbox{0.90\textwidth}{\centering\vspace{3cm}
+  \textit{[Insertar diagrama BPMN: Proceso de encomiendas digitalizado con DOMU]}
+  \vspace{3cm}}}
+  \caption{Proceso de recepción y entrega de encomiendas --- digitalizado con DOMU.}
+  \label{fig:bpmn-encomienda-tobe}
+\end{figure}
+
+Las Figuras~\ref{fig:screen-encomienda-conserje} y~\ref{fig:screen-encomienda-residente} muestran capturas del sistema DOMU correspondientes a este proceso.
+
+\begin{figure}[H]
+  \centering
+  \fbox{\parbox{0.90\textwidth}{\centering\vspace{2.5cm}
+  \textit{[Insertar captura de pantalla: Vista del conserje registrando encomienda con fotografía de evidencia]}
+  \vspace{2.5cm}}}
+  \caption{Captura de pantalla --- Registro de encomienda con fotografía de evidencia en DOMU.}
+  \label{fig:screen-encomienda-conserje}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \fbox{\parbox{0.90\textwidth}{\centering\vspace{2.5cm}
+  \textit{[Insertar captura de pantalla: Vista del residente consultando encomienda con foto de evidencia]}
+  \vspace{2.5cm}}}
+  \caption{Captura de pantalla --- Vista del residente con detalle de encomienda y foto de evidencia.}
+  \label{fig:screen-encomienda-residente}
+\end{figure}
+
+\subsubsection{Pago de gastos comunes con DOMU}
+
+DOMU automatiza la gestión financiera de gastos comunes eliminando las planillas manuales, las transferencias sin trazabilidad y la validación manual de comprobantes. El sistema calcula los cargos por unidad habitacional utilizando un \textbf{coeficiente de prorrata} específico, y genera tres tipos de documentos PDF mediante servicios especializados: \textit{estado de cuenta general} (\texttt{CommonExpensePdfService}), \textit{comprobante de pago} (\texttt{PaymentReceiptPdfService}) y \textit{detalle de cargo individual} (\texttt{ChargeReceiptPdfService}). El residente puede \textbf{seleccionar cargos específicos a pagar} (pago parcial), sin necesidad de saldar todos los pendientes simultáneamente. Además, como alternativa al pago en línea, el residente puede \textbf{subir un comprobante de transferencia bancaria} como imagen, el cual queda asociado al pago para revisión del administrador. El administrador dispone de un panel financiero para listar y filtrar pagos por período, unidad y estado, y puede descargar reportes PDF de cada período. En la versión~1.0, DOMU opera con una pasarela de pago simulada; el comprobante de transferencia sirve como alternativa funcional.
+
+% === PLACEHOLDER: BPMN TO-BE — Pago de Gastos Comunes con DOMU ===
+% PROMPT para generador de imágenes (Gemini/GPT/DALL-E):
+%
+% "Genera un DIAGRAMA BPMN 2.0 con swimlanes del proceso de pago de gastos comunes digitalizado con DOMU.
+%
+% NOTACIÓN BPMN 2.0 OBLIGATORIA:
+% - EVENTOS: ○ inicio (círculo fino), ◉ fin (círculo grueso doble).
+% - TAREAS: rectángulos redondeados con nombre dentro. Tareas automáticas (sistema) con ícono de engranaje.
+% - GATEWAYS EXCLUSIVOS: diamantes con X dentro.
+% - FLUJO SECUENCIA: flechas sólidas. FLUJO MENSAJE: flechas punteadas entre lanes.
+% - SWIMLANES: franjas horizontales, nombre a la izquierda en vertical.
+% - ARTEFACTO (documento): ícono de documento con esquina doblada para representar PDFs generados.
+%
+% 3 SWIMLANES HORIZONTALES:
+%
+% SWIMLANE 'Administrador':
+% ○ Inicio 'Cierre período mensual' → [Crea período de gasto común en DOMU]
+% → [Carga cargos por unidad (prorrateo automático con coeficiente)] → (flujo al Sistema)
+% → ... (más adelante) [Revisa pagos pendientes por unidad en panel financiero]
+% → [Filtra pagos por período, unidad y estado]
+% → [Descarga reporte PDF de período] 📄 → ◉ Fin 'Período cerrado'
+%
+% SWIMLANE 'Sistema DOMU':
+% [Calcula cargos con coeficiente de prorrata por unidad habitacional]
+% → [Genera 3 tipos de PDF (OpenPDF):] 📄📄📄
+%    - 📄 Estado de cuenta general (CommonExpensePdfService)
+%    - 📄 Comprobante de pago (PaymentReceiptPdfService)
+%    - 📄 Detalle de cargo individual (ChargeReceiptPdfService)
+% → [Envía notificación WebSocket de nuevo cobro a residentes]
+% → ... → [Recibe pago o comprobante de transferencia del residente]
+% → ◇ ¿Tipo de pago?
+%   → (Pago en línea - pasarela simulada v1.0) → ◇ ¿Pago correcto?
+%     → (Sí) [Registra pago y actualiza estado] → [Genera comprobante PDF] 📄 → [Notifica confirmación]
+%     → (No) [Rechaza pago y muestra error]
+%   → (Comprobante de transferencia) [Almacena comprobante de transferencia subido por residente]
+%     → [Asocia comprobante al pago para revisión del administrador] → [Notifica al administrador]
+%
+% SWIMLANE 'Residente':
+% [Recibe notificación de nuevo estado de cuenta (WebSocket)] → [Consulta cartola en la app]
+% → [Descarga PDF de estado de cuenta] → [Selecciona cargos específicos a pagar (puede pagar parcialmente)]
+% → ◇ ¿Medio de pago?
+%   → (Pago en línea) [Inicia flujo de pago en DOMU] → [Confirma transacción]
+%     → [Recibe comprobante PDF por email] → ◉ Fin 'Pago registrado'
+%   → (Transferencia bancaria) [Realiza transferencia bancaria externa]
+%     → [Sube comprobante de transferencia como imagen (/api/payments/upload-receipt)]
+%     → ◉ Fin 'Comprobante enviado, pendiente de revisión'
+%
+% ARTEFACTOS PDF (mostrar como documentos BPMN adjuntos al proceso):
+% 📄 Estado de cuenta — 📄 Comprobante de pago — 📄 Detalle de cargo
+%
+% NOTA BPMN (rectángulo con esquina doblada):
+% "SIN boletas en papel, SIN WhatsApp para enviar comprobantes, SIN validación manual.
+% v1.0 opera con pasarela simulada; comprobante de transferencia como alternativa.
+% 3 PDFs generados: estado de cuenta, comprobante de pago, detalle de cargo."
+%
+% ESTILO: Fondo blanco, swimlanes gris muy claro, bordes negros, tareas blancas.
+% Tipografía sans-serif. Profesional para tesis universitaria. Etiquetas en español.
+% Formato: PNG 300dpi orientación horizontal (landscape)."
+\begin{figure}[H]
+  \centering
+  \fbox{\parbox{0.90\textwidth}{\centering\vspace{3cm}
+  \textit{[Insertar diagrama BPMN: Proceso de pago de gastos comunes digitalizado con DOMU]}
+  \vspace{3cm}}}
+  \caption{Proceso de pago de gastos comunes --- digitalizado con DOMU.}
+  \label{fig:bpmn-pago-tobe}
+\end{figure}
+
+Las Figuras~\ref{fig:screen-pago-pdf},~\ref{fig:screen-pago-residente} y~\ref{fig:screen-pago-admin} muestran capturas del sistema DOMU correspondientes a este proceso.
+
+\begin{figure}[H]
+  \centering
+  \fbox{\parbox{0.90\textwidth}{\centering\vspace{2.5cm}
+  \textit{[Insertar captura de pantalla: PDF de estado de cuenta generado por DOMU]}
+  \vspace{2.5cm}}}
+  \caption{Captura de pantalla --- Estado de cuenta en PDF generado por DOMU.}
+  \label{fig:screen-pago-pdf}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \fbox{\parbox{0.90\textwidth}{\centering\vspace{2.5cm}
+  \textit{[Insertar captura de pantalla: Vista del residente pagando o subiendo comprobante de transferencia]}
+  \vspace{2.5cm}}}
+  \caption{Captura de pantalla --- Flujo de pago del residente y subida de comprobante de transferencia.}
+  \label{fig:screen-pago-residente}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \fbox{\parbox{0.90\textwidth}{\centering\vspace{2.5cm}
+  \textit{[Insertar captura de pantalla: Panel financiero del administrador con pagos por unidad]}
+  \vspace{2.5cm}}}
+  \caption{Captura de pantalla --- Panel financiero del administrador en DOMU.}
+  \label{fig:screen-pago-admin}
+\end{figure}
+
+La comparación entre los diagramas de procesos manuales y digitalizados evidencia que DOMU elimina la dependencia de registros en papel, reduce los puntos de contacto manual y garantiza la trazabilidad de cada operación mediante notificaciones automáticas y almacenamiento digital.
 
 \section{Propuesta de Solución}
 
@@ -88,9 +471,9 @@ Se propone una plataforma web que centralice los procesos críticos de la admini
 
 A diferencia de las herramientas actuales, \textit{DOMU} integra un sistema de registro de visitas que permite a los residentes pre-autorizar visitantes, crear contactos frecuentes y agendar visitas con fecha y hora. La conserjería puede verificar el ingreso mediante códigos QR, validar el RUT y registrar el \textit{check-in}, facilitando el control y la trazabilidad de accesos sin depender de dispositivos físicos especializados.
 
-Asimismo, la plataforma digitaliza el registro de encomiendas , la gestión de incidentes y reclamos con seguimiento por estado y asignación, y la reserva de áreas comunes con control de aforo, franjas horarias y bloqueo ante morosidad. El módulo financiero permite crear períodos de gastos comunes, cargar cargos, generar estados de cuenta en PDF y habilitar un flujo de pago que registra comprobantes y emite recibos.
+Asimismo, la plataforma digitaliza el registro de encomiendas, la gestión de incidentes y reclamos con seguimiento por estado y asignación, y la reserva de áreas comunes con control de aforo, franjas horarias y bloqueo ante morosidad. El módulo financiero permite crear períodos de gastos comunes, cargar cargos, generar estados de cuenta en PDF y habilitar un flujo de pago que registra comprobantes y emite recibos.
 
-La comunicación interna se apoya en un foro categorizado, un chat en tiempo real entre vecinos y una tienda comunitaria para compraventa dentro del edificio. Los residentes pueden participar en votaciones con cierre programado y exportación de resultados, y los administradores pueden gestionar personal, gestionar proveedores , asignar tareas y administrar unidades habitacionales y residentes desde un mismo entorno.
+La comunicación interna se apoya en un foro categorizado, un chat en tiempo real entre vecinos y una tienda comunitaria para compraventa dentro del edificio. Los residentes pueden participar en votaciones con cierre programado y exportación de resultados, y los administradores pueden gestionar personal, gestionar proveedores, asignar tareas y administrar unidades habitacionales y residentes desde un mismo entorno.
 
 De este modo, la aplicación aborda de manera unificada la administración interna (tareas y personal), la experiencia del residente (pagos, reservas, comunicación, incidentes) y la transparencia financiera, promoviendo eficiencia y coordinación en la convivencia diaria.
 
@@ -99,31 +482,31 @@ De este modo, la aplicación aborda de manera unificada la administración inter
 Actualmente existen varias soluciones orientadas a la administración de edificios y condominios, como \textit{ComunidadFeliz}, \textit{Edifito}, \textit{Edipro} y \textit{GastoComunChile}. Todas ellas abordan parcialmente la gestión financiera, la comunicación con residentes, el registro de gastos comunes y, en algunos casos, el control de accesos. Sin embargo, ninguna integra de forma completa las áreas involucradas —administrador, residentes, personal de aseo, conserjes, proveedores y visitas.
 
 \begin{enumerate}
-    \item \textbf{ComunidadFeliz}: ofrece una plataforma enfocada en la administración digital de comunidades residenciales, con funcionalidades que incluyen gestión de gastos comunes, pagos en línea, comunicación con residentes, votaciones virtuales, reservas de espacios comunes y conciliación bancaria. El Plan Full incorpora módulos adicionales como gestión de conserjería, remuneraciones y soporte especializado.
+    \item \textbf{ComunidadFeliz}~\cite{comunidadfeliz2025}: ofrece una plataforma enfocada en la administración digital de comunidades residenciales, con funcionalidades que incluyen gestión de gastos comunes, pagos en línea, comunicación con residentes, votaciones virtuales, reservas de espacios comunes y conciliación bancaria. El Plan Full incorpora módulos adicionales como gestión de conserjería, remuneraciones y soporte especializado.
 
     \par\noindent
     Si bien \textit{ComunidadFeliz} cuenta con una presencia consolidada en el mercado chileno, su enfoque se centra principalmente en la administración financiera y la interacción con residentes, dejando fuera la integración operativa directa de actores como el personal interno, proveedores o sistemas físicos de acceso.
 
     \begin{figure}[H]
         \centering
-        \includegraphics[width=.8\linewidth]{Proyecto_de_Titulo/InformeFinal-SW/images/PaginaComunidadFeliz.png}
+        \includegraphics[width=.8\linewidth]{PaginaComunidadFeliz.png}
         \caption{Página web de ComunidadFeliz.}
         \label{fig:site-comunidadfeliz}
     \end{figure}
 
-    \item \textbf{Edifito}: ofrece una plataforma digital orientada a la administración integral de comunidades, con foco en la automatización de procesos financieros y operativos. Entre sus principales funcionalidades se encuentran la generación automática de gastos comunes, conciliación bancaria, gestión de remuneraciones, control de accesos mediante códigos QR o lectura de cédulas —similar a los lectores de precios de las cajas automáticas de supermercados—, administración de encomiendas, reservas de espacios comunes, comunicación interna, votaciones virtuales y conexión con cámaras de seguridad.
+    \item \textbf{Edifito}~\cite{edifito2025}: ofrece una plataforma digital orientada a la administración integral de comunidades, con foco en la automatización de procesos financieros y operativos. Entre sus principales funcionalidades se encuentran la generación automática de gastos comunes, conciliación bancaria, gestión de remuneraciones, control de accesos mediante códigos QR o lectura de cédulas —similar a los lectores de precios de las cajas automáticas de supermercados—, administración de encomiendas, reservas de espacios comunes, comunicación interna, votaciones virtuales y conexión con cámaras de seguridad.
 
     \par\noindent
     \textit{Edifito} trabaja bajo un modelo comercial basado exclusivamente en cotización personalizada, por lo que no publica valores estándar en su sitio web. El precio final se ajusta en función del tamaño de la comunidad, la cantidad de unidades habitacionales y los módulos requeridos por cada cliente.
 
     \begin{figure}[H]
         \centering
-        \includegraphics[width=.8\linewidth]{Proyecto_de_Titulo/InformeFinal-SW/images/PaginaEdifito.png}
+        \includegraphics[width=.8\linewidth]{PaginaEdifito.png}
         \caption{Página web de Edifito.}
         \label{fig:site-edifito}
     \end{figure}
 
-    \item \textbf{Edipro}: ofrece una plataforma digital orientada a la administración de comunidades, centrada principalmente en la automatización de procesos financieros y operativos. Sus funcionalidades incluyen gestión de gastos comunes, conciliación bancaria, control de accesos mediante códigos QR o lectura de cédulas, administración de remuneraciones, registro de encomiendas, reservas de espacios comunes, votaciones virtuales, comunicación interna, videoconferencias e integración con cámaras de seguridad.
+    \item \textbf{Edipro}~\cite{edipro2025}: ofrece una plataforma digital orientada a la administración de comunidades, centrada principalmente en la automatización de procesos financieros y operativos. Sus funcionalidades incluyen gestión de gastos comunes, conciliación bancaria, control de accesos mediante códigos QR o lectura de cédulas, administración de remuneraciones, registro de encomiendas, reservas de espacios comunes, votaciones virtuales, comunicación interna, videoconferencias e integración con cámaras de seguridad.
 
     \par\noindent
     \textit{Edipro} opera bajo un modelo modular, compuesto por tres paquetes escalables según las necesidades de cada comunidad. El \textit{Pack Conserje} (CLP 9.571 mensuales) contempla funciones básicas como control de accesos, registro de visitas y encomiendas, mensajería interna y tareas operativas. El \textit{Pack Administra} (CLP 25.524 mensuales) añade contabilidad, cálculo de gastos comunes, remuneraciones y conciliación bancaria. Finalmente, el \textit{Pack Full} (aproximadamente CLP 31.905 mensuales) integra todos los servicios anteriores, sumando reservas de espacios, videoconferencias y votaciones digitales.
@@ -133,13 +516,13 @@ Actualmente existen varias soluciones orientadas a la administración de edifici
 
     \begin{figure}[H]
         \centering
-        \includegraphics[width=.8\linewidth]{Proyecto_de_Titulo/InformeFinal-SW/images/PaginaEdipro.png}
+        \includegraphics[width=.8\linewidth]{PaginaEdipro.png}
         \caption{Página web de Edipro.}
         \label{fig:site-edipro}
     \end{figure}
 
 
-    \item \textbf{GastoComunChile}: su propuesta se centra en optimizar la gestión financiera comunitaria, con funcionalidades que incluyen el ingreso de consumos y cobros individuales, cálculo automático de gastos comunes, conciliación bancaria, generación de minutas y reportes —como libro diario, mayor, cartolas de morosidad o corte de servicios—, envío masivo de notificaciones por correo y gestión de remuneraciones con archivos compatibles con \textit{Previred}.
+    \item \textbf{GastoComunChile}~\cite{gastocomunchile2025}: su propuesta se centra en optimizar la gestión financiera comunitaria, con funcionalidades que incluyen el ingreso de consumos y cobros individuales, cálculo automático de gastos comunes, conciliación bancaria, generación de minutas y reportes —como libro diario, mayor, cartolas de morosidad o corte de servicios—, envío masivo de notificaciones por correo y gestión de remuneraciones con archivos compatibles con \textit{Previred}.
 
     \par\noindent
     \textit{GastoComunChile} ofrece planes por comunidad con un costo inicial de \$25.000 CLP al mes (más IVA), o \$250.000 CLP al año si se prefiere pago anual, incluyendo soporte técnico, configuración personalizada y actualizaciones continuas sin cargo adicional.
@@ -149,7 +532,7 @@ Actualmente existen varias soluciones orientadas a la administración de edifici
 
     \begin{figure}[H]
         \centering
-        \includegraphics[width=.8\linewidth]{Proyecto_de_Titulo/InformeFinal-SW/images/PaginaGastoComunChile.png}
+        \includegraphics[width=.8\linewidth]{PaginaGastoComunChile.png}
         \caption{Página web de GastoComunChile.}
         \label{fig:site-gastocomunchile}
     \end{figure}
@@ -160,16 +543,6 @@ Actualmente existen varias soluciones orientadas a la administración de edifici
 \noindent
 \textit{DOMU} se diferencia al proponer un sistema integral que combina la plataforma de software con un sistema de acceso ágil, automatizando el registro de visitantes, proveedores y personal de mantenimiento. Además, incorpora la gestión centralizada de tareas, pagos, comunicación interna y votaciones en un solo entorno, solucionando la falta de trazabilidad y coordinación observada en los sistemas actuales.
 
-
-% \section{Justificación de la Propuesta}
-
-% La gestión de comunidades residenciales involucra una serie de procesos interdependientes, como el control de accesos, la administración financiera, la comunicación con residentes, la recepción de encomiendas y la coordinación del personal interno. Actualmente, muchas de estas tareas se llevan a cabo de forma fragmentada, ya sea mediante herramientas manuales o plataformas digitales aisladas, lo que genera ineficiencias, errores frecuentes, pérdida de tiempo y una limitada capacidad de control y trazabilidad.
-
-% Las plataformas existentes han logrado digitalizar ciertos aspectos clave, sirviendo como referencia para identificar buenas prácticas y oportunidades de mejora. Sin embargo, ninguna de ellas integra todos los procesos críticos en un solo sistema ni contempla soluciones físicas que refuercen la seguridad operativa, como un tótem de registro. Esta ausencia de integración limita su efectividad a la hora de ofrecer una experiencia realmente centralizada, segura y eficiente para las comunidades.
-
-% En este contexto, la propuesta de \textit{DOMU} se justifica por su enfoque integral e innovador. A través de una única plataforma, se reúnen todos los elementos esenciales de la administración comunitaria —pago de gastos comunes, remuneraciones, notificaciones, entre otros—. El uso de un tótem de acceso permite registrar y validar de manera inmediata tanto a visitantes como al personal, reduciendo errores humanos y fortaleciendo el control de ingreso. Además, el sistema permite asignar, monitorear y evaluar tareas internas, optimizando la productividad y la capacidad de respuesta operativa.
-
-% \textit{DOMU} no solo digitaliza, sino que también centraliza y conecta todos los procesos clave de una comunidad, entregando una solución moderna, escalable y competitiva frente a las herramientas actuales. Su implementación apunta a mejorar la eficiencia administrativa, fortalecer la seguridad y promover una mejor convivencia en los entornos residenciales.
 
 \section{Justificación de la Propuesta}
 
@@ -272,5 +645,24 @@ A continuación, se detallan los objetivos específicos del proyecto junto con  
 \end{longtable}
 
 \section{Composición del Informe}
-Aquí va como se organiza el informe, mencionar los capítulos que abrodan las etapas del proyecto.
-describiendo brevemente c/u 
+El presente informe se organiza en nueve capítulos que abordan las distintas etapas del proyecto. A continuación se describe brevemente el contenido de cada uno:
+
+\begin{itemize}
+    \item \textbf{Capítulo 1 -- Introducción:} presenta el contexto del proyecto, la problemática identificada, los procesos actuales del ámbito, la propuesta de solución, el análisis de trabajos relacionados, la justificación, los objetivos y la composición del informe.
+
+    \item \textbf{Capítulo 2 -- Proyecto:} describe los objetivos del software, la metodología de desarrollo adoptada, las tecnologías, herramientas y frameworks utilizados, y los estándares de documentación aplicados.
+
+    \item \textbf{Capítulo 3 -- Especificación de Requerimientos:} detalla los límites del proyecto y los requerimientos funcionales y no funcionales del sistema, agrupados por módulo.
+
+    \item \textbf{Capítulo 4 -- Factibilidad del Proyecto:} evalúa la viabilidad técnica, operativa y económica de la propuesta, proporcionando una base para la toma de decisiones estratégicas.
+
+    \item \textbf{Capítulo 5 -- Análisis del Proyecto:} presenta los casos de uso que modelan la interacción entre los actores y el sistema.
+
+    \item \textbf{Capítulo 6 -- Diseño:} aborda los servicios web, el modelo de datos, los diagramas entidad-relación, la arquitectura del software y el diseño de las interfaces de usuario.
+
+    \item \textbf{Capítulo 7 -- Desarrollo del Trabajo:} detalla la estructura del código fuente, la configuración del entorno, las fases de implementación y los aspectos técnicos más relevantes de la solución.
+
+    \item \textbf{Capítulo 8 -- Implantación y Puesta en Marcha:} describe la estrategia de despliegue en un entorno productivo, la arquitectura basada en contenedores y la adopción del sistema por parte de la comunidad.
+
+    \item \textbf{Capítulo 9 -- Conclusión:} sintetiza los resultados obtenidos, el cumplimiento de los objetivos y las proyecciones futuras del proyecto.
+\end{itemize} 

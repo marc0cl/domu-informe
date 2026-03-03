@@ -1,2 +1,236 @@
-Entidades/ colecciones: que representan
-Atributos: que información contienen , formato, valores por defecto, reglas y validaciones
+% -----------------------------------------------------------
+%  Anexo — Diccionario de Datos
+% -----------------------------------------------------------
+
+Este anexo complementa el modelo de datos presentado en el Capítulo~6 (§6.2), describiendo las principales entidades del sistema DOMU, sus atributos más relevantes, y el historial completo de migraciones de base de datos.
+
+\section{Entidades Principales}
+
+\subsection{Dominio Core}
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabular}{|p{0.22\textwidth}|p{0.15\textwidth}|p{0.50\textwidth}|}
+\hline
+\multicolumn{3}{|c|}{\textbf{\texttt{users}}} \\ \hline
+\textbf{Atributo} & \textbf{Tipo} & \textbf{Descripción} \\ \hline
+id & BIGINT & Identificador único del usuario \\ \hline
+email & VARCHAR(255) & Correo electrónico (login) \\ \hline
+password\_hash & VARCHAR(255) & Hash BCrypt de la contraseña \\ \hline
+document\_number & VARCHAR(12) & RUT del usuario \\ \hline
+first\_name & VARCHAR(100) & Nombre del usuario \\ \hline
+last\_name & VARCHAR(100) & Apellido del usuario \\ \hline
+role\_id & BIGINT & FK a tabla \texttt{roles} \\ \hline
+display\_name & VARCHAR & Nombre público (chat, foro) \\ \hline
+\end{tabular}
+\caption{Entidad \texttt{users}.}
+\end{table}
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabular}{|p{0.22\textwidth}|p{0.15\textwidth}|p{0.50\textwidth}|}
+\hline
+\multicolumn{3}{|c|}{\textbf{\texttt{buildings}}} \\ \hline
+\textbf{Atributo} & \textbf{Tipo} & \textbf{Descripción} \\ \hline
+id & BIGINT & Identificador único del edificio \\ \hline
+name & VARCHAR(200) & Nombre del edificio o condominio \\ \hline
+address & VARCHAR(300) & Dirección física \\ \hline
+commune & VARCHAR(100) & Comuna \\ \hline
+floors & INT & Número de pisos \\ \hline
+units\_count & INT & Número total de unidades \\ \hline
+building\_type & VARCHAR & Tipo (edificio, condominio, mixto) \\ \hline
+\end{tabular}
+\caption{Entidad \texttt{buildings}.}
+\end{table}
+
+\subsection{Dominio de Acceso}
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabular}{|p{0.22\textwidth}|p{0.15\textwidth}|p{0.50\textwidth}|}
+\hline
+\multicolumn{3}{|c|}{\textbf{\texttt{visits}}} \\ \hline
+\textbf{Atributo} & \textbf{Tipo} & \textbf{Descripción} \\ \hline
+id & BIGINT & Identificador único de la visita \\ \hline
+visitor\_name & VARCHAR(200) & Nombre del visitante \\ \hline
+visitor\_document & VARCHAR(12) & RUT del visitante (escaneo QR) \\ \hline
+visitor\_type & VARCHAR & Tipo (personal, proveedor, delivery) \\ \hline
+company & VARCHAR & Empresa del visitante (opcional) \\ \hline
+\end{tabular}
+\caption{Entidad \texttt{visits}.}
+\end{table}
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabular}{|p{0.22\textwidth}|p{0.15\textwidth}|p{0.50\textwidth}|}
+\hline
+\multicolumn{3}{|c|}{\textbf{\texttt{visit\_authorizations}}} \\ \hline
+\textbf{Atributo} & \textbf{Tipo} & \textbf{Descripción} \\ \hline
+id & BIGINT & Identificador de la autorización \\ \hline
+visit\_id & BIGINT & FK a la visita \\ \hline
+resident\_user\_id & BIGINT & FK al residente que autoriza \\ \hline
+unit\_id & BIGINT & Unidad de destino \\ \hline
+valid\_from & DATETIME & Inicio de validez \\ \hline
+valid\_until & DATETIME & Fin de validez \\ \hline
+qr\_hash & VARCHAR & Hash del QR temporal generado \\ \hline
+status & VARCHAR & Estado (PENDING, APPROVED, EXPIRED) \\ \hline
+\end{tabular}
+\caption{Entidad \texttt{visit\_authorizations}.}
+\end{table}
+
+\subsection{Dominio Financiero}
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabular}{|p{0.22\textwidth}|p{0.15\textwidth}|p{0.50\textwidth}|}
+\hline
+\multicolumn{3}{|c|}{\textbf{\texttt{common\_expense\_periods}}} \\ \hline
+\textbf{Atributo} & \textbf{Tipo} & \textbf{Descripción} \\ \hline
+id & BIGINT & Identificador del período \\ \hline
+building\_id & BIGINT & Edificio asociado \\ \hline
+year & INT & Año del período \\ \hline
+month & INT & Mes del período (1--12) \\ \hline
+due\_date & DATE & Fecha de vencimiento \\ \hline
+total\_amount & DECIMAL & Monto total del período \\ \hline
+status & VARCHAR & Estado (OPEN, CLOSED) \\ \hline
+\end{tabular}
+\caption{Entidad \texttt{common\_expense\_periods}.}
+\end{table}
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabular}{|p{0.22\textwidth}|p{0.15\textwidth}|p{0.50\textwidth}|}
+\hline
+\multicolumn{3}{|c|}{\textbf{\texttt{common\_payments}}} \\ \hline
+\textbf{Atributo} & \textbf{Tipo} & \textbf{Descripción} \\ \hline
+id & BIGINT & Identificador del pago \\ \hline
+unit\_id & BIGINT & Unidad que paga \\ \hline
+charge\_id & BIGINT & Cargo asociado \\ \hline
+amount & DECIMAL & Monto pagado \\ \hline
+payment\_method & VARCHAR & Método de pago \\ \hline
+reference & VARCHAR & Referencia de transacción \\ \hline
+status & VARCHAR & Estado (PENDING, APPROVED, REJECTED) \\ \hline
+\end{tabular}
+\caption{Entidad \texttt{common\_payments}.}
+\end{table}
+
+%% ============================================================
+\section{Historial Completo de Migraciones Flyway}
+
+El esquema de base de datos se gestiona mediante Flyway con 35~migraciones versionadas que documentan la evolución del modelo de datos. A continuación se detalla cada migración:
+
+\begin{longtable}{|p{0.08\textwidth}|p{0.40\textwidth}|p{0.42\textwidth}|}
+\caption{Historial de migraciones Flyway (V001--V035).} \label{tab:migraciones} \\
+\hline
+\textbf{Ver.} & \textbf{Archivo} & \textbf{Descripción} \\ \hline
+\endfirsthead
+\hline \textbf{Ver.} & \textbf{Archivo} & \textbf{Descripción} \\ \hline
+\endhead
+\hline \multicolumn{3}{|r|}{\small\textit{Continúa en la siguiente página...}} \\ \hline
+\endfoot
+\hline
+\endlastfoot
+
+V001 & create\_auth\_schema & Crea esquema inicial de autenticación: tablas \texttt{rol}, \texttt{unidad}, \texttt{usuario}. Inserta roles \textit{admin} y \textit{residente}. \\ \hline
+
+V002 & update\_auth\_schema & Elimina tablas en español y las recrea en inglés: \texttt{roles}, \texttt{buildings}, \texttt{housing\_units}, \texttt{users}. Agrega campos expandidos (teléfono, estado, documento). \\ \hline
+
+V003 & common\_expenses & Crea el sistema de gastos comunes: \texttt{common\_expense\_periods}, \texttt{common\_charges}, \texttt{common\_payments}, \texttt{delinquency\_records}. \\ \hline
+
+V004 & building\_requests & Crea el flujo de solicitud de registro de comunidades: \texttt{building\_requests}. Agrega geolocalización y tipo a \texttt{buildings}. \\ \hline
+
+V005 & visits & Crea el sistema de control de acceso: \texttt{visits}, \texttt{visit\_authorizations} (con QR hash), \texttt{visit\_access\_logs}. \\ \hline
+
+V006 & incidents & Crea la tabla \texttt{incidents} para tickets de reclamos/sugerencias con categoría, prioridad y estado. \\ \hline
+
+V007 & visit\_contacts & Crea \texttt{visit\_contacts}: directorio de visitantes frecuentes por residente. \\ \hline
+
+V008 & user\_buildings & Crea tabla de relación N:M \texttt{user\_buildings} para soportar usuarios en múltiples edificios. \\ \hline
+
+V009 & building\_request\_box\_metadata & Agrega columnas de metadatos de Box (\texttt{box\_folder\_id}, \texttt{box\_file\_id}) a \texttt{building\_requests}. \\ \hline
+
+V010 & building\_request\_nullable & Hace nullable el campo \texttt{requested\_by\_user\_id} para permitir solicitudes sin autenticación. \\ \hline
+
+V011 & building\_request\_email\_approvals & Agrega columnas de aprobación por correo electrónico (token, expiración, acción) a \texttt{building\_requests}. \\ \hline
+
+V012 & building\_request\_admin\_invite & Agrega columnas de invitación de administrador (token de invitación) a \texttt{building\_requests}. \\ \hline
+
+V013 & polls & Crea sistema de votaciones: \texttt{polls}, \texttt{poll\_options}, \texttt{poll\_votes}. Restricción de un voto por usuario por votación. \\ \hline
+
+V014 & amenities & Crea sistema de reservas: \texttt{amenities}, \texttt{amenity\_time\_slots}, \texttt{amenity\_reservations}. \\ \hline
+
+V015 & housing\_units\_audit & Agrega columnas de auditoría (\texttt{created\_by}, \texttt{created\_at}, \texttt{updated\_at}) a \texttt{housing\_units}. \\ \hline
+
+V016 & ggcc\_enhancements & Mejora gastos comunes: auditoría, archivos de recibos (Box), tabla \texttt{common\_expense\_revisions} para historial de cambios. \\ \hline
+
+V017 & incident\_enhancements & Agrega campo \texttt{assigned\_to\_user\_id} a \texttt{incidents} para asignación de tickets. \\ \hline
+
+V018 & user\_confirmation & Crea \texttt{user\_confirmations} para verificación de correo electrónico mediante token. \\ \hline
+
+V019 & marketplace\_and\_chat & Crea marketplace comunitario (\texttt{market\_category}, \texttt{market\_item}) y chat en tiempo real (\texttt{chat\_room}, \texttt{chat\_participant}, \texttt{chat\_message}). \\ \hline
+
+V020 & profiles\_and\_chat\_requests & Agrega perfil de usuario (\texttt{bio}, \texttt{avatar\_box\_id}). Crea \texttt{chat\_request} para solicitudes de chat. \\ \hline
+
+V021 & multiple\_market\_images & Crea \texttt{market\_item\_image} para múltiples imágenes por artículo del marketplace. \\ \hline
+
+V022 & privacy\_photo & Agrega \texttt{privacy\_avatar\_box\_id} a \texttt{users} para control de visibilidad del avatar. \\ \hline
+
+V023 & forum & Crea foro comunitario: \texttt{forum\_categories}, \texttt{forum\_threads}, \texttt{forum\_posts}. Inserta 4~categorías por defecto. \\ \hline
+
+V024 & tasks & Crea \texttt{tasks} para gestión de tareas de mantenimiento con prioridad, asignación y vencimiento. \\ \hline
+
+V026 & staff & Crea \texttt{staff}: directorio de personal del edificio (conserjes, mantenimiento). \\ \hline
+
+V026.1 & staff\_add\_indexes & Agrega índices de rendimiento en \texttt{staff} (\texttt{building\_id}, \texttt{active}). \\ \hline
+
+V027 & task\_assignments & Crea \texttt{task\_assignments}: relación N:M entre tareas y personal. \\ \hline
+
+V028 & gcs\_migration & Agrega \texttt{display\_name} a \texttt{users} para nombre público en chat y foro. \\ \hline
+
+V029 & chat\_hide\_room & Agrega \texttt{hidden\_at} a \texttt{chat\_participant} para ocultar salas de chat. \\ \hline
+
+V030 & library & Crea \texttt{library\_documents}: biblioteca de documentos comunitarios. \\ \hline
+
+V031 & password\_reset & Crea \texttt{password\_reset\_tokens} para flujo de recuperación de contraseña. \\ \hline
+
+V032 & building\_type\_and\_unit\_breakdown & Agrega de forma idempotente columnas de tipo de edificio y desglose de unidades. \\ \hline
+
+V033 & notifications & Crea sistema de notificaciones: \texttt{notifications} y \texttt{notification\_preferences}. \\ \hline
+
+V034 & inline\_schema\_updates & Consolidación de ajustes: ampliación de columnas URL a TEXT, verificaciones idempotentes de existencia de columnas. \\ \hline
+
+V035 & providers & Crea gestión de proveedores: \texttt{providers}, \texttt{service\_orders}, \texttt{quotations}. Inserta rol \textit{proveedor}. \\ \hline
+
+\end{longtable}
+
+\subsection{Resumen de Tablas por Dominio}
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabular}{|l|p{0.65\textwidth}|}
+\hline
+\textbf{Dominio} & \textbf{Tablas} \\ \hline
+Core & \texttt{roles}, \texttt{users}, \texttt{buildings}, \texttt{housing\_units}, \texttt{user\_buildings}, \texttt{building\_requests} \\ \hline
+Acceso & \texttt{visits}, \texttt{visit\_authorizations}, \texttt{visit\_access\_logs}, \texttt{visit\_contacts} \\ \hline
+Finanzas & \texttt{common\_expense\_periods}, \texttt{common\_charges}, \texttt{common\_payments}, \texttt{delinquency\_records}, \texttt{common\_expense\_revisions} \\ \hline
+Incidentes & \texttt{incidents} \\ \hline
+Votaciones & \texttt{polls}, \texttt{poll\_options}, \texttt{poll\_votes} \\ \hline
+Reservas & \texttt{amenities}, \texttt{amenity\_time\_slots}, \texttt{amenity\_reservations} \\ \hline
+Marketplace & \texttt{market\_category}, \texttt{market\_item}, \texttt{market\_item\_image} \\ \hline
+Chat & \texttt{chat\_room}, \texttt{chat\_participant}, \texttt{chat\_message}, \texttt{chat\_request} \\ \hline
+Foro & \texttt{forum\_categories}, \texttt{forum\_threads}, \texttt{forum\_posts} \\ \hline
+Personal & \texttt{staff}, \texttt{tasks}, \texttt{task\_assignments} \\ \hline
+Biblioteca & \texttt{library\_documents} \\ \hline
+Notificaciones & \texttt{notifications}, \texttt{notification\_preferences} \\ \hline
+Proveedores & \texttt{providers}, \texttt{service\_orders}, \texttt{quotations} \\ \hline
+Autenticación & \texttt{user\_confirmations}, \texttt{password\_reset\_tokens} \\ \hline
+\end{tabular}
+\caption{Resumen de las 37 tablas del sistema organizadas por dominio.}
+\end{table}

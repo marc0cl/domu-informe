@@ -3,15 +3,16 @@
 \def\bibname{Referencias}
 \def\tablename{Tabla}
 }
-\usepackage{hyperref}
+\usepackage[hyperfootnotes=false]{hyperref}
 \hypersetup{
     colorlinks=true,
     linkcolor=blue,
-    filecolor=blue,      
+    filecolor=blue,
     urlcolor=blue,
     citecolor=blue
 }
 \usepackage{rotating}
+\usepackage{pdflscape}
 \usepackage{longtable}
 \usepackage{tabularx}
 \usepackage{array}
@@ -21,7 +22,7 @@
 %%\usepackage{algorithm}
 %\usepackage{algpseudocode}
 %\usepackage[noend]{algpseudocode}
-\usepackage{acronym}
+\usepackage[nohyperlinks]{acronym}
 \usepackage{siunitx}
 \usepackage{mathtools}
 \usepackage[T1]{fontenc}
@@ -48,7 +49,7 @@
 \usepackage{subfig}
 \usepackage{longtable}
 %\usepackage{amssymb}
-\usepackage{color}
+\usepackage[dvipsnames]{xcolor}
 \usepackage{ragged2e}
 \usepackage[all]{xy}
 \usepackage{xspace,epic,eepic}
@@ -100,6 +101,26 @@
         stringstyle=\color[rgb]{0,0,0},
 }
 
+\lstdefinestyle{javadto}{
+  language=Java,
+  basicstyle=\small\ttfamily,
+  keywordstyle=\color[HTML]{7B30D0}\bfseries,
+  stringstyle=\color[HTML]{067D17},
+  commentstyle=\color[HTML]{6A737D},
+  emphstyle=\color[HTML]{0033B3}\bfseries,
+  emph={String,Long,int,boolean,BigDecimal,List,LocalDateTime,MultipartFile},
+  showstringspaces=false,
+  frame=single,
+  framerule=0.4pt,
+  rulecolor=\color[HTML]{CCCCCC},
+  backgroundcolor=\color[HTML]{F7F7F7},
+  aboveskip=8pt,
+  belowskip=8pt,
+  xleftmargin=4pt,
+  xrightmargin=4pt,
+  tabsize=4,
+  breaklines=true,
+}
 
 %\renewcommand{\labelenumi}{\arabic{enumi}.} % (1., 2., 3.,...)
 %\renewcommand{\labelenumi}{\roman{enumi}.} %  (i., ii., iii.,...)

@@ -1,6 +1,170 @@
-<Todas las técnicas aplicadas y el respaldo de la información recopilada. Por ejemplo, entrevista, cuestionarios, observación en terreno, revisión de documentación, talleres grupales, etc.
-a.	En cuestionarios se indica: a quien, para que, cuando se aplicó, y las preguntas. Después se incluyen las tablas de respuestas y resumen de los resultados.
-b.	En entrevistas se indica: a quien, para que, cuando se aplicó, y preguntas. Después se incluyen las respuestas y firma del cliente.
-c.	Observación en terreno: donde se realizó, que proceso observó, que usuarios, que información recopiló.
-d.	Revisión de documentos (internos o externos): que documentos obtuvo, desde donde, cuando los obtuvo, que información útil extrajo.
-Toda la información que se recopila de las técnicas debe estar relacionada con el contenido del informe, es decir con la etapa del desarrollo del software. Por ejemplo, si no estamos interesados de los tipos de usuarios del software, no debe preguntar o extraer información al respecto.>
+% -----------------------------------------------------------
+%  Recopilación de Información
+% -----------------------------------------------------------
+
+Este anexo describe las técnicas de recopilación de información empleadas durante las etapas de análisis y diseño del proyecto DOMU. La información recopilada alimentó la definición de requerimientos funcionales, la especificación de casos de uso y las decisiones de diseño del sistema.
+
+% === PLACEHOLDER: Reemplazar con imagen generada ===
+% PROMPT para generador de imágenes (Gemini/GPT/DALL-E):
+%
+% "Genera un DIAGRAMA DE FLUJO DE INFORMACIÓN mostrando las 4 fuentes de recopilación de datos
+% para un proyecto de software.
+%
+% NOTACIÓN:
+% - FUENTES: 4 rectángulos redondeados con borde sólido, cada uno con un título en negrita y
+%   debajo una lista con viñetas (bullet points) de los sub-ítems.
+% - ELEMENTO CENTRAL: un rectángulo más grande con borde doble (o más grueso), en el centro,
+%   etiquetado 'Requerimientos Funcionales (20 RFs) + Casos de Uso (27 CUs)'.
+% - FLECHAS: flechas gruesas con punta, desde cada fuente hacia el centro, indicando que la
+%   información fluye de las fuentes a los requerimientos.
+% - ÉNFASIS: la caja 'Análisis de Competencia' debe tener borde más grueso y un asterisco (*)
+%   o etiqueta 'Fuente principal' para destacarla visualmente respecto a las otras 3.
+%
+% DISPOSICIÓN (las 4 fuentes rodean al centro):
+% ARRIBA-IZQUIERDA: 'Revisión de Documentos Externos'
+%   • Ley 21.442 Copropiedad
+%   • Ley 21.719 Datos Personales
+%   • Ley 19.799 Docs Electrónicos
+%   • Estadísticas Subtel
+%
+% ARRIBA-DERECHA: 'Análisis de la Competencia' ★ FUENTE PRINCIPAL (borde grueso doble)
+%   • ComunidadFeliz
+%   • Edifito
+%   • Edipro
+%   • GastoComunChile
+%
+% ABAJO-IZQUIERDA: 'Reuniones con Profesora Guía'
+%   • Validación de alcance
+%   • Retroalimentación de diseño
+%   • Revisión de avances
+%
+% ABAJO-DERECHA: 'Observación de Procesos en Condominios'
+%   • Libro de visitas manual
+%   • Pizarras de avisos
+%   • Gestión de encomiendas en cuaderno
+%   • Reservas en papel
+%
+% ESTILO: Fondo blanco, bordes negros, relleno blanco o gris muy claro. Sin gradientes.
+% Tipografía sans-serif. Profesional para tesis universitaria. Etiquetas en español.
+% Formato: PNG 300dpi."
+\begin{figure}[H]
+  \centering
+  \fbox{\parbox{0.85\textwidth}{\centering\vspace{3cm}
+  \textit{[Insertar diagrama: Fuentes de recopilación de información y su relación con los RFs y CUs del proyecto]}
+  \vspace{3cm}}}
+  \caption{Técnicas de recopilación de información y su aporte a los requerimientos del sistema.}
+  \label{fig:fuentes-recopilacion}
+\end{figure}
+
+\section{Revisión de Documentos Externos}
+
+Se revisaron documentos normativos y estadísticos relevantes para el dominio de la administración de comunidades residenciales. La Tabla~\ref{tab:documentos-externos} detalla las fuentes consultadas y la información útil extraída de cada una.
+
+\begin{longtable}{|p{0.28\textwidth}|p{0.18\textwidth}|p{0.46\textwidth}|}
+\caption{Documentos externos revisados}\label{tab:documentos-externos}\\
+\hline
+\textbf{Documento} & \textbf{Fuente / Fecha} & \textbf{Información útil extraída} \\
+\hline
+\endfirsthead
+\hline
+\textbf{Documento} & \textbf{Fuente / Fecha} & \textbf{Información útil extraída} \\
+\hline
+\endhead
+\hline
+\endfoot
+
+Ley 21.442 de Copropiedad Inmobiliaria y su Reglamento (D.S. N°\,1 de 2025) &
+Biblioteca del Congreso Nacional / 2022--2025 &
+Obligaciones del administrador (rendición de cuentas, fondo de reserva, sesiones de copropietarios), derechos de los residentes, quórum de votación. Estos elementos fundamentaron los RF de finanzas (RF\_07, RF\_08), votaciones (RF\_10) y RBAC (RF\_16). \\
+\hline
+
+Ley 21.719 de Protección de Datos Personales &
+Biblioteca del Congreso Nacional / 2024 &
+Requisitos de consentimiento para almacenamiento de datos personales, derecho de acceso y eliminación. Influyó en las decisiones de diseño del módulo de registro y gestión de perfiles. \\
+\hline
+
+Ley 19.799 de Documentos Electrónicos &
+Biblioteca del Congreso Nacional / 2002 &
+Validez jurídica de documentos electrónicos y firma electrónica. Relevante para la generación de boletas y estados de cuenta en formato PDF (RF\_07). \\
+\hline
+
+Estadísticas de penetración de Internet en Chile &
+Subtel / 2024 &
+Datos de conectividad residencial (cobertura de banda ancha fija y móvil en zonas urbanas). Respaldó la decisión de implementar una aplicación web progresiva (PWA) como canal principal de acceso. \\
+
+\end{longtable}
+
+\section{Análisis de la Competencia}
+
+El análisis de la competencia constituyó la \textbf{fuente principal} de recopilación de información para el diseño funcional de DOMU. Se evaluaron cuatro plataformas chilenas de administración de comunidades, con el objetivo de identificar funcionalidades estándar, brechas de mercado y oportunidades de diferenciación.
+
+\subsection{Plataformas evaluadas}
+
+\begin{enumerate}
+    \item \textbf{ComunidadFeliz} --- Plataforma líder en Chile con cobertura integral: gastos comunes, reservas, comunicación, control de acceso. Modelo SaaS con planes desde UF~0.10 por unidad/mes.
+
+    \item \textbf{Edifito} --- Solución orientada a la gestión financiera y comunicación entre vecinos. Incluye módulo de pagos en línea y publicación de avisos.
+
+    \item \textbf{Edipro} --- Plataforma enfocada en la administración profesional de edificios. Ofrece gestión de gastos comunes, cobranza y reportes financieros.
+
+    \item \textbf{GastoComunChile} --- Solución especializada en el cálculo y distribución de gastos comunes, con énfasis en el cumplimiento de la Ley de Copropiedad.
+\end{enumerate}
+
+\subsection{Criterios de evaluación}
+
+Las plataformas se evaluaron según los siguientes criterios:
+\begin{itemize}
+    \item \textbf{Funcionalidades}: Módulos disponibles (finanzas, reservas, comunicación, control de acceso, proveedores, votaciones).
+    \item \textbf{Modelo de negocio}: Estructura de precios, costos por unidad habitacional, planes disponibles.
+    \item \textbf{Experiencia de usuario}: Calidad de la interfaz, disponibilidad móvil, facilidad de uso.
+    \item \textbf{Limitaciones}: Funcionalidades ausentes, restricciones técnicas, dependencia de hardware especializado.
+\end{itemize}
+
+\subsection{Resultados y brechas identificadas}
+
+La tabla comparativa detallada se presenta en el Capítulo~\ref{cap:introduccion}, Sección~1.4. Las principales brechas identificadas que motivaron los requerimientos funcionales de DOMU fueron:
+
+\begin{itemize}
+    \item \textbf{Control de acceso con QR de bajo costo:} Las soluciones existentes requieren hardware propietario (tótem, tablets dedicadas). DOMU propone un modelo con pistola lectora QR estándar (modo HID), reduciendo significativamente el costo de implementación (RF\_01, RF\_03).
+
+    \item \textbf{Chat en tiempo real entre vecinos:} La mayoría de las plataformas limitan la comunicación a foros o tablones de avisos. DOMU incorpora chat WebSocket bidireccional (RF\_17).
+
+    \item \textbf{Marketplace comunitario:} Funcionalidad no ofrecida por las plataformas evaluadas. Permite la compraventa de artículos entre vecinos de la misma comunidad (RF\_18).
+
+    \item \textbf{Portal de proveedores:} Las plataformas analizadas gestionan proveedores internamente sin otorgarles acceso directo. DOMU ofrece un portal dedicado con flujo de órdenes y cotizaciones (RF\_13).
+
+    \item \textbf{Biblioteca de documentos:} Centralización de reglamentos, actas y documentos comunitarios con almacenamiento en la nube, funcionalidad ausente o limitada en las alternativas evaluadas (RF\_19).
+
+    \item \textbf{Modelo de código abierto:} A diferencia de las soluciones comerciales evaluadas, DOMU se concibe como un proyecto de código abierto, permitiendo su personalización y despliegue sin costos de licenciamiento.
+\end{itemize}
+
+\section{Reuniones con Profesora Guía}
+
+Se realizaron reuniones periódicas con la profesora guía a lo largo del proyecto, con los siguientes objetivos:
+
+\begin{itemize}
+    \item \textbf{Validación de alcance:} Revisión de los requerimientos funcionales y priorización de casos de uso según la metodología MoSCoW.
+    \item \textbf{Retroalimentación sobre diseño:} Evaluación de decisiones arquitectónicas (elección de Javalin sobre Spring Boot, estrategia de multi-tenancy, modelo de datos financiero).
+    \item \textbf{Revisión de avances:} Seguimiento del progreso por fases, con énfasis en la decisión de diferir funcionalidades a v2.0 (semana~8).
+    \item \textbf{Revisión del informe:} Correcciones de estructura, contenido y formato del documento final según el template UBB.
+\end{itemize}
+
+Las reuniones se realizaron de forma presencial y remota, con una frecuencia aproximada de una sesión cada dos semanas. La retroalimentación recibida influyó directamente en la re-priorización de funcionalidades y en la estructura del informe.
+
+\section{Observación de Procesos en Condominios}
+
+Se realizó una observación informal de los procesos manuales vigentes en edificios de la ciudad de Chillán, con el fin de identificar puntos de dolor y oportunidades de digitalización. Las observaciones se centraron en:
+
+\begin{itemize}
+    \item \textbf{Control de acceso:} Libro de visitas en papel, donde el conserje registra manualmente el nombre, RUT y hora de ingreso de cada visitante. Se identificó que este proceso demora entre 2 y 5~minutos por visita y es propenso a errores de registro.
+
+    \item \textbf{Comunicación entre vecinos:} Pizarras de avisos en áreas comunes y grupos de WhatsApp como canales principales de comunicación. Se observó fragmentación de la información y dificultad para acceder a avisos históricos.
+
+    \item \textbf{Gestión de encomiendas:} Registro informal en cuadernos o sin registro, con notificación verbal o mediante nota bajo la puerta. Se identificó pérdida de trazabilidad y demoras en la entrega.
+
+    \item \textbf{Reserva de áreas comunes:} Cuadernos de reserva en conserjería, con conflictos frecuentes por doble reserva y falta de visibilidad del calendario.
+
+    \item \textbf{Gastos comunes:} Distribución de boletas en papel o por correo electrónico manual, con pagos presenciales o transferencia bancaria sin confirmación automática.
+\end{itemize}
+
+Estas observaciones alimentaron directamente los diagramas BPMN del Capítulo~\ref{cap:introduccion} (procesos AS-IS) y la definición de los flujos TO-BE que implementa DOMU.

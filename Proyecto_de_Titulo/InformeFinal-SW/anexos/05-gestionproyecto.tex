@@ -2,20 +2,350 @@
 %  Gestión del Proyecto
 % -----------------------------------------------------------
 
+Este anexo presenta los aspectos de gestión del proyecto DOMU, incluyendo la planificación mediante carta Gantt, el análisis de desviaciones y un resumen del esfuerzo invertido.
+
 \section{Carta Gantt con línea base y desviaciones}
 
-Incluir cada Gantt con la explicación del cambio y el efecto en la planificación global.
+A continuación se presentan las cartas Gantt correspondientes a las dos etapas del proyecto: el anteproyecto (planificación inicial) y el proyecto de título (ejecución real).
 
-\begin{sidewaysfigure}[p]
+\begin{landscape}
+\begin{figure}[p]
   \centering
-  \includegraphics[width=\textheight]{carta-gantt/anteproyecto.pdf}
-  \caption{Carta Gantt – Anteproyecto}
+  \includegraphics[width=\linewidth,height=0.88\textheight,keepaspectratio]{carta-gantt/anteproyecto.pdf}
+  \caption{Carta Gantt -- Anteproyecto (línea base)}
   \label{fig:gantt-anteproyecto}
-\end{sidewaysfigure}
+\end{figure}
+\end{landscape}
 
-\begin{sidewaysfigure}[p]
+\begin{landscape}
+\begin{figure}[p]
   \centering
-  \includegraphics[width=\textheight]{carta-gantt/proyecto.pdf}
-  \caption{Carta Gantt – Proyecto de Título}
+  \includegraphics[width=\linewidth,height=0.88\textheight,keepaspectratio]{carta-gantt/proyecto.pdf}
+  \caption{Carta Gantt -- Proyecto de Título (ejecución real)}
   \label{fig:gantt-proyecto}
-\end{sidewaysfigure}
+\end{figure}
+\end{landscape}
+
+\subsection{Análisis de Desviaciones}
+
+Al comparar la carta Gantt del anteproyecto (Figura~\ref{fig:gantt-anteproyecto}) con la ejecución real (Figura~\ref{fig:gantt-proyecto}), se identifican las siguientes desviaciones principales:
+
+\begin{itemize}
+    \item \textbf{Fase de diseño de base de datos:} Se extendió aproximadamente una semana más de lo planificado debido a la complejidad del modelo financiero (gastos comunes, períodos contables, tipos de cargo). La decisión de modelar 35~entidades en 9~dominios, en lugar de las ~20 estimadas inicialmente, impactó esta fase.
+
+    \item \textbf{Fase de implementación del backend:} La construcción de los módulos de finanzas y proveedores demandó más iteraciones de las previstas, particularmente la generación de documentos PDF y la integración con Box para almacenamiento. Se compensó parcialmente con una implementación más rápida del frontend.
+
+    \item \textbf{Módulos postergados a v2.0:} Los casos de uso CU\_06 (conciliación bancaria), CU\_08 (turnos de personal), CU\_11 (mantenimiento preventivo), CU\_12 (estacionamientos) y CU\_18 (bitácora de ascensores) fueron postergados durante la ejecución para asegurar la calidad de los módulos entregados. Esta decisión se tomó en la semana~8 del desarrollo.
+
+    \item \textbf{Fecha de cierre:} A pesar de las desviaciones puntuales, la fecha de cierre global del proyecto se mantuvo dentro del margen planificado, gracias a la re-priorización de funcionalidades y la eficiencia ganada por la adopción de TanStack React Query en el frontend.
+\end{itemize}
+
+\section{Resumen de Esfuerzo}
+
+La Tabla~\ref{tab:esfuerzo} presenta un resumen del esfuerzo estimado y real por fase del proyecto.
+
+\begin{table}[H]
+\centering
+\begin{tabular}{|p{0.40\textwidth}|c|c|c|}
+\hline
+\textbf{Fase} & \textbf{Estimado (hrs)} & \textbf{Real (hrs)} & \textbf{Desviación} \\ \hline
+Análisis y especificación de requerimientos & 40 & 35 & $-$12\% \\ \hline
+Diseño (BD, arquitectura, UI) & 50 & 60 & +20\% \\ \hline
+Implementación Backend & 100 & 120 & +20\% \\ \hline
+Implementación Frontend Web & 80 & 65 & $-$19\% \\ \hline
+Implementación App Móvil (PWA) & 20 & 15 & $-$25\% \\ \hline
+Integración y pruebas & 20 & 20 & 0\% \\ \hline
+Documentación del informe & 30 & 35 & +17\% \\ \hline
+\textbf{Total} & \textbf{340} & \textbf{350} & \textbf{+3\%} \\ \hline
+\end{tabular}
+\caption{Comparación de esfuerzo estimado vs. real por fase.}
+\label{tab:esfuerzo}
+\end{table}
+
+El esfuerzo total real (350~horas) se desvió solo un 3\% respecto a la estimación inicial (340~horas), lo que indica una planificación global acertada. Las desviaciones más significativas se produjeron en el diseño (+20\%) y el backend (+20\%), compensadas por una implementación más eficiente del frontend ($-$19\%) y la aplicación móvil PWA ($-$25\%).
+
+% -----------------------------------------------------------
+\section{Riesgos de Alto Nivel}
+% -----------------------------------------------------------
+
+La Tabla~\ref{tab:riesgos} presenta los riesgos de alto nivel identificados durante la etapa de planificación del proyecto, junto con su evaluación de probabilidad, impacto, estrategia de mitigación y el resultado observado al cierre del desarrollo.
+
+\begin{longtable}{|p{0.04\textwidth}|p{0.18\textwidth}|p{0.08\textwidth}|p{0.07\textwidth}|p{0.35\textwidth}|p{0.12\textwidth}|}
+\caption{Riesgos de alto nivel del proyecto DOMU}\label{tab:riesgos}\\
+\hline
+\textbf{ID} & \textbf{Riesgo} & \textbf{Prob.} & \textbf{Imp.} & \textbf{Estrategia de Mitigación} & \textbf{¿Se materializó?} \\
+\hline
+\endfirsthead
+\hline
+\textbf{ID} & \textbf{Riesgo} & \textbf{Prob.} & \textbf{Imp.} & \textbf{Estrategia de Mitigación} & \textbf{¿Se materializó?} \\
+\hline
+\endhead
+\hline
+\endfoot
+
+R01 & Complejidad del modelo financiero (gastos comunes, prorrateo, períodos contables) & Alta & Alto & Diseñar el esquema de BD en iteraciones tempranas; validar con datos de prueba realistas. & \textbf{Sí} (fase de diseño +20\%) \\
+\hline
+
+R02 & Postergación de funcionalidades a v2.0 por falta de tiempo & Alta & Medio & Priorizar CUs mediante MoSCoW; comunicar decisiones de alcance tempranamente. & \textbf{Sí} (5 CUs diferidos: CU\_06, CU\_08, CU\_11, CU\_12, CU\_18) \\
+\hline
+
+R03 & Integración hardware QR con navegador web & Media & Alto & Investigar modo HID de pistolas lectoras QR; preparar alternativa de ingreso manual. & \textbf{No} (modo HID funcionó sin drivers adicionales) \\
+\hline
+
+R04 & Rendimiento de WebSocket bajo carga concurrente & Media & Alto & Usar implementación nativa de Javalin; diseñar pruebas de carga para MVP. & \textbf{No} (Javalin nativo suficiente para escala MVP) \\
+\hline
+
+R05 & Dependencia de Box API para almacenamiento de archivos & Media & Medio & Abstraer almacenamiento tras interfaz de servicio; documentar proceso de renovación de tokens. & \textbf{Parcial} (token de desarrollador requiere renovación manual cada 60~min en desarrollo) \\
+\hline
+
+R06 & Disponibilidad de pasarela de pago Mercado Pago & Baja & Alto & Implementar flujo de pago en modo simulado para v1.0; preparar integración real para v2.0. & \textbf{N/A} (modo simulado en v1.0) \\
+\hline
+
+R07 & Curva de aprendizaje de tecnologías nuevas (Javalin, TanStack Query) & Media & Medio & Dedicar sprint inicial a prototipos; apoyarse en documentación oficial y ejemplos. & \textbf{Parcial} (compensado con documentación oficial extensa) \\
+\hline
+
+R08 & Coordinación entre 2 desarrolladores con cargas académicas paralelas & Media & Medio & Usar Git con ramas por funcionalidad; reuniones semanales breves de sincronización. & \textbf{No} (Git + comunicación efectiva mitigaron el riesgo) \\
+
+\end{longtable}
+
+De los ocho riesgos identificados, dos se materializaron completamente (R01 y R02), dos de forma parcial (R05 y R07) y los restantes no se concretaron gracias a las estrategias de mitigación adoptadas. El impacto más significativo fue la postergación de cinco casos de uso a la versión~2.0, decisión tomada en la semana~8 de desarrollo para asegurar la calidad de los módulos entregados.
+
+% === PLACEHOLDER: Reemplazar con imagen generada ===
+% PROMPT para generador de imágenes (Gemini/GPT/DALL-E):
+%
+% "Genera una MATRIZ DE RIESGOS (Probabilidad vs Impacto) para un proyecto de software.
+%
+% NOTACIÓN:
+% - GRILLA: tabla de 3 filas x 3 columnas formando 9 celdas.
+% - EJE X (horizontal, abajo): 'Impacto' con valores: Bajo, Medio, Alto.
+% - EJE Y (vertical, izquierda): 'Probabilidad' con valores: Baja, Media, Alta.
+% - COLORES DE CELDAS: verde claro (Baja+Bajo, Baja+Medio), amarillo (Media+Bajo, Media+Medio, Baja+Alto),
+%   naranja (Alta+Bajo, Alta+Medio, Media+Alto), rojo (Alta+Alto).
+% - RIESGOS: círculos blancos con borde negro, dentro el ID del riesgo (R01, R02, etc.).
+%   Cada círculo tiene un ícono pequeño: ✓ si se materializó, ✗ si no, ~ si parcial.
+%
+% POSICIÓN DE LOS 8 RIESGOS EN LA GRILLA:
+% - R01 en celda (Alta, Alto) = zona roja, con ✓
+% - R02 en celda (Alta, Medio) = zona naranja, con ✓
+% - R03 en celda (Media, Alto) = zona naranja, con ✗
+% - R04 en celda (Media, Alto) = zona naranja, con ✗ (junto a R03)
+% - R05 en celda (Media, Medio) = zona amarilla, con ~
+% - R06 en celda (Baja, Alto) = zona amarilla, con N/A
+% - R07 en celda (Media, Medio) = zona amarilla, con ~ (junto a R05)
+% - R08 en celda (Media, Medio) = zona amarilla, con ✗ (junto a R05 y R07)
+%
+% LEYENDA abajo: ✓ = Materializado | ✗ = No materializado | ~ = Parcial | N/A = No aplica
+%
+% ESTILO: Fondo blanco, bordes de grilla en negro, texto negro, sin gradientes.
+% Tipografía sans-serif. Profesional para tesis universitaria. Etiquetas en español.
+% Formato: PNG 300dpi."
+\begin{figure}[H]
+  \centering
+  \fbox{\parbox{0.85\textwidth}{\centering\vspace{3cm}
+  \textit{[Insertar diagrama: Matriz de riesgos Probabilidad vs.\ Impacto con R01--R08 posicionados]}
+  \vspace{3cm}}}
+  \caption{Matriz de probabilidad--impacto de los riesgos del proyecto DOMU.}
+  \label{fig:matriz-riesgos}
+\end{figure}
+
+% -----------------------------------------------------------
+\section{Estimación por Puntos de Casos de Uso}
+% -----------------------------------------------------------
+
+A continuación se presenta la estimación del esfuerzo del proyecto utilizando el método de \textbf{Puntos de Casos de Uso} (UCP, \textit{Use Case Points}), desarrollado por Gustav Karner. Este método permite estimar el esfuerzo en horas-persona a partir de la complejidad de los actores y casos de uso del sistema, ajustado por factores técnicos y ambientales.
+
+\subsection{Clasificación de Actores (UAW)}
+
+Los actores del sistema se clasifican según la complejidad de su interfaz de interacción, como se muestra en la Tabla~\ref{tab:uaw}.
+
+\begin{table}[H]
+\centering
+\begin{tabular}{|p{0.25\textwidth}|p{0.30\textwidth}|c|c|}
+\hline
+\textbf{Actor} & \textbf{Tipo de interfaz} & \textbf{Clasificación} & \textbf{Peso} \\
+\hline
+Administrador & GUI completa (web) & Complejo & 3 \\
+\hline
+Conserje & GUI completa (web) & Complejo & 3 \\
+\hline
+Personal & Protocolo interactivo limitado & Medio & 2 \\
+\hline
+Residente & GUI completa (web + PWA) & Complejo & 3 \\
+\hline
+Proveedor & Portal limitado (web) & Medio & 2 \\
+\hline
+\multicolumn{3}{|r|}{\textbf{UAW (Unadjusted Actor Weight)}} & \textbf{13} \\
+\hline
+\end{tabular}
+\caption{Clasificación de actores y cálculo de UAW.}
+\label{tab:uaw}
+\end{table}
+
+\subsection{Clasificación de Casos de Uso (UUCW)}
+
+Cada caso de uso se clasifica según el número de transacciones (pasos en el flujo actor-sistema). La Tabla~\ref{tab:uucw} resume la clasificación de los 27~CUs del sistema.
+
+\begin{table}[H]
+\centering
+\begin{tabular}{|p{0.14\textwidth}|p{0.08\textwidth}|p{0.40\textwidth}|c|c|c|}
+\hline
+\textbf{Complejidad} & \textbf{Trans.} & \textbf{Casos de Uso} & \textbf{Cant.} & \textbf{Peso} & \textbf{Subtotal} \\
+\hline
+Simple & $\leq 3$ & CU\_03, CU\_13, CU\_17, CU\_22, CU\_23, CU\_27 & 6 & 5 & 30 \\
+\hline
+Medio & 4--7 & CU\_01, CU\_02, CU\_04, CU\_05, CU\_07, CU\_08, CU\_09, CU\_10, CU\_14, CU\_15, CU\_16, CU\_19, CU\_20, CU\_21, CU\_24, CU\_25 & 16 & 10 & 160 \\
+\hline
+Complejo & $> 7$ & CU\_06, CU\_11, CU\_12, CU\_18, CU\_26 & 5 & 15 & 75 \\
+\hline
+\multicolumn{4}{|r|}{\textbf{UUCW (Unadjusted Use Case Weight)}} & & \textbf{265} \\
+\hline
+\end{tabular}
+\caption{Clasificación de casos de uso y cálculo de UUCW.}
+\label{tab:uucw}
+\end{table}
+
+\subsection{Puntos de Casos de Uso No Ajustados (UUCP)}
+
+\[
+\text{UUCP} = \text{UAW} + \text{UUCW} = 13 + 265 = \mathbf{278}
+\]
+
+\subsection{Factores de Complejidad Técnica (TCF)}
+
+La Tabla~\ref{tab:tcf} presenta los 13~factores técnicos estándar con sus pesos y valores asignados según el contexto del proyecto DOMU.
+
+\begin{table}[H]
+\centering
+\begin{tabular}{|c|p{0.40\textwidth}|c|c|c|}
+\hline
+\textbf{Factor} & \textbf{Descripción} & \textbf{Peso} & \textbf{Valor} & \textbf{P$\times$V} \\
+\hline
+T1 & Sistema distribuido & 2.0 & 3 & 6.0 \\
+\hline
+T2 & Tiempo de respuesta & 1.0 & 4 & 4.0 \\
+\hline
+T3 & Eficiencia para el usuario & 1.0 & 4 & 4.0 \\
+\hline
+T4 & Procesamiento interno complejo & 1.0 & 3 & 3.0 \\
+\hline
+T5 & Código reutilizable & 1.0 & 4 & 4.0 \\
+\hline
+T6 & Facilidad de instalación & 0.5 & 3 & 1.5 \\
+\hline
+T7 & Facilidad de uso & 0.5 & 4 & 2.0 \\
+\hline
+T8 & Portabilidad & 2.0 & 3 & 6.0 \\
+\hline
+T9 & Facilidad de cambio & 1.0 & 4 & 4.0 \\
+\hline
+T10 & Concurrencia & 1.0 & 3 & 3.0 \\
+\hline
+T11 & Seguridad & 1.0 & 4 & 4.0 \\
+\hline
+T12 & Acceso directo a terceros & 1.0 & 2 & 2.0 \\
+\hline
+T13 & Entrenamiento especial requerido & 1.0 & 2 & 2.0 \\
+\hline
+\multicolumn{4}{|r|}{\textbf{TFactor} = $\sum$(P$\times$V)} & \textbf{45.5} \\
+\hline
+\end{tabular}
+\caption{Factores de complejidad técnica (TCF).}
+\label{tab:tcf}
+\end{table}
+
+\[
+\text{TCF} = 0.6 + (0.01 \times 45.5) = 0.6 + 0.455 = \mathbf{1.055}
+\]
+
+\subsection{Factores Ambientales (EF)}
+
+La Tabla~\ref{tab:ef} presenta los 8~factores ambientales evaluados para el equipo de desarrollo.
+
+\begin{table}[H]
+\centering
+\begin{tabular}{|c|p{0.40\textwidth}|c|c|c|}
+\hline
+\textbf{Factor} & \textbf{Descripción} & \textbf{Peso} & \textbf{Valor} & \textbf{P$\times$V} \\
+\hline
+E1 & Familiaridad con el proceso de desarrollo & 1.5 & 3 & 4.5 \\
+\hline
+E2 & Experiencia en la aplicación & 0.5 & 2 & 1.0 \\
+\hline
+E3 & Experiencia en orientación a objetos & 1.0 & 4 & 4.0 \\
+\hline
+E4 & Capacidad del analista líder & 0.5 & 3 & 1.5 \\
+\hline
+E5 & Motivación & 1.0 & 5 & 5.0 \\
+\hline
+E6 & Estabilidad de los requerimientos & 2.0 & 3 & 6.0 \\
+\hline
+E7 & Personal a tiempo parcial & $-1.0$ & 3 & $-3.0$ \\
+\hline
+E8 & Dificultad del lenguaje de programación & $-1.0$ & 2 & $-2.0$ \\
+\hline
+\multicolumn{4}{|r|}{\textbf{EFactor} = $\sum$(P$\times$V)} & \textbf{17.0} \\
+\hline
+\end{tabular}
+\caption{Factores ambientales (EF).}
+\label{tab:ef}
+\end{table}
+
+\[
+\text{EF} = 1.4 + (-0.03 \times 17.0) = 1.4 - 0.51 = \mathbf{0.89}
+\]
+
+\subsection{Puntos de Casos de Uso Ajustados (UCP)}
+
+\[
+\text{UCP} = \text{UUCP} \times \text{TCF} \times \text{EF} = 278 \times 1.055 \times 0.89 = \mathbf{260.9}
+\]
+
+\subsection{Nivel de Esfuerzo (LOE)}
+
+Para determinar las horas por punto de caso de uso, se evalúan los factores ambientales:
+\begin{itemize}
+    \item Factores E1--E6 con valor $< 3$: E2 (valor~2) $\rightarrow$ \textbf{1 factor}.
+    \item Factores E7--E8 con valor $> 3$: ninguno $\rightarrow$ \textbf{0 factores}.
+    \item Total: \textbf{1 factor} $\leq 2$ $\Rightarrow$ LOE = \textbf{20 hrs/UCP}.
+\end{itemize}
+
+\subsection{Esfuerzo Estimado}
+
+\[
+\text{Esfuerzo} = \text{UCP} \times \text{LOE} = 260.9 \times 20 = \mathbf{5{,}218 \text{ horas-persona}}
+\]
+
+\subsection{Análisis comparativo}
+
+La estimación UCP arroja un valor teórico de 5{,}218~horas-persona, considerablemente superior a las 350~horas reales invertidas. Esta divergencia se explica por varios factores:
+
+\begin{itemize}
+    \item \textbf{Factor LOE estándar:} El método UCP utiliza un LOE de 20~hrs/UCP como referencia para equipos profesionales a tiempo completo. En el contexto de un proyecto de título con dos desarrolladores que reutilizaron componentes y librerías existentes, la productividad por punto fue significativamente mayor.
+
+    \item \textbf{Reutilización de tecnología:} El uso de frameworks maduros como Javalin, TanStack React Query y Flyway redujo el esfuerzo de implementación respecto a un desarrollo desde cero.
+
+    \item \textbf{CUs diferidos:} Cinco de los 27 CUs (los más complejos: CU\_06, CU\_08, CU\_11, CU\_12, CU\_18) fueron diferidos a v2.0, reduciendo el esfuerzo real sin modificar la estimación teórica.
+
+    \item \textbf{Factor de ajuste empírico:} Aplicando un factor de ajuste de $\approx 0.067$ (350/5{,}218), se obtiene un LOE efectivo de $\approx 1.34$~hrs/UCP, coherente con proyectos académicos de alta productividad reportados en la literatura.
+\end{itemize}
+
+En la Tabla~\ref{tab:comparacion-estimaciones} se resume la comparación entre las tres fuentes de estimación.
+
+\begin{table}[H]
+\centering
+\begin{tabular}{|p{0.30\textwidth}|c|p{0.35\textwidth}|}
+\hline
+\textbf{Fuente} & \textbf{Horas} & \textbf{Observación} \\
+\hline
+Carta Gantt (planificación) & 340 & Estimación inicial por fase \\
+\hline
+Esfuerzo real (Tabla~\ref{tab:esfuerzo}) & 350 & Medición directa (+3\% vs.\ Gantt) \\
+\hline
+UCP (teórico, LOE=20) & 5{,}218 & Sobreestimación típica del método \\
+\hline
+UCP (ajustado, LOE=1.34) & $\approx$ 350 & Convergente con esfuerzo real \\
+\hline
+\end{tabular}
+\caption{Comparación de estimaciones de esfuerzo.}
+\label{tab:comparacion-estimaciones}
+\end{table}

@@ -1,88 +1,227 @@
-Este capítulo detalla el proceso de construcción del sistema \textbf{DOMU}, describiendo la estructura técnica del código, la configuración del entorno y las fases de implementación ejecutadas bajo la metodología híbrida definida. Se aborda la evolución del software desde su núcleo hasta los módulos de gestión comunitaria actualmente operativos.
+Este capítulo detalla el proceso de construcción del sistema \textbf{DOMU}, describiendo la estructura técnica del código fuente, la configuración del entorno, las fases de implementación ejecutadas bajo la metodología híbrida definida y los aspectos técnicos más relevantes de la solución. Se aborda la evolución del software desde su núcleo de autenticación hasta los módulos de gestión comunitaria, financiera y de comunicación en tiempo real.
 
 \section{Estructura del Código y Arquitectura}
 \label{sec:estructura_codigo}
 
-El sistema se ha desarrollado siguiendo una arquitectura de cliente-servidor desacoplada, donde el Backend expone una API REST consumida por el Frontend. A continuación, se detalla la organización de los componentes en los repositorios de control de versiones.
+El sistema se ha desarrollado siguiendo una arquitectura cliente-servidor desacoplada. El Backend expone una API REST con más de 120 endpoints, consumida por el Frontend construido como una \textit{Single Page Application} (SPA). Ambos repositorios se gestionan de forma independiente mediante Git, lo que permite ciclos de desarrollo, pruebas y despliegue autónomos.
 
 \subsection{Backend (Java)}
-El desarrollo del lado del servidor se ha estructurado en paquetes que separan claramente las responsabilidades, facilitando la mantenibilidad y escalabilidad del código. La estructura principal en el directorio \texttt{src/main/java/com/domu} es la siguiente:
+El servidor se ha construido con \textbf{Java~21} y el framework ligero \textbf{Javalin~6}~\cite{javalin2025}, gestionado con \textbf{Gradle} (Kotlin DSL). El proyecto cuenta con aproximadamente 190~clases Java organizadas en una arquitectura por capas. La estructura principal bajo el paquete raíz \texttt{com.domu} es la siguiente:
 
 \begin{itemize}
-    \item \textbf{config/}: Clases de configuración global del sistema, incluyendo la inyección de dependencias (\texttt{AppConfig}, \texttt{DependencyInjectionModule}).
-    \item \textbf{database/}: Capa de persistencia encargada de la comunicación directa con la base de datos MySQL (ej. \texttt{UserRepository}, \texttt{DataSourceFactory}).
-    \item \textbf{domain/}: Entidades del dominio que representan los objetos de negocio como \texttt{User}, \texttt{Community}, \texttt{Ticket}, \texttt{Reservation} y \texttt{Vote}.
-    \item \textbf{dto/}: Objetos de Transferencia de Datos (DTOs) utilizados para recibir y enviar información a través de la API sin exponer las entidades de la base de datos (ej. \texttt{LoginRequest}, \texttt{AuthResponse}, \texttt{VisitRequest}).
-    \item \textbf{security/}: Módulos encargados de la seguridad, incluyendo la generación y validación de tokens JWT (\texttt{JwtProvider}) y el hashing de contraseñas (\texttt{BCryptPasswordHasher}).
-    \item \textbf{service/}: Capa de lógica de negocio donde residen las reglas del sistema (ej. \texttt{UserService}).
-    \item \textbf{web/}: Controladores y manejadores de rutas HTTP que exponen los endpoints de la API REST (\texttt{WebServer}, \texttt{UserMapper}).
+    \item \textbf{config/}: Configuración global del sistema. La clase \texttt{AppConfig} centraliza los parámetros del servidor, base de datos, JWT, correo electrónico y almacenamiento en Box. La clase \texttt{DependencyInjectionModule} configura el contenedor de inyección de dependencias mediante \textbf{Google Guice}, registrando como \textit{singletons} los 27~servicios, 21~repositorios, los manejadores WebSocket y el módulo de seguridad.
+
+    \item \textbf{domain/}: Contiene 35~entidades de dominio organizadas en subpaquetes temáticos que reflejan los módulos del sistema:
+    \begin{itemize}
+        \item \texttt{core/}: Entidades base (\texttt{User}, \texttt{Building}, \texttt{HousingUnit}, \texttt{Role}).
+        \item \texttt{access/}: Control de acceso (\texttt{Visit}, \texttt{VisitAuthorization}, \texttt{AccessLog}, \texttt{DeliveryPackage}).
+        \item \texttt{finance/}: Gestión financiera (\texttt{CommonExpensePeriod}, \texttt{CommonCharge}, \texttt{CommonPayment}, \texttt{DelinquencyRecord}).
+        \item \texttt{facility/}: Áreas comunes (\texttt{CommonArea}, \texttt{Reservation}).
+        \item \texttt{voting/}: Votaciones (\texttt{VotingEvent}, \texttt{VotingOption}, \texttt{Vote}).
+        \item \texttt{community/}: Foro (\texttt{ForumCategory}, \texttt{ForumThread}, \texttt{ForumMessage}).
+        \item \texttt{staff/}: Personal (\texttt{Personnel}, \texttt{Shift}, \texttt{Task}, \texttt{PersonnelLog}).
+        \item \texttt{ticket/}: Incidentes (\texttt{Ticket}, \texttt{TicketFollowUp}).
+        \item \texttt{vendor/}: Proveedores (\texttt{Provider}, \texttt{ServiceRequest}, \texttt{Quote}, \texttt{Invoice}, \texttt{PreventiveMaintenance}, \texttt{FinancialTransaction}).
+    \end{itemize}
+
+    \item \textbf{dto/}: Aproximadamente 99~\textit{Data Transfer Objects} que definen los contratos de la API. Cada módulo cuenta con DTOs de solicitud (\texttt{*Request}) y respuesta (\texttt{*Response}), separando la representación HTTP de las entidades de dominio. Ejemplos representativos incluyen \texttt{LoginRequest}, \texttt{AuthResponse}, \texttt{CreateVisitRequest}, \texttt{CommonExpensePeriodDetailResponse} y \texttt{ChatMessageResponse}.
+
+    \item \textbf{database/}: Capa de persistencia compuesta por 21~repositorios que implementan el acceso a datos mediante JDBC directo sobre MySQL, utilizando \textbf{HikariCP}~5.1 para el \textit{pool} de conexiones. Las clases principales incluyen \texttt{UserRepository}, \texttt{CommonExpenseRepository}, \texttt{VisitRepository}, \texttt{PollRepository}, \texttt{AmenityRepository}, \texttt{ChatRepository}, \texttt{ParcelRepository}, \texttt{NotificationRepository}, entre otros. La clase \texttt{DataSourceFactory} centraliza la creación del \textit{pool} de conexiones.
+
+    \item \textbf{service/}: Capa de lógica de negocio con 27~servicios que encapsulan las reglas del sistema. Los servicios más relevantes son:
+    \begin{itemize}
+        \item \texttt{UserService}: Registro, autenticación, confirmación por correo y recuperación de contraseñas.
+        \item \texttt{BuildingService}: Flujo de registro de comunidades con aprobación por correo e invitación al administrador.
+        \item \texttt{CommonExpenseService}: Creación de períodos de gasto común, cargos por unidad y procesamiento de pagos.
+        \item \texttt{CommonExpensePdfService}, \texttt{PaymentReceiptPdfService}, \texttt{ChargeReceiptPdfService}: Generación de documentos PDF con \textbf{OpenPDF}.
+        \item \texttt{VisitService}: Autorización de visitas, generación de códigos QR y \textit{check-in}.
+        \item \texttt{ChatService}: Gestión de salas de chat y mensajes en tiempo real.
+        \item \texttt{NotificationService}: Creación y distribución de notificaciones vía WebSocket.
+    \end{itemize}
+
+    \item \textbf{security/}: Módulo de seguridad compuesto por 4~clases: \texttt{JwtProvider} (generación y validación de tokens JWT con HMAC256), \texttt{BCryptPasswordHasher} (hashing de contraseñas), \texttt{PasswordHasher} (interfaz de abstracción) y \texttt{AuthenticationHandler} (\textit{middleware} de Javalin que intercepta las rutas protegidas y valida el token en la cabecera \texttt{Authorization}).
+
+    \item \textbf{email/}: Servicio de correo electrónico con 6~clases: la interfaz \texttt{EmailService}, su implementación SMTP (\texttt{SmtpEmailService}) y cuatro plantillas HTML para confirmación de cuenta, aprobación de comunidades, notificación de aprobación y notificación de rechazo.
+
+    \item \textbf{web/}: Capa de presentación HTTP con 4~clases. \texttt{WebServer} es la clase principal que registra los más de 120~endpoints REST y los dos canales WebSocket (\texttt{/ws/chat} y \texttt{/ws/notifications}). \texttt{ChatWebSocketHandler} y \texttt{NotificationWebSocketHandler} gestionan la comunicación bidireccional en tiempo real. \texttt{UserMapper} convierte entidades de usuario a DTOs de respuesta.
 \end{itemize}
+
+El esquema de base de datos se versiona mediante \textbf{Flyway}, con 35~migraciones SQL que documentan la evolución del modelo de datos desde la creación del esquema de autenticación (V001) hasta las últimas actualizaciones del sistema de notificaciones y estructura de edificios (V035).
 
 \subsection{Frontend (React)}
-La interfaz de usuario se ha construido utilizando React, organizando el código para promover la reutilización de componentes y la gestión eficiente del estado:
+La interfaz de usuario se ha construido con \textbf{React~19} y el empaquetador \textbf{Vite~7}, utilizando JavaScript (JSX) y hojas de estilo SCSS. El proyecto comprende aproximadamente 92~archivos fuente con más de 20.000~líneas de código, organizados de la siguiente manera:
 
 \begin{itemize}
-    \item \textbf{components/}: Componentes reutilizables de la interfaz (botones, formularios, tarjetas de información).
-    \item \textbf{pages/}: Vistas principales que componen la navegación del usuario (Login, Dashboard, Reservas, Votaciones).
-    \item \textbf{services/}: Módulos encargados de realizar las peticiones HTTP al Backend (Axios/Fetch).
-    \item \textbf{context/}: Manejo del estado global de la aplicación, como la sesión del usuario autenticado.
-    \item \textbf{assets/}: Recursos estáticos como imágenes, logotipos e iconos.
+    \item \textbf{pages/} (54~vistas): Componentes de nivel de ruta que conforman las pantallas de la aplicación. Están segmentadas por rol:
+    \begin{itemize}
+        \item \textit{Públicas} (7): \texttt{Home}, \texttt{Login}, \texttt{Register}, \texttt{ForgotPassword}, \texttt{About}, \texttt{Contact}, \texttt{UserTypeProveedores}.
+        \item \textit{Administrador} (13): \texttt{Dashboard}, \texttt{AdminCreateUser}, \texttt{AdminIncidentsBoard}, \texttt{AdminIncidentStats}, \texttt{AdminResidents}, \texttt{AdminHousingUnits}, \texttt{AdminAmenities}, \texttt{AdminCommonExpenses}, \texttt{AdminParcels}, \texttt{AdminTasks}, \texttt{AdminStaff}, \texttt{AdminProviders}, \texttt{AdminServiceOrders}.
+        \item \textit{Residente} (18): \texttt{ResidentProfile}, \texttt{ResidentVisits}, \texttt{ResidentIncidents}, \texttt{ResidentAmenities}, \texttt{ResidentCartola}, \texttt{ResidentChargesDetail}, \texttt{ResidentPaymentFlow}, \texttt{ResidentParcels}, \texttt{ResidentPublications}, \texttt{ResidentLibrary}, \texttt{ResidentMarketplace}, \texttt{ChatHub}, \texttt{Votaciones}, entre otras.
+        \item \textit{Proveedor} (2): \texttt{ProviderPortal}, \texttt{ProviderServiceOrders}.
+        \item \textit{Especiales}: Páginas de soluciones por tipo de usuario, confirmación de correo, registro de administrador por invitación y centro de notificaciones.
+    \end{itemize}
+
+    \item \textbf{components/} (18~componentes): Elementos reutilizables de la interfaz, incluyendo \texttt{Button} (con estados de carga), \texttt{FormField} (con validación), \texttt{Spinner}, \texttt{Skeleton} (\textit{skeleton loading}), \texttt{ConfirmModal}, \texttt{LocationPicker} (selector de ubicación basado en mapas mediante la librería \texttt{pigeon-maps}), \texttt{VisitRegistrationPanel}, \texttt{MarketCard}, \texttt{ProtectedRoute} y un módulo completo de pago (\texttt{PaymentMethodModal}, \texttt{CardPaymentView}, \texttt{BankTransferView}, \texttt{ChargeSelector}, \texttt{PaymentSuccess}).
+
+    \item \textbf{layout/} (7~componentes): Estructura visual de la aplicación, compuesta por \texttt{ProtectedLayout} (envolvente para rutas autenticadas con barra lateral y cabecera), \texttt{AuthLayout} (envolvente para páginas públicas), \texttt{Header}, \texttt{Sidebar} (navegación filtrada por rol), \texttt{Footer} y \texttt{MainContent}.
+
+    \item \textbf{services/}: Capa de comunicación con el Backend. El archivo principal \texttt{api.js} (1.034~líneas) centraliza todas las llamadas HTTP organizadas por módulo (\texttt{auth}, \texttt{visits}, \texttt{incidents}, \texttt{finance}, \texttt{polls}, \texttt{amenities}, \texttt{chat}, \texttt{market}, \texttt{parcels}, \texttt{library}, \texttt{notifications}, entre otros). Cada petición inyecta automáticamente el token JWT en la cabecera \texttt{Authorization} y el identificador de la comunidad activa en la cabecera \texttt{X-Building-Id}.
+
+    \item \textbf{context/}: Estado global de la aplicación mediante \textbf{React Context API}. El \texttt{AppContext} gestiona la sesión del usuario autenticado, el edificio seleccionado (soporte multi-comunidad), el tema visual (claro/oscuro) y funciones de \textit{logout} y cambio de comunidad.
+
+    \item \textbf{hooks/}: \textit{Custom hooks} de React. El hook \texttt{useNotifications} integra WebSocket con \textbf{TanStack React Query}~v5 para recibir notificaciones en tiempo real, con reconexión automática cada 5~segundos ante desconexiones.
+
+    \item \textbf{constants/}: Configuración centralizada con 85~definiciones de rutas, secciones de navegación filtradas por rol y 20~tipos de notificación con iconos y colores asociados.
+
+    \item \textbf{styles/}: Hojas de estilo globales en SCSS compiladas por Vite.
 \end{itemize}
+
+La aplicación se configura como \textit{Progressive Web App} (PWA) mediante el plugin \texttt{vite-plugin-pwa}, y utiliza TanStack React Query para la gestión de caché y revalidación de datos del servidor.
+
 
 \section{Fases de Implementación (Iteraciones)}
 \label{sec:fases_implementacion}
 
-Siguiendo la metodología híbrida adoptada, el desarrollo se dividió en fases iterativas, permitiendo desplegar funcionalidades incrementales. A continuación, se describen las iteraciones completadas y las que se encuentran en curso.
+Siguiendo la metodología híbrida adoptada, el desarrollo se dividió en fases iterativas que permitieron desplegar funcionalidades incrementales. Cada fase fue validada antes de avanzar a la siguiente, asegurando la estabilidad del sistema. A continuación, se describen las seis iteraciones ejecutadas.
 
 \subsection{Fase 1: Fundamentos y Seguridad}
-El objetivo de esta primera iteración fue establecer los cimientos del sistema y asegurar el acceso controlado.
+El objetivo de esta primera iteración fue establecer los cimientos técnicos del sistema y asegurar el acceso controlado.
 \begin{itemize}
-    \item \textbf{Configuración del Entorno:} Levantar el servidor Backend y conectar con la base de datos MySQL.
-    \item \textbf{Autenticación (JWT):} Se implementó un sistema de seguridad basado en \textit{JSON Web Tokens}. Al iniciar sesión, el usuario recibe un token con una duración de 1 hora, el cual se almacena en el \texttt{localStorage} del navegador para persistir la sesión durante su uso.
-    \item \textbf{Gestión de Perfiles:} Funcionalidad para que los usuarios puedan editar su propia información de perfil.
+    \item \textbf{Configuración del Entorno:} Se estableció el proyecto Backend con Gradle, configurando el servidor Javalin y la conexión a MySQL mediante HikariCP. Se implementó Flyway para el versionamiento de migraciones de base de datos, asegurando la reproducibilidad del esquema entre entornos de desarrollo y producción.
+    \item \textbf{Inyección de Dependencias:} Se configuró Google Guice como contenedor de inversión de control, registrando todos los servicios y repositorios como \textit{singletons} en el módulo \texttt{DependencyInjectionModule}.
+    \item \textbf{Autenticación (JWT):} Se implementó un sistema de seguridad basado en \textit{JSON Web Tokens} firmados con HMAC256. Al iniciar sesión, el usuario recibe un token con una duración configurable (por defecto 60~minutos), el cual se almacena en el \texttt{localStorage} del navegador. El \textit{middleware} \texttt{AuthenticationHandler} intercepta todas las rutas protegidas y valida la vigencia del token.
+    \item \textbf{Registro con Confirmación:} Se implementó el flujo completo de registro de usuarios con confirmación por correo electrónico, incluyendo el servicio SMTP con plantillas HTML (\texttt{UserConfirmationEmailTemplate}) y la recuperación de contraseñas mediante tokens de un solo uso.
+    \item \textbf{Gestión de Perfiles:} Funcionalidad para que los usuarios puedan editar su información personal, cambiar su contraseña y subir avatar de perfil, con optimización automática de imágenes mediante la librería Thumbnailator.
 \end{itemize}
 
 \subsection{Fase 2: Gestión de Comunidades y Usuarios}
-Se desarrollaron las herramientas administrativas necesarias para la operación del condominio.
+Se desarrollaron las herramientas administrativas necesarias para la configuración y operación de las comunidades.
 \begin{itemize}
-    \item \textbf{Registro de Comunidades:} Implementación de un flujo mediante correo electrónico para solicitar y validar el registro de nuevas comunidades en la plataforma.
-    \item \textbf{Creación de Roles Operativos:} Desarrollo de interfaces para que el Administrador pueda crear y gestionar cuentas de personal, específicamente Conserjes y Personal de Aseo.
-    \item \textbf{Vistas por Rol:} Segmentación de la interfaz para mostrar opciones específicas según si el usuario es Administrador, Conserje o Residente.
+    \item \textbf{Registro de Comunidades:} Se implementó un flujo completo de solicitud, aprobación y rechazo de comunidades. La solicitud se envía mediante un formulario y la documentación se almacena en la nube mediante \textbf{Box}. El aprobador recibe un correo electrónico con enlaces para aprobar o rechazar la solicitud, tras lo cual se genera automáticamente una invitación para que el administrador de la comunidad registre su cuenta.
+    \item \textbf{Soporte Multi-Comunidad:} Se diseñó un mecanismo que permite a un usuario pertenecer a múltiples edificios. El Frontend envía la cabecera \texttt{X-Building-Id} en cada petición, y el Backend filtra los datos según la comunidad activa. El contexto global del Frontend gestiona el cambio de comunidad e invalida las cachés de React Query automáticamente.
+    \item \textbf{Gestión de Unidades Habitacionales:} CRUD completo de unidades (departamentos o casas) dentro de cada edificio, con la posibilidad de vincular y desvincular residentes a cada unidad.
+    \item \textbf{Creación de Usuarios por Rol:} Interfaces para que el administrador pueda crear y gestionar cuentas de Conserjes, Personal de Aseo y otros funcionarios. El sistema cuenta con 5~roles base: Administrador, Residente, Conserje, Funcionario y Proveedor.
+    \item \textbf{Vistas Segmentadas por Rol:} Se implementó la segmentación de la interfaz mostrando secciones de navegación y funcionalidades específicas según el rol del usuario autenticado, tanto en el \texttt{Sidebar} como en las rutas protegidas del Frontend.
 \end{itemize}
 
 \subsection{Fase 3: Servicios al Residente y Operación}
 Esta fase se centró en las funcionalidades de interacción diaria dentro de la comunidad.
 \begin{itemize}
-    \item \textbf{Reporte de Incidentes:} Módulo que permite a los residentes reportar problemas (ej. luces quemadas, ruidos molestos), generando un ticket visible para la administración.
-    \item \textbf{Reservas de Áreas Comunes:} Sistema de calendario para verificar disponibilidad y reservar espacios como quinchos o salones.
-    \item \textbf{Sistema de Votaciones:} Módulo digital que permite a la administración crear votaciones y a los residentes emitir su sufragio de manera remota.
+    \item \textbf{Reporte y Gestión de Incidentes:} Módulo que permite a los residentes reportar problemas (filtraciones de agua, ruidos molestos, fallas eléctricas, entre otros), generando un ticket con categoría, prioridad y descripción. La administración visualiza los incidentes en un tablero tipo Kanban (\texttt{AdminIncidentsBoard}) con estados (abierto, en progreso, resuelto) y puede asignarlos a personal específico. Se implementó también una vista de estadísticas (\texttt{AdminIncidentStats}) que presenta métricas de los incidentes.
+    \item \textbf{Reservas de Áreas Comunes:} Sistema de calendario que permite al administrador crear áreas comunes (quinchos, salones, gimnasios), configurar franjas horarias (\textit{time slots}) y definir aforos máximos. Los residentes pueden consultar la disponibilidad por fecha y reservar espacios desde la interfaz. Se implementó la lógica de cancelación y la restricción de reserva por morosidad.
+    \item \textbf{Sistema de Votaciones:} Módulo que permite a la administración crear eventos de votación con múltiples opciones, establecer fechas de cierre y publicar resultados. Los residentes emiten su voto de manera remota. Se implementó el cierre programado de votaciones y la exportación de resultados a CSV para respaldo y auditoría.
+    \item \textbf{Control de Acceso y Visitas:} Se desarrolló el módulo de autorización de visitas, permitiendo a los residentes pre-autorizar visitantes con fecha, hora y motivo. El conserje puede realizar el \textit{check-in} mediante lectura de código QR (endpoint \texttt{POST /api/visits/qr-check}) o de forma manual. Se implementó la gestión de contactos frecuentes (\texttt{VisitContactService}), que permite a los residentes guardar datos de visitantes habituales y generar visitas rápidamente a partir de ellos.
 \end{itemize}
 
-\subsection{Fase 4: Control de Acceso y Finanzas (En Desarrollo)}
-Actualmente, el proyecto se encuentra en esta etapa, enfocándose en los módulos más complejos de lógica de negocio.
+\subsection{Fase 4: Módulo Financiero}
+Esta fase abordó los módulos de mayor complejidad en la lógica de negocio.
 \begin{itemize}
-    \item \textbf{Gestión de Visitas (Formulario Manual):} Se ha implementado el formulario base que permite al conserje o al residente registrar los datos de una visita manualmente.
-    \item \textbf{Generación de Gastos Comunes:} Desarrollo de la lógica para calcular el prorrateo de gastos mensuales por unidad.
-    \item \textbf{Generación de Documentos:} Implementación de librerías para generar automáticamente los reportes de cobro en formato PDF.
+    \item \textbf{Períodos de Gastos Comunes:} Se implementó la lógica para que el administrador cree períodos mensuales de gasto común y agregue cargos individuales por unidad habitacional, considerando el coeficiente de prorrata de cada departamento.
+    \item \textbf{Flujo de Pagos:} Desarrollo completo del flujo transaccional que guía al residente a través del proceso de pago. El Frontend presenta un selector de cargos pendientes (\texttt{ChargeSelector}), opciones de método de pago (\texttt{PaymentMethodModal}) y vistas específicas para transferencia bancaria y tarjeta. El Backend procesa el pago y actualiza el estado del cargo.
+    \item \textbf{Generación de Documentos PDF:} Mediante la librería \textbf{OpenPDF}, se implementaron tres servicios de generación de documentos: estados de cuenta mensuales (\texttt{CommonExpensePdfService}), comprobantes de pago (\texttt{PaymentReceiptPdfService}) y boletas de cargo (\texttt{ChargeReceiptPdfService}). Los residentes pueden descargar estos documentos directamente desde la interfaz.
+    \item \textbf{Subida de Comprobantes:} Los residentes pueden subir comprobantes de transferencia bancaria, los cuales se almacenan en \textbf{Box} y quedan vinculados al cargo correspondiente para su posterior verificación por la administración.
 \end{itemize}
+
+\subsection{Fase 5: Comunicación y Módulos Comunitarios}
+Se implementaron las funcionalidades orientadas a la interacción entre residentes y la vida comunitaria.
+\begin{itemize}
+    \item \textbf{Chat en Tiempo Real:} Sistema de mensajería instantánea construido sobre \textbf{WebSocket} (canal \texttt{/ws/chat}). El \texttt{ChatWebSocketHandler} gestiona la conexión bidireccional autenticada mediante token JWT. Los residentes pueden iniciar conversaciones con vecinos, y el sistema incluye un flujo de solicitud de chat para respetar la privacidad. Se implementó la visualización de usuarios en línea y el ocultamiento de salas.
+    \item \textbf{Foro Comunitario:} Módulo de publicaciones que permite crear hilos de discusión categorizados, editarlos y eliminarlos. Funciona como un espacio de comunicación asincrónica complementario al chat.
+    \item \textbf{Marketplace Comunitario:} Tienda interna que permite a los residentes publicar artículos en venta con múltiples imágenes, descripción y precio. Las imágenes se almacenan en la nube mediante \texttt{MarketplaceStorageService}. Se integra con el chat para facilitar la comunicación entre comprador y vendedor.
+    \item \textbf{Gestión de Encomiendas:} Módulo para que el conserje registre la recepción de paquetes, asignándolos a la unidad habitacional correspondiente. El residente recibe una notificación y puede consultar el estado de sus encomiendas. Se implementaron cambios de estado (recibido, notificado, entregado) y la vista administrativa (\texttt{AdminParcels}).
+    \item \textbf{Biblioteca de Documentos:} Repositorio digital que permite al administrador subir documentos relevantes para la comunidad (reglamentos, actas, comunicados). Los archivos se almacenan en Box y los residentes pueden descargarlos desde la interfaz.
+\end{itemize}
+
+\subsection{Fase 6: Personal, Notificaciones y Cierre}
+La última iteración completó los módulos de gestión operativa y el sistema de notificaciones.
+\begin{itemize}
+    \item \textbf{Gestión de Personal:} CRUD completo para el registro de funcionarios (conserjes, personal de aseo, mayordomos), incluyendo la administración de turnos y la visualización del personal activo.
+    \item \textbf{Asignación de Tareas:} Módulo que permite al administrador crear tareas, asignarlas a funcionarios específicos y realizar seguimiento de su estado (pendiente, en progreso, completada). Los funcionarios pueden consultar sus tareas asignadas desde la vista \texttt{StaffTasks}.
+    \item \textbf{Sistema de Notificaciones en Tiempo Real:} Se implementó un canal WebSocket dedicado (\texttt{/ws/notifications}) gestionado por \texttt{NotificationWebSocketHandler}. El Backend genera notificaciones ante eventos relevantes (nueva encomienda, pago recibido, incidente actualizado, nueva visita, entre otros). El Frontend las recibe mediante el hook \texttt{useNotifications}, que integra la conexión WebSocket con TanStack React Query para mantener el estado sincronizado. Se implementó también el centro de notificaciones (\texttt{NotificationCenter}) con funcionalidad de marcar como leído y preferencias de notificación por tipo.
+    \item \textbf{Servicio de Correo Electrónico:} Se consolidó el sistema de correo con plantillas HTML para confirmación de cuenta, aprobación/rechazo de comunidades y notificación al administrador invitado, utilizando Jakarta Mail sobre SMTP.
+\end{itemize}
+
+\subsection{Fase 7: Proveedores, Órdenes de Servicio y Documentación de la API}
+Esta fase incorporó el módulo de gestión de proveedores externos y la documentación interactiva de la API.
+\begin{itemize}
+    \item \textbf{Gestión de Proveedores:} CRUD completo para registrar empresas proveedoras de servicios vinculadas a la comunidad (electricistas, gasfíteres, empresas de aseo, entre otros). El administrador puede crear, editar y desactivar proveedores desde la vista \texttt{AdminProviders}. Cada proveedor se asocia a una categoría de servicio y opcionalmente a una cuenta de usuario con rol \textit{Proveedor}.
+    \item \textbf{Órdenes de Servicio:} Flujo completo de solicitud de trabajo que permite al administrador crear órdenes, asignarlas a un proveedor y realizar seguimiento por estado (pendiente, aceptada, rechazada, en progreso, completada, cancelada). El proveedor puede aceptar o rechazar órdenes, subir cotizaciones y marcar trabajos como completados desde su portal (\texttt{ProviderPortal} y \texttt{ProviderServiceOrders}).
+    \item \textbf{Cotizaciones:} Los proveedores pueden adjuntar propuestas económicas a cada orden de servicio, incluyendo monto, descripción y archivo adjunto. El administrador revisa y aprueba o rechaza las cotizaciones.
+    \item \textbf{Documentación de la API (Swagger~UI):} Se integró el plugin comunitario \texttt{javalin-openapi} para generar automáticamente la especificación OpenAPI~3 del sistema. La interfaz Swagger~UI, accesible en \texttt{/swagger}, permite explorar y probar los más de 130~endpoints de la API de forma interactiva.
+\end{itemize}
+
+\subsection{Contratos de la API REST}
+Los contratos detallados de los endpoints principales de la API ---incluyendo
+métodos HTTP, rutas, objetos de solicitud (\textit{request}) y respuesta
+(\textit{response})--- se documentan en el Anexo~\ref{anexo:endpoints}.
+Dicha documentación complementa la especificación interactiva disponible
+en Swagger~UI y facilita la comprensión de la integración entre el Frontend
+y el Backend para cada módulo funcional del sistema.
 
 \section{Detalles Técnicos de Implementación}
 
-\subsection{Integración del Lector de Cédula (Diseño Técnico)}
-Para el control de acceso en conserjería, se ha definido una estrategia de integración mediante hardware tipo "pistola escáner" de códigos QR/Barras. A diferencia de soluciones basadas en cámaras web, este dispositivo operará en modo de emulación de teclado (\textit{HID Mode}).
+\subsection{Integración del Lector de Cédula}
+Para el control de acceso en conserjería, se implementó una estrategia de integración mediante hardware tipo ``pistola escáner'' de códigos QR/Barras. Este dispositivo opera en modo de emulación de teclado (\textit{HID Mode}), lo que permite su uso directo sobre el navegador web sin necesidad de controladores especiales.
 
-El flujo técnico diseñado (a implementar sobre el formulario actual) es el siguiente:
+El flujo técnico implementado es el siguiente:
 \begin{enumerate}
-    \item El conserje enfoca el campo de entrada "RUT/Pasaporte" en la interfaz web.
-    \item Al escanear el código QR de la Cédula de Identidad chilena, el dispositivo "escribe" automáticamente la cadena de texto contenida en el código.
-    \item El Frontend procesará esta cadena, limpiando la URL o metadatos extraños para extraer únicamente el RUN.
-    \item Se realizará una consulta automática a la base de datos (Endpoint \texttt{GET /api/visits/check/\{run\}}) para verificar si la persona tiene un acceso autorizado o histórico previo, autocompletando el formulario en caso positivo.
+    \item El conserje accede a la vista de registro de visitas en la interfaz web (\texttt{VisitRegistrationPanel}).
+    \item Al escanear el código QR de la Cédula de Identidad chilena, el dispositivo ``escribe'' automáticamente la cadena de texto contenida en el código.
+    \item El Frontend procesa esta cadena, extrayendo el RUN del visitante mediante \textit{parsing} de la estructura del código.
+    \item Se realiza una consulta automática al Backend (endpoint \texttt{POST /api/visits/qr-check}) que verifica si la persona tiene una autorización vigente. En caso positivo, se completa el \textit{check-in} automáticamente; en caso negativo, se presenta el formulario para registro manual.
+    \item Paralelamente, el sistema de contactos frecuentes (\texttt{POST /api/visit-contacts/\{id\}/register}) permite generar visitas con un solo clic para visitantes previamente guardados.
 \end{enumerate}
 
 \subsection{Manejo de Seguridad y Sesión}
-La seguridad se gestiona mediante la clase \texttt{JwtProvider} en el Backend. El flujo de autenticación valida las credenciales contra la base de datos (con contraseñas encriptadas vía \texttt{BCrypt}) y emite un token firmado.
+La seguridad del sistema se gestiona en múltiples capas:
 
-En el Frontend, se ha implementado un interceptor en las peticiones HTTP (servicio \textit{Axios/Fetch}) que inyecta automáticamente el token en la cabecera \texttt{Authorization: Bearer <token>}. Si el servidor responde con un error 401 (No autorizado) debido a la expiración del token (1 hora), el Frontend cierra la sesión automáticamente y redirige al Login por seguridad.
+\begin{itemize}
+    \item \textbf{Autenticación:} La clase \texttt{JwtProvider} genera tokens JWT firmados con el algoritmo HMAC256. El token contiene el identificador del usuario, su correo electrónico y una fecha de expiración configurable. Las contraseñas se almacenan encriptadas mediante \texttt{BCrypt} con sal automática.
+
+    \item \textbf{Middleware de Autorización:} La clase \texttt{AuthenticationHandler} actúa como un \textit{before-handler} de Javalin que intercepta las peticiones a rutas protegidas. Extrae el token de la cabecera \texttt{Authorization: Bearer <token>}, lo valida y deposita el identificador del usuario en el contexto de la petición para su uso posterior por los controladores.
+
+    \item \textbf{Interceptor en el Frontend:} El módulo \texttt{services/api.js} inyecta automáticamente el token JWT y la cabecera \texttt{X-Building-Id} en cada petición. Si el servidor responde con un código 401 (no autorizado) debido a la expiración del token, el Frontend cierra la sesión automáticamente, limpia el \texttt{localStorage} y redirige al formulario de inicio de sesión.
+
+    \item \textbf{Recuperación de Contraseña:} Se implementó un flujo seguro de recuperación que genera un token de un solo uso almacenado en la tabla \texttt{password\_reset\_tokens}, el cual se envía por correo electrónico al usuario y expira tras su primer uso.
+\end{itemize}
+
+\subsection{Comunicación en Tiempo Real}
+El sistema implementa dos canales WebSocket nativos de Javalin para comunicación bidireccional:
+
+\begin{itemize}
+    \item \textbf{Chat (\texttt{/ws/chat}):} Gestionado por \texttt{ChatWebSocketHandler}, permite el intercambio de mensajes instantáneos entre residentes. La conexión se autentica mediante el token JWT enviado como parámetro de consulta (\texttt{?token=...}). Los mensajes se persisten en la base de datos a través de \texttt{ChatRepository} y se distribuyen en tiempo real a los participantes de la sala.
+
+    \item \textbf{Notificaciones (\texttt{/ws/notifications}):} Gestionado por \texttt{NotificationWebSocketHandler}, distribuye notificaciones a los usuarios conectados cuando ocurren eventos relevantes en el sistema. En el Frontend, el hook \texttt{useNotifications} mantiene la conexión WebSocket y sincroniza el estado con TanStack React Query, implementando reconexión automática cada 5~segundos ante desconexiones.
+\end{itemize}
+
+\subsection{Generación de Documentos PDF}
+Para la generación de documentos financieros se utiliza la librería \textbf{OpenPDF}~1.3, que permite construir documentos PDF de forma programática. Se implementaron tres servicios especializados:
+
+\begin{itemize}
+    \item \texttt{CommonExpensePdfService}: Genera el estado de cuenta mensual de gastos comunes, detallando los cargos por unidad, el monto total y el período correspondiente.
+    \item \texttt{PaymentReceiptPdfService}: Genera comprobantes de pago con los datos del residente, el monto pagado, la fecha y el método de pago.
+    \item \texttt{ChargeReceiptPdfService}: Genera boletas individuales por cada cargo registrado.
+\end{itemize}
+
+Los documentos se generan bajo demanda cuando el residente los solicita desde la interfaz y se entregan como descarga directa a través de la API.
+
+\subsection{Almacenamiento en la Nube}
+El almacenamiento de archivos se gestiona mediante \textbf{Box}, utilizando el SDK oficial de Java con autenticación por \textit{Developer Token}. La clase central \texttt{BoxStorageService} encapsula las operaciones de subida, descarga y organización de archivos en carpetas, manteniendo una caché interna de identificadores de carpetas (\texttt{folderIdCache}) para evitar consultas redundantes a la API de Box.
+
+Tres servicios especializados delegan en \texttt{BoxStorageService} la gestión de cada tipo de archivo:
+
+\begin{itemize}
+    \item \texttt{CommunityRegistrationStorageService}: Documentos de registro de comunidades (formularios, actas constitutivas).
+    \item \texttt{CommonExpenseReceiptStorageService}: Comprobantes de pago subidos por los residentes.
+    \item \texttt{MarketplaceStorageService}: Imágenes de artículos publicados en el marketplace, optimizadas automáticamente por \texttt{ImageOptimizer} antes de la subida.
+\end{itemize}
+
+Los archivos se organizan en carpetas jerárquicas dentro de Box (por edificio, módulo y entidad), y se recuperan mediante el identificador de archivo almacenado en la base de datos. Esta arquitectura permite centralizar el almacenamiento en un solo proveedor, simplificando la gestión de permisos y el mantenimiento del sistema.
+
+\subsection{Migraciones de Base de Datos}
+El esquema de base de datos se gestiona mediante \textbf{Flyway}~\cite{flyway2025}, integrado directamente en el proceso de arranque de la aplicación a través del módulo de inyección de dependencias. Al iniciar el servidor, Flyway ejecuta automáticamente las migraciones pendientes, asegurando que el esquema esté siempre sincronizado con la versión del código.
+
+El proyecto cuenta con 35~migraciones versionadas (V001 a V035) que documentan la evolución completa del modelo de datos: desde la creación del esquema de autenticación y roles, pasando por la incorporación de visitas, incidentes, votaciones, áreas comunes, finanzas, marketplace, chat, foro, encomiendas, tareas, personal, biblioteca, notificaciones, proveedores y órdenes de servicio, y las optimizaciones de rendimiento (índices y ajustes de esquema). El detalle completo de cada migración se presenta en el Anexo~\ref{anexo:diccionario}.
 
 \section{Conclusión del Capítulo}
-A la fecha, el sistema \textbf{DOMU} cuenta con un núcleo funcional sólido y los módulos de gestión comunitaria más críticos (votaciones, reservas, incidentes) totalmente operativos. El desarrollo actual se centra en finalizar el módulo financiero y la integración de hardware para optimizar el control de acceso, cumpliendo con el cronograma de la metodología híbrida establecida.
+El sistema \textbf{DOMU} ha completado las siete fases de desarrollo planificadas, alcanzando un estado funcional completo con más de 130~endpoints REST, dos canales WebSocket, 35~migraciones de base de datos y una interfaz de usuario compuesta por 54~vistas. Los módulos de autenticación, gestión de comunidades, control de acceso, finanzas, incidentes, votaciones, reservas, chat, foro, marketplace, encomiendas, tareas, personal, biblioteca, notificaciones, proveedores y órdenes de servicio se encuentran operativos e integrados. Adicionalmente, la API se documenta de forma interactiva mediante Swagger~UI. El siguiente paso corresponde a las pruebas de aceptación, el despliegue en producción y la marcha blanca descritos en el capítulo siguiente.
