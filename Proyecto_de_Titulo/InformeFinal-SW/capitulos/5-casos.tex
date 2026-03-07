@@ -25,39 +25,39 @@
 \noindent Este capítulo presenta las historias de usuario, actores y la especificación de Casos de Uso del sistema \textit{DOMU}, junto con su matriz de trazabilidad con los requerimientos funcionales (RF).
 
 % ====== 4.1 Historias de usuario ======
-\section{Historias de usuario}
+% \section{Historias de usuario}
 
-A continuación se presentan las principales historias de usuario que guiaron el diseño del sistema, organizadas por actor:
+% A continuación se presentan las principales historias de usuario que guiaron el diseño del sistema, organizadas por actor:
 
-\subsubsection*{Administrador}
-\begin{itemize}
-  \item Como \textbf{administrador}, quiero generar estados de cuenta mensuales en PDF para distribuirlos a los residentes y mantener transparencia financiera.
-  \item Como \textbf{administrador}, quiero asignar y monitorear tareas del personal operativo para asegurar el cumplimiento de las labores de mantenimiento.
-  \item Como \textbf{administrador}, quiero gestionar proveedores y órdenes de servicio para controlar los costos de mantención del edificio.
-  \item Como \textbf{administrador}, quiero crear votaciones con cierre programado para facilitar la toma de decisiones comunitarias de forma transparente.
-\end{itemize}
+% \subsubsection*{Administrador}
+% \begin{itemize}
+%   \item Como \textbf{administrador}, quiero generar estados de cuenta mensuales en PDF para distribuirlos a los residentes y mantener transparencia financiera.
+%   \item Como \textbf{administrador}, quiero asignar y monitorear tareas del personal operativo para asegurar el cumplimiento de las labores de mantenimiento.
+%   \item Como \textbf{administrador}, quiero gestionar proveedores y órdenes de servicio para controlar los costos de mantención del edificio.
+%   \item Como \textbf{administrador}, quiero crear votaciones con cierre programado para facilitar la toma de decisiones comunitarias de forma transparente.
+% \end{itemize}
 
-\subsubsection*{Conserje}
-\begin{itemize}
-  \item Como \textbf{conserje}, quiero registrar el ingreso y salida de visitas escaneando la cédula de identidad con la pistola QR para agilizar el control de acceso.
-  \item Como \textbf{conserje}, quiero verificar si una visita tiene pre-autorización vigente para permitir el ingreso sin necesidad de contactar al residente.
-  \item Como \textbf{conserje}, quiero registrar la recepción de encomiendas con fotografía de evidencia para garantizar la trazabilidad de los paquetes.
-\end{itemize}
+% \subsubsection*{Conserje}
+% \begin{itemize}
+%   \item Como \textbf{conserje}, quiero registrar el ingreso y salida de visitas escaneando la cédula de identidad con la pistola QR para agilizar el control de acceso.
+%   \item Como \textbf{conserje}, quiero verificar si una visita tiene pre-autorización vigente para permitir el ingreso sin necesidad de contactar al residente.
+%   \item Como \textbf{conserje}, quiero registrar la recepción de encomiendas con fotografía de evidencia para garantizar la trazabilidad de los paquetes.
+% \end{itemize}
 
-\subsubsection*{Residente}
-\begin{itemize}
-  \item Como \textbf{residente}, quiero recibir notificaciones cuando llegue una encomienda a mi nombre para retirarla oportunamente.
-  \item Como \textbf{residente}, quiero pre-autorizar visitas generando un código QR temporal para evitar demoras en el ingreso de mis invitados.
-  \item Como \textbf{residente}, quiero reservar áreas comunes desde la aplicación para planificar eventos sin tener que acudir a conserjería.
-  \item Como \textbf{residente}, quiero consultar mi estado de cuenta y registrar pagos de gastos comunes desde la plataforma para evitar trámites presenciales.
-  \item Como \textbf{residente}, quiero comunicarme con otros vecinos mediante el chat en tiempo real para coordinar asuntos comunitarios.
-  \item Como \textbf{residente}, quiero registrar reclamos y sugerencias con seguimiento de estado para tener visibilidad sobre la resolución de mis solicitudes.
-\end{itemize}
+% \subsubsection*{Residente}
+% \begin{itemize}
+%   \item Como \textbf{residente}, quiero recibir notificaciones cuando llegue una encomienda a mi nombre para retirarla oportunamente.
+%   \item Como \textbf{residente}, quiero pre-autorizar visitas generando un código QR temporal para evitar demoras en el ingreso de mis invitados.
+%   \item Como \textbf{residente}, quiero reservar áreas comunes desde la aplicación para planificar eventos sin tener que acudir a conserjería.
+%   \item Como \textbf{residente}, quiero consultar mi estado de cuenta y registrar pagos de gastos comunes desde la plataforma para evitar trámites presenciales.
+%   \item Como \textbf{residente}, quiero comunicarme con otros vecinos mediante el chat en tiempo real para coordinar asuntos comunitarios.
+%   \item Como \textbf{residente}, quiero registrar reclamos y sugerencias con seguimiento de estado para tener visibilidad sobre la resolución de mis solicitudes.
+% \end{itemize}
 
-\subsubsection*{Comité}
-\begin{itemize}
-  \item Como \textbf{miembro del comité}, quiero acceder a reportes financieros y de gestión para fiscalizar la labor del administrador.
-\end{itemize}
+% \subsubsection*{Comité}
+% \begin{itemize}
+%   \item Como \textbf{miembro del comité}, quiero acceder a reportes financieros y de gestión para fiscalizar la labor del administrador.
+% \end{itemize}
 
 % ====== 4.2 Actores de Casos de Uso ======
 \section{Actores de casos de uso}
@@ -132,9 +132,7 @@ Básico & Bajo (interacciones asignadas) \\\hline
 % Etiquetas en español. Formato: PNG 300dpi orientación horizontal (landscape)."
 \begin{figure}[H]
   \centering
-  \fbox{\parbox{0.85\textwidth}{\centering\vspace{4cm}
-  \textit{[Insertar diagrama: Diagrama UML de Casos de Uso con los 5 actores (stick figures) y 27 CUs (elipses) agrupados por módulo]}
-  \vspace{4cm}}}
+  \includegraphics[width=\textwidth]{\detokenize{../images/ActoresCU.drawio (1).png}}
   \caption{Diagrama de casos de uso del sistema DOMU.}
   \label{fig:diagrama-cu}
 \end{figure}
