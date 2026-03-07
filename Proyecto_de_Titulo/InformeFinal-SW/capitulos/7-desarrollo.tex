@@ -21,7 +21,6 @@ El servidor se ha construido con \textbf{Java~21} y el framework ligero \textbf{
         \item \texttt{community/}: Foro (\texttt{ForumCategory}, \texttt{ForumThread}, \texttt{ForumMessage}).
         \item \texttt{staff/}: Personal (\texttt{Personnel}, \texttt{Shift}, \texttt{Task}, \texttt{PersonnelLog}).
         \item \texttt{ticket/}: Incidentes (\texttt{Ticket}, \texttt{TicketFollowUp}).
-        \item \texttt{vendor/}: Proveedores (\texttt{Provider}, \texttt{ServiceRequest}, \texttt{Quote}, \texttt{Invoice}, \texttt{PreventiveMaintenance}, \texttt{FinancialTransaction}).
     \end{itemize}
 
     \item \textbf{dto/}: Aproximadamente 99~\textit{Data Transfer Objects} que definen los contratos de la API. Cada módulo cuenta con DTOs de solicitud (\texttt{*Request}) y respuesta (\texttt{*Response}), separando la representación HTTP de las entidades de dominio. Ejemplos representativos incluyen \texttt{LoginRequest}, \texttt{AuthResponse}, \texttt{CreateVisitRequest}, \texttt{CommonExpensePeriodDetailResponse} y \texttt{ChatMessageResponse}.
@@ -46,6 +45,8 @@ El servidor se ha construido con \textbf{Java~21} y el framework ligero \textbf{
     \item \textbf{web/}: Capa de presentación HTTP con 4~clases. \texttt{WebServer} es la clase principal que registra los más de 120~endpoints REST y los dos canales WebSocket (\texttt{/ws/chat} y \texttt{/ws/notifications}). \texttt{ChatWebSocketHandler} y \texttt{NotificationWebSocketHandler} gestionan la comunicación bidireccional en tiempo real. \texttt{UserMapper} convierte entidades de usuario a DTOs de respuesta.
 \end{itemize}
 
+Para mantener consistencia con el alcance funcional vigente del producto defendido, esta sección describe únicamente los módulos activos de autenticación, operación comunitaria, finanzas y gobernanza del Comité. Artefactos históricos fuera de dicho alcance no se consideran parte de la entrega final documentada.
+
 El esquema de base de datos se versiona mediante \textbf{Flyway}, con 35~migraciones SQL que documentan la evolución del modelo de datos desde la creación del esquema de autenticación (V001) hasta las últimas actualizaciones del sistema de notificaciones y estructura de edificios (V035).
 
 \subsection{Frontend (React)}
@@ -54,10 +55,10 @@ La interfaz de usuario se ha construido con \textbf{React~19} y el empaquetador 
 \begin{itemize}
     \item \textbf{pages/} (54~vistas): Componentes de nivel de ruta que conforman las pantallas de la aplicación. Están segmentadas por rol:
     \begin{itemize}
-        \item \textit{Públicas} (7): \texttt{Home}, \texttt{Login}, \texttt{Register}, \texttt{ForgotPassword}, \texttt{About}, \texttt{Contact}, \texttt{UserTypeProveedores}.
-        \item \textit{Administrador} (13): \texttt{Dashboard}, \texttt{AdminCreateUser}, \texttt{AdminIncidentsBoard}, \texttt{AdminIncidentStats}, \texttt{AdminResidents}, \texttt{AdminHousingUnits}, \texttt{AdminAmenities}, \texttt{AdminCommonExpenses}, \texttt{AdminParcels}, \texttt{AdminTasks}, \texttt{AdminStaff}, \texttt{AdminProviders}, \texttt{AdminServiceOrders}.
+        \item \textit{Públicas} (7): \texttt{Home}, \texttt{Login}, \texttt{Register}, \texttt{ForgotPassword}, \texttt{About}, \texttt{Contact} y páginas de solución por tipo de usuario.
+        \item \textit{Administrador} (13): \texttt{Dashboard}, \texttt{AdminCreateUser}, \texttt{AdminIncidentsBoard}, \texttt{AdminIncidentStats}, \texttt{AdminResidents}, \texttt{AdminHousingUnits}, \texttt{AdminAmenities}, \texttt{AdminCommonExpenses}, \texttt{AdminParcels}, \texttt{AdminTasks}, \texttt{AdminStaff} y vistas de gobernanza comunitaria reutilizadas por el Comité.
         \item \textit{Residente} (18): \texttt{ResidentProfile}, \texttt{ResidentVisits}, \texttt{ResidentIncidents}, \texttt{ResidentAmenities}, \texttt{ResidentCartola}, \texttt{ResidentChargesDetail}, \texttt{ResidentPaymentFlow}, \texttt{ResidentParcels}, \texttt{ResidentPublications}, \texttt{ResidentLibrary}, \texttt{ResidentMarketplace}, \texttt{ChatHub}, \texttt{Votaciones}, entre otras.
-        \item \textit{Proveedor} (2): \texttt{ProviderPortal}, \texttt{ProviderServiceOrders}.
+        \item \textit{Comité}: Acceso a capacidades de gobernanza comunitaria (votaciones, actas y consulta de estados de cuenta) mediante permisos sobre módulos existentes.
         \item \textit{Especiales}: Páginas de soluciones por tipo de usuario, confirmación de correo, registro de administrador por invitación y centro de notificaciones.
     \end{itemize}
 
@@ -82,7 +83,7 @@ La aplicación se configura como \textit{Progressive Web App} (PWA) mediante el 
 \section{Fases de Implementación (Iteraciones)}
 \label{sec:fases_implementacion}
 
-Siguiendo la metodología híbrida adoptada, el desarrollo se dividió en fases iterativas que permitieron desplegar funcionalidades incrementales. Cada fase fue validada antes de avanzar a la siguiente, asegurando la estabilidad del sistema. A continuación, se describen las seis iteraciones ejecutadas.
+Siguiendo la metodología híbrida adoptada, el desarrollo se dividió en fases iterativas que permitieron desplegar funcionalidades incrementales. Cada fase fue validada antes de avanzar a la siguiente, asegurando la estabilidad del sistema. A continuación, se describen las siete iteraciones ejecutadas.
 
 \subsection{Fase 1: Fundamentos y Seguridad}
 El objetivo de esta primera iteración fue establecer los cimientos técnicos del sistema y asegurar el acceso controlado.
@@ -100,7 +101,7 @@ Se desarrollaron las herramientas administrativas necesarias para la configuraci
     \item \textbf{Registro de Comunidades:} Se implementó un flujo completo de solicitud, aprobación y rechazo de comunidades. La solicitud se envía mediante un formulario y la documentación se almacena en la nube mediante \textbf{Box}. El aprobador recibe un correo electrónico con enlaces para aprobar o rechazar la solicitud, tras lo cual se genera automáticamente una invitación para que el administrador de la comunidad registre su cuenta.
     \item \textbf{Soporte Multi-Comunidad:} Se diseñó un mecanismo que permite a un usuario pertenecer a múltiples edificios. El Frontend envía la cabecera \texttt{X-Building-Id} en cada petición, y el Backend filtra los datos según la comunidad activa. El contexto global del Frontend gestiona el cambio de comunidad e invalida las cachés de React Query automáticamente.
     \item \textbf{Gestión de Unidades Habitacionales:} CRUD completo de unidades (departamentos o casas) dentro de cada edificio, con la posibilidad de vincular y desvincular residentes a cada unidad.
-    \item \textbf{Creación de Usuarios por Rol:} Interfaces para que el administrador pueda crear y gestionar cuentas de Conserjes, Personal de Aseo y otros funcionarios. El sistema cuenta con 5~roles base: Administrador, Residente, Conserje, Funcionario y Proveedor.
+    \item \textbf{Creación de Usuarios por Rol:} Interfaces para que el administrador pueda crear y gestionar cuentas de Conserjes, Personal de Aseo, Comité y otros funcionarios. El sistema considera cinco roles base para operación del producto documentado: Administrador, Comité, Residente, Conserje y Funcionario.
     \item \textbf{Vistas Segmentadas por Rol:} Se implementó la segmentación de la interfaz mostrando secciones de navegación y funcionalidades específicas según el rol del usuario autenticado, tanto en el \texttt{Sidebar} como en las rutas protegidas del Frontend.
 \end{itemize}
 
@@ -141,12 +142,12 @@ La última iteración completó los módulos de gestión operativa y el sistema 
     \item \textbf{Servicio de Correo Electrónico:} Se consolidó el sistema de correo con plantillas HTML para confirmación de cuenta, aprobación/rechazo de comunidades y notificación al administrador invitado, utilizando Jakarta Mail sobre SMTP.
 \end{itemize}
 
-\subsection{Fase 7: Proveedores, Órdenes de Servicio y Documentación de la API}
-Esta fase incorporó el módulo de gestión de proveedores externos y la documentación interactiva de la API.
+\subsection{Fase 7: Gobernanza del Comité y Consolidación Documental/API}
+Esta fase consolidó el soporte funcional al actor Comité y cerró la documentación técnica de integración.
 \begin{itemize}
-    \item \textbf{Gestión de Proveedores:} CRUD completo para registrar empresas proveedoras de servicios vinculadas a la comunidad (electricistas, gasfíteres, empresas de aseo, entre otros). El administrador puede crear, editar y desactivar proveedores desde la vista \texttt{AdminProviders}. Cada proveedor se asocia a una categoría de servicio y opcionalmente a una cuenta de usuario con rol \textit{Proveedor}.
-    \item \textbf{Órdenes de Servicio:} Flujo completo de solicitud de trabajo que permite al administrador crear órdenes, asignarlas a un proveedor y realizar seguimiento por estado (pendiente, aceptada, rechazada, en progreso, completada, cancelada). El proveedor puede aceptar o rechazar órdenes, subir cotizaciones y marcar trabajos como completados desde su portal (\texttt{ProviderPortal} y \texttt{ProviderServiceOrders}).
-    \item \textbf{Cotizaciones:} Los proveedores pueden adjuntar propuestas económicas a cada orden de servicio, incluyendo monto, descripción y archivo adjunto. El administrador revisa y aprueba o rechaza las cotizaciones.
+    \item \textbf{Gestión de votaciones desde Comité:} Se formalizó el uso del módulo de votaciones por parte del Comité como rol interno adicional de gobernanza. En la implementación vigente, esta capacidad reutiliza vistas y endpoints ya utilizados por administración para crear votaciones, cerrarlas y publicar resultados, sin requerir un motor funcional separado.
+    \item \textbf{Carga de actas de asamblea:} Se consolidó el flujo para que el Comité cargue actas en la biblioteca documental utilizando la etiqueta \texttt{actas}. Esta operación se implementa sobre el módulo de biblioteca existente (almacenamiento en Box y trazabilidad de metadatos), aplicando reglas de uso por rol en lugar de un subsistema documental distinto.
+    \item \textbf{Consulta de estados de cuenta para fiscalización:} Se incorporó el uso en modo lectura de los estados de cuenta por parte del Comité, reutilizando los servicios financieros existentes (\texttt{CommonExpenseService} y \texttt{CommonExpensePdfService}) para fines de revisión y control comunitario.
     \item \textbf{Documentación de la API (Swagger~UI):} Se integró el plugin comunitario \texttt{javalin-openapi} para generar automáticamente la especificación OpenAPI~3 del sistema. La interfaz Swagger~UI, accesible en \texttt{/swagger}, permite explorar y probar los más de 130~endpoints de la API de forma interactiva.
 \end{itemize}
 
@@ -216,12 +217,12 @@ Tres servicios especializados delegan en \texttt{BoxStorageService} la gestión 
     \item \texttt{MarketplaceStorageService}: Imágenes de artículos publicados en el marketplace, optimizadas automáticamente por \texttt{ImageOptimizer} antes de la subida.
 \end{itemize}
 
-Los archivos se organizan en carpetas jerárquicas dentro de Box (por edificio, módulo y entidad), y se recuperan mediante el identificador de archivo almacenado en la base de datos. Esta arquitectura permite centralizar el almacenamiento en un solo proveedor, simplificando la gestión de permisos y el mantenimiento del sistema.
+Los archivos se organizan en carpetas jerárquicas dentro de Box (por edificio, módulo y entidad), y se recuperan mediante el identificador de archivo almacenado en la base de datos. Esta arquitectura permite centralizar el almacenamiento en un único servicio, simplificando la gestión de permisos y el mantenimiento del sistema.
 
 \subsection{Migraciones de Base de Datos}
 El esquema de base de datos se gestiona mediante \textbf{Flyway}~\cite{flyway2025}, integrado directamente en el proceso de arranque de la aplicación a través del módulo de inyección de dependencias. Al iniciar el servidor, Flyway ejecuta automáticamente las migraciones pendientes, asegurando que el esquema esté siempre sincronizado con la versión del código.
 
-El proyecto cuenta con 35~migraciones versionadas (V001 a V035) que documentan la evolución completa del modelo de datos: desde la creación del esquema de autenticación y roles, pasando por la incorporación de visitas, incidentes, votaciones, áreas comunes, finanzas, marketplace, chat, foro, encomiendas, tareas, personal, biblioteca, notificaciones, proveedores y órdenes de servicio, y las optimizaciones de rendimiento (índices y ajustes de esquema). El detalle completo de cada migración se presenta en el Anexo~\ref{anexo:diccionario}.
+El proyecto cuenta con 35~migraciones versionadas (V001 a V035) que documentan la evolución completa del modelo de datos: desde la creación del esquema de autenticación y roles, pasando por la incorporación de visitas, incidentes, votaciones, áreas comunes, finanzas, marketplace, chat, foro, encomiendas, tareas, personal, biblioteca, notificaciones y ajustes de gobernanza comunitaria, además de optimizaciones de rendimiento (índices y ajustes de esquema). El detalle completo de cada migración se presenta en el Anexo~\ref{anexo:diccionario}.
 
 \section{Conclusión del Capítulo}
-El sistema \textbf{DOMU} ha completado las siete fases de desarrollo planificadas, alcanzando un estado funcional completo con más de 130~endpoints REST, dos canales WebSocket, 35~migraciones de base de datos y una interfaz de usuario compuesta por 54~vistas. Los módulos de autenticación, gestión de comunidades, control de acceso, finanzas, incidentes, votaciones, reservas, chat, foro, marketplace, encomiendas, tareas, personal, biblioteca, notificaciones, proveedores y órdenes de servicio se encuentran operativos e integrados. Adicionalmente, la API se documenta de forma interactiva mediante Swagger~UI. El siguiente paso corresponde a las pruebas de aceptación, el despliegue en producción y la marcha blanca descritos en el capítulo siguiente.
+El sistema \textbf{DOMU} ha completado las siete fases de desarrollo planificadas, alcanzando un estado funcional completo con más de 130~endpoints REST, dos canales WebSocket, 35~migraciones de base de datos y una interfaz de usuario compuesta por 54~vistas. Los módulos de autenticación, gestión de comunidades, control de acceso, finanzas, incidentes, votaciones, reservas, chat, foro, marketplace, encomiendas, tareas, personal, biblioteca y notificaciones se encuentran operativos e integrados en el alcance vigente, incorporando además el soporte de gobernanza para el actor Comité (votaciones, actas y fiscalización de estados de cuenta) sobre capacidades existentes del sistema. Adicionalmente, la API se documenta de forma interactiva mediante Swagger~UI. El siguiente paso corresponde a las pruebas de aceptación, el despliegue en producción y la marcha blanca descritos en el capítulo siguiente.

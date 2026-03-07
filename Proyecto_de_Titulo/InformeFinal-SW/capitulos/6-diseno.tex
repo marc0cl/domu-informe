@@ -3,7 +3,7 @@ Este capítulo abordará los servicios web necesarios para este proyecto, el mod
 % ---------------------------------------------
 \section{Descripción de los Servicios Web}
 
-La capa de servicios web de DOMU se implementa mediante una \textbf{API RESTful} expuesta a través del \textit{framework} Javalin~6, complementada con canales \textbf{WebSocket} para comunicación bidireccional en tiempo real. El backend agrupa la lógica en trece módulos funcionales, cada uno respaldado por sus respectivos \textit{Controllers}, \textit{Services} y \textit{Repositories}. Adicionalmente, el sistema integra servicios transversales de generación de documentos PDF (OpenPDF), almacenamiento en la nube (Box~API) y envío de correo electrónico (Jakarta~Mail).
+La capa de servicios web de DOMU se implementa mediante una \textbf{API RESTful} expuesta a través del \textit{framework} Javalin~6, complementada con canales \textbf{WebSocket} para comunicación bidireccional en tiempo real. El backend agrupa la lógica en doce módulos funcionales, cada uno respaldado por sus respectivos \textit{Controllers}, \textit{Services} y \textit{Repositories}. Adicionalmente, el sistema integra servicios transversales de generación de documentos PDF (OpenPDF), almacenamiento en la nube (Box~API) y envío de correo electrónico (Jakarta~Mail).
 
 La Tabla~\ref{tab:servicios-web} resume los módulos, el protocolo de comunicación que utilizan y una descripción sintética de su alcance funcional.
 
@@ -27,7 +27,7 @@ Registro con confirmación por correo, inicio de sesión con JWT, recuperación 
 
 Gestión de Usuarios y Roles &
 REST &
-CRUD de usuarios, asignación dinámica de cinco roles (Administrador, Residente, Conserje, Funcionario, Proveedor) bajo el modelo RBAC; gestión de perfiles con avatar almacenado en Box. \\
+CRUD de usuarios, asignación dinámica de roles internos (Administrador, Comité, Residente, Conserje y Funcionario) bajo el modelo RBAC; gestión de perfiles con avatar almacenado en Box. \\
 \hline
 
 Gestión de Comunidades &
@@ -80,9 +80,9 @@ WebSocket &
 Entrega de notificaciones en tiempo real mediante el canal \texttt{/ws/notifications}, con preferencias configurables por tipo de evento. \\
 \hline
 
-Gestión de Proveedores y Órdenes de Servicio &
+Gobernanza del Comité &
 REST &
-CRUD de proveedores vinculados a la comunidad, creación y seguimiento de órdenes de servicio con flujo de aceptación/rechazo por parte del proveedor, y gestión de cotizaciones. \\
+Soporte al gobierno comunitario: generación de votaciones, publicación de resultados, consulta de estados de cuenta en modo lectura y carga de actas de asamblea a la biblioteca con etiqueta ``actas''. \\
 
 \end{longtable}
 
@@ -330,49 +330,6 @@ GET & \texttt{/api/notifications/preferences} & Obtiene preferencias de notifica
 
 \end{longtable}
 
-% --- Endpoints: Proveedores ---
-\begin{longtable}{|p{0.08\textwidth}|p{0.38\textwidth}|p{0.46\textwidth}|}
-\caption{Endpoints --- Proveedores}\label{tab:ep-providers}\\
-\hline
-\textbf{Método} & \textbf{Ruta} & \textbf{Descripción} \\
-\hline
-\endfirsthead
-\hline \textbf{Método} & \textbf{Ruta} & \textbf{Descripción} \\ \hline
-\endhead
-\hline \endfoot
-
-POST & \texttt{/api/providers} & Registra nuevo proveedor en la comunidad. \\
-\hline
-GET & \texttt{/api/providers} & Lista proveedores de la comunidad. \\
-\hline
-GET & \texttt{/api/providers/\{id\}} & Detalle de un proveedor. \\
-\hline
-PUT & \texttt{/api/providers/\{id\}} & Actualiza datos del proveedor. \\
-\hline
-DELETE & \texttt{/api/providers/\{id\}} & Desactiva proveedor. \\
-
-\end{longtable}
-
-% --- Endpoints: Órdenes de Servicio ---
-\begin{longtable}{|p{0.08\textwidth}|p{0.38\textwidth}|p{0.46\textwidth}|}
-\caption{Endpoints --- Órdenes de Servicio}\label{tab:ep-service-orders}\\
-\hline
-\textbf{Método} & \textbf{Ruta} & \textbf{Descripción} \\
-\hline
-\endfirsthead
-\hline \textbf{Método} & \textbf{Ruta} & \textbf{Descripción} \\ \hline
-\endhead
-\hline \endfoot
-
-POST & \texttt{/api/service-orders} & Crea orden de servicio asignada a proveedor. \\
-\hline
-PUT & \texttt{/api/service-orders/\{id\}/status} & Actualiza estado de la orden (aceptar, rechazar, completar). \\
-\hline
-POST & \texttt{/api/service-orders/\{id\}/quotations} & Sube cotización vinculada a la orden. \\
-\hline
-GET & \texttt{/api/service-orders} & Lista órdenes de servicio (filtros por estado y proveedor). \\
-
-\end{longtable}
 
 Adicionalmente, el sistema expone dos canales \textbf{WebSocket} persistentes:
 \begin{itemize}
@@ -395,11 +352,11 @@ Ambos canales requieren autenticación mediante token JWT enviado como parámetr
 % - BASE DE DATOS: a la derecha, un cilindro etiquetado 'MySQL 8' con flecha desde el core.
 % - SERVICIOS EXTERNOS: arriba, 3 cajas pequeñas: 'Box API (archivos)', 'Gmail SMTP (correo)', 'OpenPDF (documentos)'.
 %
-% Los 13 módulos se organizan en GRID 4x4 alrededor del core central:
+% Los 12 módulos se organizan en GRID 4x3 alrededor del core central:
 % Fila superior: Autenticación, Usuarios y Roles, Comunidades, Control de Accesos
 % Fila media: Encomiendas, Gestión Operativa, Finanzas, Incidentes
 % Fila inferior: Reservas, Votaciones, Comunicación (Foro/Chat/Marketplace), Notificaciones
-% Última fila: Proveedores y Órdenes de Servicio
+% Última fila: Gobernanza del Comité (votaciones, actas y consulta de estados de cuenta)
 %
 % Cada módulo tiene una línea que lo conecta al core central.
 % Los módulos de Comunicación y Notificaciones tienen además línea punteada a los WebSocket.
@@ -410,7 +367,7 @@ Ambos canales requieren autenticación mediante token JWT enviado como parámetr
 \begin{figure}[H]
   \centering
   \fbox{\parbox{0.85\textwidth}{\centering\vspace{3cm}
-  \textit{[Insertar diagrama: Arquitectura modular de la API REST --- 13 módulos + 2 canales WebSocket]}
+  \textit{[Insertar diagrama: Arquitectura modular de la API REST --- 12 módulos + 2 canales WebSocket]}
   \vspace{3cm}}}
   \caption{Diagrama de módulos de la API REST del sistema DOMU.}
   \label{fig:diagrama-api-modulos}
@@ -421,7 +378,7 @@ Ambos canales requieren autenticación mediante token JWT enviado como parámetr
 
 El modelo de datos es de tipo relacional, con el fin de mantener la simpleza y eficiencia del almacenamiento de información crítica del sistema.
 
-Las 37~tablas del modelo, derivadas de las 35~migraciones Flyway del proyecto, se organizan en 12~dominios funcionales. La Tabla~\ref{tab:resumen-dominios} presenta un resumen de esta distribución; el detalle de cada entidad y sus atributos se encuentra en el Anexo~D (Diccionario de Datos).
+Las 34~tablas del modelo, derivadas de las 35~migraciones Flyway del proyecto, se organizan en 11~dominios funcionales vigentes. La Tabla~\ref{tab:resumen-dominios} presenta un resumen de esta distribución; el detalle de cada entidad y sus atributos se encuentra en el Anexo~D (Diccionario de Datos).
 
 \begin{table}[H]
 \centering
@@ -440,7 +397,6 @@ Votaciones & \texttt{polls}, \texttt{poll\_options}, \texttt{poll\_votes} & 3 \\
 Chat y Marketplace & \texttt{chat\_room}, \texttt{chat\_participant}, \texttt{chat\_message}, \texttt{chat\_request}, \texttt{market\_category}, \texttt{market\_item}, \texttt{market\_item\_image} & 7 \\ \hline
 Foro Comunitario & \texttt{forum\_categories}, \texttt{forum\_threads}, \texttt{forum\_posts} & 3 \\ \hline
 Biblioteca, Notificaciones e Incidentes & \texttt{library\_documents}, \texttt{notifications}, \texttt{notification\_preferences}, \texttt{incidents} & 4 \\ \hline
-Proveedores & \texttt{providers}, \texttt{service\_orders}, \texttt{quotations} & 3 \\ \hline
 \end{tabular}
 \caption{Resumen de entidades del modelo de datos por dominio funcional.}
 \label{tab:resumen-dominios}
@@ -449,7 +405,7 @@ Proveedores & \texttt{providers}, \texttt{service\_orders}, \texttt{quotations} 
 \subsection{Esquema de la base de datos}
 El diseño de la persistencia de datos se realizó utilizando el motor de base de datos relacional \textbf{MySQL~8}. El esquema se gestiona mediante \textbf{Flyway~10.15}, que ejecuta migraciones SQL versionadas al arranque del servidor, garantizando la consistencia entre los entornos de desarrollo y producción. Hasta la fecha, el proyecto acumula \textbf{35~migraciones} (\texttt{V001} a \texttt{V035}), cada una atómica e idempotente.
 
-A continuación, las Tablas~\ref{tab:esquema-acceso} a~\ref{tab:esquema-proveedores} presentan las tablas del esquema agrupadas por dominio funcional, junto con sus relaciones clave.
+A continuación, las Tablas~\ref{tab:esquema-acceso} a~\ref{tab:esquema-soporte} presentan las tablas del esquema agrupadas por dominio funcional, junto con sus relaciones clave.
 
 % --- Tabla 1: Acceso y Organización ---
 \begin{table}[H]
@@ -594,23 +550,6 @@ A continuación, las Tablas~\ref{tab:esquema-acceso} a~\ref{tab:esquema-proveedo
 \end{tabular}
 \end{table}
 
-% --- Tabla 8: Proveedores ---
-\begin{table}[H]
-\centering
-\caption{Esquema de base de datos --- Proveedores y Servicios Externos}\label{tab:esquema-proveedores}
-\begin{tabular}{|p{0.26\textwidth}|p{0.38\textwidth}|p{0.28\textwidth}|}
-\hline
-\textbf{Tabla} & \textbf{Descripción} & \textbf{Relaciones clave} \\
-\hline
-\texttt{providers} & Proveedores externos de servicios. & FK a \texttt{buildings}, \texttt{users} \\
-\hline
-\texttt{service\_orders} & Órdenes de servicio con flujo de estados. & FK a \texttt{buildings}, \texttt{providers}, \texttt{users} \\
-\hline
-\texttt{quotations} & Cotizaciones asociadas a órdenes. & FK a \texttt{service\_orders}, \texttt{providers} \\
-\hline
-\end{tabular}
-\end{table}
-
 El modelo respeta las formas normales para evitar redundancia de datos, utilizando claves foráneas (\texttt{FOREIGN KEY}) para mantener la integridad referencial entre las unidades, los residentes y sus respectivas operaciones (pagos, reservas, incidentes). Todas las tablas incluyen columnas de auditoría \texttt{created\_at} y \texttt{updated\_at} gestionadas automáticamente.
 
 \cleardoublepage
@@ -738,7 +677,7 @@ La composición de las interfaces expuesta a continuación corresponde a la vers
 
 % --- ÍTEM D: Vista Comité ---
 \begin{itemize}
-    \item[\textbf{D.}] \textbf{Vista Comité}: Interfaz con acceso a información crítica, documentos y procesos de votación destinados a los miembros del comité de administración.
+    \item[\textbf{D.}] \textbf{Vista Comité}: Interfaz de gobierno comunitario para miembros del comité, enfocada en generar votaciones, publicar resultados, subir actas de asamblea a biblioteca con etiqueta ``actas'' y consultar estados de cuenta en modo lectura/fiscalización.
 \end{itemize}
 \begin{figure}[H]
     \centering
@@ -815,7 +754,7 @@ La composición de las interfaces expuesta a continuación corresponde a la vers
 \subsection{Vistas del Sistema por Rol}
 \label{subsec:vistas-por-rol}
 
-El frontend de DOMU está compuesto por \textbf{54~vistas} organizadas según el rol del usuario. A continuación se presentan las vistas agrupadas por categoría de acceso, indicando los casos de uso (CU) que cada vista materializa.
+El frontend de DOMU está compuesto por \textbf{52~vistas} organizadas según el rol del usuario. A continuación se presentan las vistas agrupadas por categoría de acceso, indicando los casos de uso (CU) que cada vista materializa.
 
 % --- Vistas Públicas ---
 \begin{longtable}{|p{0.28\textwidth}|p{0.42\textwidth}|p{0.22\textwidth}|}
@@ -877,9 +816,9 @@ AdminTasks & Creación y asignación de tareas al personal. & CU\_07 \\
 \hline
 AdminStaff & Gestión de personal operativo de la comunidad. & CU\_07 \\
 \hline
-AdminProviders & CRUD de proveedores vinculados a la comunidad. & CU\_19, CU\_25 \\
+AdminProviders & Gestión de votaciones comunitarias y publicación de resultados. & CU\_19, CU\_27 \\
 \hline
-AdminServiceOrders & Gestión de órdenes de servicio y cotizaciones. & CU\_26 \\
+AdminServiceOrders & Carga de actas de asamblea y consulta de estados de cuenta para fiscalización. & CU\_25, CU\_26 \\
 
 \end{longtable}
 
@@ -951,9 +890,9 @@ ResidentContacts & Gestión de contactos frecuentes para visitas. & CU\_01 \\
 
 \end{longtable}
 
-% --- Vistas Proveedor ---
+% --- Vistas Comité ---
 \begin{longtable}{|p{0.28\textwidth}|p{0.42\textwidth}|p{0.22\textwidth}|}
-\caption{Vistas del Proveedor}\label{tab:vistas-proveedor}\\
+\caption{Vistas del Comité}\label{tab:vistas-comite}\\
 \hline
 \textbf{Vista} & \textbf{Descripción} & \textbf{CUs relacionados} \\
 \hline
@@ -962,9 +901,9 @@ ResidentContacts & Gestión de contactos frecuentes para visitas. & CU\_01 \\
 \endhead
 \hline \endfoot
 
-ProviderPortal & Portal principal del proveedor con órdenes asignadas. & CU\_27 \\
+AdminProviders & Gestión de votaciones comunitarias y publicación de resultados en rol Comité. & CU\_19, CU\_27 \\
 \hline
-ProviderServiceOrders & Detalle de órdenes con flujo de aceptación y cotizaciones. & CU\_27 \\
+AdminServiceOrders & Carga de actas de asamblea (etiqueta ``actas'') y consulta de estados de cuenta en modo lectura. & CU\_25, CU\_26 \\
 
 \end{longtable}
 
@@ -983,7 +922,7 @@ NotificationCenter & Centro de notificaciones con lectura y preferencias. & CU\_
 \hline
 CommunitySelector & Selector de comunidad activa (multi-comunidad). & CU\_24 \\
 \hline
-UserTypeSelector & Selección de tipo de usuario en registro de proveedores. & CU\_25 \\
+UserTypeSelector & Selección de rol en flujos de administración y gobierno comunitario. & CU\_14, CU\_24 \\
 \hline
 NotFound (404) & Página de error para rutas inexistentes. & --- \\
 
@@ -1003,12 +942,12 @@ NotFound (404) & Página de error para rutas inexistentes. & --- \\
 % FRANJAS (de arriba a abajo):
 % 1. 'Público' (fondo gris claro, 7 cajas): Home, Login, Register, ForgotPassword, ConfirmEmail, About, RegisterByInvite
 % 2. 'Administrador' (fondo naranja pálido, 13 cajas): Dashboard, CreateUser, IncidentsBoard, IncidentStats,
-%    Residents, HousingUnits, Amenities, CommonExpenses, Parcels, Tasks, Staff, Providers, ServiceOrders
+%    Residents, HousingUnits, Amenities, CommonExpenses, Parcels, Tasks, Staff, GovernancePolls, GovernanceDocs
 % 3. 'Conserje' (fondo verde pálido, 3 cajas): VisitRegistration, VisitLog, Parcels
 % 4. 'Residente' (fondo azul pálido, 18 cajas): Profile, Visits, Incidents, Amenities, Cartola,
 %    ChargesDetail, PaymentFlow, Parcels, Publications, Library, Marketplace, MarketplaceCreate,
 %    ChatHub, ChatRoom, Votaciones, VoteDetail, Tasks, Contacts
-% 5. 'Proveedor' (fondo morado pálido, 2 cajas): ProviderPortal, ProviderServiceOrders
+% 5. 'Comité' (fondo morado pálido, 2 cajas): GovernancePolls, GovernanceDocs
 %
 % Las cajas dentro de cada franja se organizan en filas. Conectar con flechas finas:
 % Login → (cualquier dashboard según rol). Cartola → ChargesDetail → PaymentFlow.
@@ -1020,7 +959,7 @@ NotFound (404) & Página de error para rutas inexistentes. & --- \\
 \begin{figure}[H]
   \centering
   \fbox{\parbox{0.85\textwidth}{\centering\vspace{3cm}
-  \textit{[Insertar diagrama: Mapa de navegación del sistema por rol --- 54 vistas organizadas por actor]}
+  \textit{[Insertar diagrama: Mapa de navegación del sistema por rol --- 52 vistas organizadas por actor]}
   \vspace{3cm}}}
   \caption{Mapa de navegación del sistema DOMU segmentado por rol de usuario.}
   \label{fig:mapa-navegacion-roles}

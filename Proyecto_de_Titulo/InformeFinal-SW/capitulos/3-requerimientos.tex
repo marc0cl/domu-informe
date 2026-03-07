@@ -2,7 +2,7 @@
 %  Capítulo 3 – Especificación de Requerimientos – Producto SW
 % --------------------------------------------------------------
 Este capítulo detalla los límites, restricciones y los requerimientos funcionales y no funcionales del sistema \textit{DOMU}.
-Los requisitos se agrupan según los módulos principales: Control de Accesos, Gestión Operativa, Finanzas, Comunicación y Soporte.
+Los requisitos se agrupan según los módulos principales: Control de Accesos, Gestión Operativa, Finanzas, Comunicación y Soporte, incorporando además las funciones de fiscalización y participación del actor Comité.
 
 \section{Límites del Proyecto}
 En esta sección se definen los límites técnicos y operacionales del sistema, los cuales establecen el alcance previsto para su funcionamiento en condiciones reales. Estos límites permiten acotar el diseño y asegurar que la solución cumpla con lo esperado dentro de parámetros definidos y controlables.
@@ -93,26 +93,26 @@ A continuación, se presentan los requerimientos funcionales identificados en la
 \begin{longtable}{|p{0.14\textwidth}|p{0.80\textwidth}|}
 \hline
 \textbf{ID} & \textbf{El sistema debe…} \\ \hline
-RF\_01 & Registrar la \textbf{entrada y salida de VISITAS} mediante lector de cédula o QR, validando el RUT. \\ \hline
-RF\_02 & Enviar \textbf{notificación push} al RESIDENTE cuando se registre una VISITA, DELIVERY o ENCOMIENDA a su nombre. \\ \hline
-RF\_03 & Permitir al RESIDENTE \textbf{pre-autorizar visitas} mediante la aplicación, registrando previamente la información del visitante para facilitar su identificación y acceso en conserjería. \\ \hline
-RF\_04 & Gestionar el \textbf{registro confiable de encomiendas}: recepción, fotografía de evidencia y entrega al residente (firma digital). \\ \hline
-RF\_05 & Gestionar \textbf{tareas y turnos} del PERSONAL (aseo, conserjes), permitiendo al ADMINISTRADOR asignar, re-asignar y monitorear estado. \\ \hline
-RF\_06 & Permitir al PERSONAL marcar \textbf{inicio/fin de jornada} y declarar tareas completadas con fotos adjuntas. \\ \hline
-RF\_07 & Generar y enviar mensualmente el \textbf{estado de gastos comunes}; habilitar pago electrónico. \\ \hline
-RF\_08 & Mantener \textbf{morosidad y conciliación}: el ADMINISTRADOR puede aplicar sanciones y enviar notificaciones. \\ \hline
-RF\_09 & Gestionar \textbf{reservas de espacios comunes} con reglas de aforo, tiempo máximo y bloqueo ante mora. \\ \hline
-RF\_10 & Implementar un \textbf{sistema de votaciones} (elecciones de comité, decisiones de gasto) con anonimato y trazabilidad. \\ \hline
-RF\_11 & Habilitar \textbf{foro/chat comunitario} categorizado (avisos, eventos, reclamos, sugerencias). \\ \hline
-RF\_12 & Registrar \textbf{tickets de reclamos/sugerencias} y permitir su seguimiento por estado (abierto, en progreso, cerrado). \\ \hline
-RF\_13 & Gestionar \textbf{proveedores y servicios externos}: CRUD de proveedores, órdenes de servicio, cotizaciones y seguimiento. \\ \hline
-RF\_14 & Registrar \textbf{mantenimientos preventivos}; programar alertas de vencimiento (planificado para v2.0). \\ \hline
-RF\_15 & Emitir \textbf{dashboards} con KPIs de seguridad (conteo de incidentes), finanzas (ingresos/egresos) y desempeño de tareas (parcial en v1.0: estadísticas de incidentes). \\ \hline
-RF\_16 & Permitir al ADMINISTRADOR configurar \textbf{roles y permisos} granularmente (RBAC). \\ \hline
-RF\_17 & Habilitar \textbf{chat en tiempo real} entre residentes mediante WebSocket. \\ \hline
-RF\_18 & Proveer un \textbf{marketplace comunitario} para compraventa entre vecinos. \\ \hline
-RF\_19 & Gestionar una \textbf{biblioteca de documentos} comunitarios. \\ \hline
-RF\_20 & Entregar \textbf{notificaciones en tiempo real} mediante WebSocket con preferencias configurables. \\ \hline
+RF\_01 & \textbf{Actor(es): CONSERJE.} Registrar la \textbf{entrada y salida de VISITAS} mediante lector de cédula o QR, validando el RUT. \\ \hline
+RF\_02 & \textbf{Actor(es): CONSERJE, RESIDENTE.} Enviar \textbf{notificación push} al RESIDENTE cuando se registre una VISITA, DELIVERY o ENCOMIENDA a su nombre. \\ \hline
+RF\_03 & \textbf{Actor(es): RESIDENTE.} Permitir al RESIDENTE \textbf{pre-autorizar visitas} mediante la aplicación, registrando previamente la información del visitante para facilitar su identificación y acceso en conserjería. \\ \hline
+RF\_04 & \textbf{Actor(es): CONSERJE, RESIDENTE.} Gestionar el \textbf{registro confiable de encomiendas}: recepción, fotografía de evidencia y entrega al residente (firma digital). \\ \hline
+RF\_05 & \textbf{Actor(es): ADMINISTRACIÓN, PERSONAL.} Gestionar \textbf{tareas y turnos} del PERSONAL (aseo, conserjes), permitiendo al ADMINISTRADOR asignar, re-asignar y monitorear estado. \\ \hline
+RF\_06 & \textbf{Actor(es): PERSONAL.} Permitir al PERSONAL marcar \textbf{inicio/fin de jornada} y declarar tareas completadas con fotos adjuntas. \\ \hline
+RF\_07 & \textbf{Actor(es): ADMINISTRACIÓN, RESIDENTE, COMITÉ.} Generar y enviar mensualmente el \textbf{estado de gastos comunes}; habilitar pago electrónico y permitir al \textbf{COMITÉ} la consulta en modo lectura para fiscalización. \\ \hline
+RF\_08 & \textbf{Actor(es): ADMINISTRADOR.} Mantener \textbf{morosidad y conciliación}: el ADMINISTRADOR puede aplicar sanciones y enviar notificaciones. \\ \hline
+RF\_09 & \textbf{Actor(es): RESIDENTE, ADMINISTRACIÓN.} Gestionar \textbf{reservas de espacios comunes} con reglas de aforo, tiempo máximo y bloqueo ante mora. \\ \hline
+RF\_10 & \textbf{Actor(es): ADMINISTRACIÓN, COMITÉ, RESIDENTE.} Implementar un \textbf{sistema de votaciones} (elecciones de comité, decisiones de gasto) con anonimato y trazabilidad, permitiendo que \textbf{ADMINISTRACIÓN} y \textbf{COMITÉ} generen y gestionen votaciones con los mismos permisos en este módulo. \\ \hline
+RF\_11 & \textbf{Actor(es): RESIDENTE.} Habilitar \textbf{foro/chat comunitario} categorizado (avisos, eventos, reclamos, sugerencias). \\ \hline
+RF\_12 & \textbf{Actor(es): RESIDENTE, ADMINISTRACIÓN.} Registrar \textbf{tickets de reclamos/sugerencias} y permitir su seguimiento por estado (abierto, en progreso, cerrado). \\ \hline
+RF\_13 & \textbf{Actor(es): ADMINISTRACIÓN, COMITÉ.} Permitir la \textbf{gestión de votaciones comunitarias} por parte de \textbf{ADMINISTRACIÓN} y \textbf{COMITÉ}, con paridad de permisos para crear, cerrar y publicar resultados dentro del módulo de votaciones. \\ \hline
+RF\_14 & \textbf{Actor(es): ADMINISTRACIÓN, PERSONAL.} Registrar \textbf{mantenimientos preventivos}; programar alertas de vencimiento (planificado para v2.0). \\ \hline
+RF\_15 & \textbf{Actor(es): ADMINISTRACIÓN, COMITÉ.} Emitir \textbf{dashboards} con KPIs de seguridad (conteo de incidentes), finanzas (ingresos/egresos) y desempeño de tareas (parcial en v1.0: estadísticas de incidentes). \\ \hline
+RF\_16 & \textbf{Actor(es): ADMINISTRADOR.} Permitir al ADMINISTRADOR configurar \textbf{roles y permisos} granularmente (RBAC). \\ \hline
+RF\_17 & \textbf{Actor(es): RESIDENTE.} Habilitar \textbf{chat en tiempo real} entre residentes mediante WebSocket. \\ \hline
+RF\_18 & \textbf{Actor(es): RESIDENTE.} Proveer un \textbf{marketplace comunitario} para compraventa entre vecinos. \\ \hline
+RF\_19 & \textbf{Actor(es): ADMINISTRACIÓN, COMITÉ, RESIDENTE.} Gestionar una \textbf{biblioteca de documentos} comunitarios, permitiendo carga de archivos por \textbf{ADMINISTRACIÓN} y \textbf{COMITÉ}; el \textbf{COMITÉ} sólo puede usar la etiqueta \textit{actas}, mientras que \textbf{ADMINISTRACIÓN} puede usar todas las etiquetas disponibles. \\ \hline
+RF\_20 & \textbf{Actor(es): ADMINISTRACIÓN, CONSERJE, PERSONAL, RESIDENTE, COMITÉ.} Entregar \textbf{notificaciones en tiempo real} mediante WebSocket con preferencias configurables. \\ \hline
 \caption{Requerimientos Funcionales del sistema DOMU}
 \label{tab:rf}
 \end{longtable}
@@ -140,7 +140,7 @@ DE\_02 & Recepción encomienda & Código paquete, RUN residente, Foto evidencia,
 DE\_03 & Pago gastos comunes & RUN, Monto, Medio, Fecha, Comprobante PDF \\ \hline
 DE\_04 & Reserva espacio & RUN, Espacio, \textit{timestamp reserva}, Nº asistentes \\ \hline
 DE\_05 & Ticket reclamo & RUN, Tipo, Descripción, Fotos, Prioridad \\ \hline
-DE\_06 & Solicitud proveedor & ID proveedor, Descripción servicio, Cotización PDF \\ \hline
+DE\_06 & Carga de acta de asamblea & Título acta, Período, Etiqueta ``actas'', Documento PDF, \textit{timestamp} \\ \hline
 \caption{Interfaces de Entrada}
 \label{tab:entrada}
 \end{longtable}
@@ -154,7 +154,7 @@ Esta sección presenta las interfaces externas de salida que el sistema entrega 
 \hline
 \textbf{ID} & \textbf{Nombre} & \textbf{Datos incluidos} & \textbf{Medio} \\ \hline
 IS\_01 & Reporte visitas & Fecha, RUN, Hora in/out, Unidad & PDF / Email \\ \hline
-IS\_02 & Estado cuenta mensual & Periodo, Cargos, Pagos, Saldo & PDF / Email \\ \hline
+IS\_02 & Estado cuenta mensual & Periodo, Cargos, Pagos, Saldo (consulta en modo lectura para Comité) & PDF / Email \\ \hline
 IS\_03 & Dashboard KPI & Indicadores clave en JSON & Web / CSV \\ \hline
 IS\_04 & Notificación push & Título, Mensaje, \textit{timestamp}, \textit{deep link} & Móvil \\ \hline
 IS\_05 & Acta de votación & Tema, Quórum, Resultado, \textit{hash} verificación & PDF firmado \\ \hline

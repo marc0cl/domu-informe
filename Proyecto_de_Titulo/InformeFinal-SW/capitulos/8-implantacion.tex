@@ -31,7 +31,7 @@ Los componentes principales del despliegue son los siguientes:
 \begin{itemize}
     \item \textbf{Servidor de Aplicaciones:} El backend Java se empaqueta en una imagen Docker basada en \texttt{eclipse-temurin:21-alpine}, optimizada para bajo consumo de recursos. Se despliega en un servicio de orquestación como AWS ECS o en un VPS con Docker Compose. La imagen expone el puerto~7070 y se configura mediante variables de entorno para los parámetros de base de datos, JWT, correo electrónico y almacenamiento.
 
-    \item \textbf{Base de Datos:} Se utiliza una instancia gestionada de MySQL~8.0 en la nube (AWS RDS o Google Cloud SQL) para garantizar copias de seguridad automáticas, alta disponibilidad y mantenimiento delegado al proveedor. La conexión desde el servidor de aplicaciones se realiza mediante JDBC con HikariCP como pool de conexiones.
+    \item \textbf{Base de Datos:} Se utiliza una instancia gestionada de MySQL~8.0 en la nube (AWS RDS o Google Cloud SQL) para garantizar copias de seguridad automáticas, alta disponibilidad y mantenimiento delegado al servicio administrado. La conexión desde el servidor de aplicaciones se realiza mediante JDBC con HikariCP como pool de conexiones.
 
     \item \textbf{Frontend Web:} La aplicación React se construye como una SPA (\textit{Single Page Application}) y se distribuye a través de una red de entrega de contenido (CDN) como Vercel o Netlify. El proceso de \textit{build} genera archivos estáticos optimizados que se sirven directamente desde la CDN, reduciendo la latencia para los usuarios finales.
 
@@ -59,7 +59,13 @@ Al iniciar el contenedor del backend, Flyway ejecuta automáticamente las migrac
 La adopción del sistema requiere nivelar las competencias digitales de los distintos usuarios. Se diseñó un plan de capacitación diferenciado por perfil de usuario.
 
 \subsection{Administración y Comité}
-Se realiza una sesión de inducción de 2~horas enfocada en la configuración inicial del edificio: carga de la nómina de residentes, configuración de alícuotas, definición de áreas comunes, creación de períodos de gastos comunes y generación de estados de cuenta. Se entrega un manual de gestión en formato digital que cubre todos los módulos administrativos del sistema.
+Se realiza una sesión de inducción de 2~horas enfocada en la configuración inicial del edificio: carga de la nómina de residentes, configuración de alícuotas, definición de áreas comunes, creación de períodos de gastos comunes y generación de estados de cuenta. Para el Comité, la capacitación considera explícitamente los flujos de gobernanza comunitaria implementados en la plataforma, manteniendo consistencia con los casos de uso y diseño funcional definidos en capítulos previos.
+\begin{itemize}
+    \item \textbf{Generación de votaciones:} creación de procesos de votación, definición de opciones, cierre y publicación de resultados desde el módulo de votaciones.
+    \item \textbf{Carga de actas de asamblea:} publicación de documentos en biblioteca con la etiqueta obligatoria \texttt{actas}, siguiendo la trazabilidad documental del sistema.
+    \item \textbf{Consulta de estados de cuenta:} revisión de estados de cuenta en modo fiscalización para seguimiento financiero comunitario.
+\end{itemize}
+Se entrega un manual de gestión en formato digital con procedimientos separados para Administración y Comité, incluyendo prácticas operativas y criterios de uso por rol.
 
 \subsection{Personal de Conserjería}
 Capacitación práctica en terreno (30~minutos) centrada exclusivamente en el uso del módulo de Control de Accesos y la operación de la pistola lectora de QR. Se prioriza la rapidez operativa para no entorpecer el flujo de ingreso de personas. La capacitación incluye:
@@ -81,9 +87,9 @@ Se recomienda una estrategia de \textbf{marcha blanca} de dos semanas, diseñada
 \begin{enumerate}
     \item \textbf{Semana~1 (Paralelo):} El sistema DOMU funciona simultáneamente con el libro de visitas manual y los procesos vigentes. No se bloquean accesos ni se cobran multas asociadas al sistema digital. El objetivo es poblar la base de datos con residentes, unidades habitacionales y contactos frecuentes, y habituar al personal de conserjería a la operación del escáner QR.
 
-    \item \textbf{Semana~2 (Transición):} Se elimina el registro en papel para visitas y encomiendas. Se habilita el módulo de reservas de áreas comunes. Los residentes comienzan a recibir notificaciones y a interactuar con la plataforma. Se monitorean incidencias y se resuelven en tiempo real.
+    \item \textbf{Semana~2 (Transición):} Se elimina el registro en papel para visitas y encomiendas. Se habilita el módulo de reservas de áreas comunes. Los residentes comienzan a recibir notificaciones y a interactuar con la plataforma. En paralelo, Administración y Comité ejecutan una validación operativa guiada de los flujos de votaciones, carga de actas y consulta de estados de cuenta. Se monitorean incidencias y se resuelven en tiempo real.
 
-    \item \textbf{Lanzamiento Oficial:} Se habilita el módulo financiero para el siguiente ciclo de facturación mensual. Se genera el primer estado de cuenta a través del sistema y se activan los flujos de pago.
+    \item \textbf{Lanzamiento Oficial:} Se habilita el módulo financiero para el siguiente ciclo de facturación mensual. Se genera el primer estado de cuenta a través del sistema, se activan los flujos de pago y queda operativo el uso regular de los flujos de gobernanza por parte del Comité.
 \end{enumerate}
 
 \section{Respaldo y Recuperación}
@@ -93,7 +99,7 @@ Para garantizar la integridad de la información, se implementa la siguiente est
 \begin{itemize}
     \item \textbf{Respaldo de base de datos:} Se configuran rutinas automáticas (\textit{cron jobs}) que ejecutan un respaldo completo diario (\texttt{mysqldump}) de la base de datos MySQL. Los archivos de respaldo se comprimen y almacenan en un \textit{bucket} de almacenamiento en la nube (Google Drive o AWS~S3) con retención de 30~días.
 
-    \item \textbf{Respaldo de archivos:} Los documentos almacenados en Box cuentan con la redundancia y versionado nativo del proveedor, garantizando la recuperación ante eliminaciones accidentales.
+    \item \textbf{Respaldo de archivos:} Los documentos almacenados en Box cuentan con redundancia y versionado nativo del servicio, garantizando la recuperación ante eliminaciones accidentales.
 
     \item \textbf{Objetivo de punto de recuperación (RPO):} 24~horas. En caso de fallo, se puede restaurar la base de datos al estado del último respaldo diario.
 
@@ -107,6 +113,8 @@ Para garantizar la integridad de la información, se implementa la siguiente est
 
     \item \textbf{Métricas de salud:} Se expone un endpoint \texttt{/health} que verifica la conectividad con la base de datos y el estado del servidor. Este endpoint es utilizado por el orquestador de contenedores para detectar y reiniciar instancias no saludables.
 
+    \item \textbf{Monitoreo funcional de implantación:} Durante la marcha blanca se supervisan además los flujos críticos por perfil, incluyendo las operaciones de Administración y Comité sobre votaciones, biblioteca documental (etiqueta \texttt{actas}) y consulta de estados de cuenta.
+
     \item \textbf{Mantenimiento correctivo:} Las correcciones de errores (\textit{hotfixes}) se despliegan mediante la construcción de una nueva imagen Docker y la actualización del servicio en el orquestador, proceso que no requiere tiempo de inactividad gracias al despliegue \textit{rolling}.
 
     \item \textbf{Mantenimiento evolutivo:} Las nuevas funcionalidades se desarrollan en ramas independientes, se prueban en un entorno de staging y se despliegan en producción siguiendo el mismo proceso de actualización de imágenes Docker.
@@ -119,7 +127,7 @@ En caso de que el despliegue presente fallos críticos que afecten la operación
 \begin{enumerate}
     \item Revertir la imagen Docker del servidor de aplicaciones a la versión anterior mediante el tag de la imagen previamente etiquetada.
     \item Si la nueva versión incluyó migraciones de base de datos incompatibles, restaurar el respaldo diario más reciente de la base de datos.
-    \item Verificar el correcto funcionamiento del sistema con la versión anterior.
+    \item Verificar el correcto funcionamiento del sistema con la versión anterior, incluyendo validación de los flujos críticos de Administración y Comité.
     \item Comunicar a los usuarios afectados sobre la interrupción temporal del servicio.
 \end{enumerate}
 
