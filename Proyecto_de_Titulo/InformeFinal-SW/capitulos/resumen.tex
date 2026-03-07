@@ -3,7 +3,7 @@
 
 \renewcommand{\keywords}{\textbf{\emph{Palabras Clave ---~}}}
 
-El presente informe documenta el desarrollo de \textit{DOMU}, una plataforma integral para la administración y gestión de comunidades residenciales que combina una aplicación web, una Progressive Web App (PWA) móvil y un sistema de control de acceso mediante pistola escáner QR. El proyecto surge a partir de la necesidad de digitalizar procesos manuales ---registro de visitas, trazabilidad de encomiendas, cobranza de gastos comunes y comunicación interna--- identificada en comunidades chilenas en el contexto de las exigencias de la Ley de Copropiedad Inmobiliaria N\textsuperscript{o}~21.442.
+El presente informe documenta el desarrollo de \textit{DOMU}, una plataforma integral para la administración y gestión de comunidades residenciales que combina una pagina web, una Progressive Web App (PWA) móvil y un sistema de control de acceso mediante pistola escáner QR. El proyecto surge a partir de la necesidad de digitalizar procesos manuales ---registro de visitas, trazabilidad de encomiendas, cobranza de gastos comunes, gestion de espacios, comunicación interna, entre otros--- identificada en comunidades chilenas en el contexto de las exigencias de la Ley de Copropiedad Inmobiliaria N\textsuperscript{o}~21.442.
 
 \medskip
 \noindent\textbf{Objetivo general}. Desarrollar una plataforma web integral que integre y optimice los procesos críticos de la administración de copropiedades: registro y verificación de visitas con pre-autorización y control de acceso QR, trazabilidad de encomiendas, gestión de gastos comunes con generación de estados de cuenta, asignación de tareas al personal, reporte de incidentes, reserva de áreas comunes y comunicación interna mediante foro, chat y marketplace comunitario.
@@ -11,24 +11,24 @@ El presente informe documenta el desarrollo de \textit{DOMU}, una plataforma int
 \medskip
 \noindent\textbf{Metodología}. Se adoptó una \textit{metodología híbrida} que combina la estructura secuencial del modelo en Cascada con la flexibilidad del desarrollo Iterativo e Incremental. Las fases de análisis y diseño siguieron un enfoque secuencial con documentación formal, mientras que la construcción se realizó en ciclos cortos donde se implementaron, integraron y probaron módulos funcionales progresivamente.
 
-\medskip
-\noindent\textbf{Estructura del informe}. El documento se organiza en nueve capítulos:
-\begin{itemize}
-  \item \textbf{Capítulo~1 -- Introducción}: contexto, problemática, procesos BPMN, propuesta de solución, análisis de competidores, justificación y objetivos.
-  \item \textbf{Capítulo~2 -- Proyecto}: objetivos del software, metodología, tecnologías, estándares y herramientas.
-  \item \textbf{Capítulo~3 -- Especificación de Requerimientos}: límites, restricciones, 20~requerimientos funcionales, requerimientos no funcionales e interfaces externas.
-  \item \textbf{Capítulo~4 -- Factibilidad}: análisis técnico, operativo y económico con proyección a 5~años y cálculo del VAN.
-  \item \textbf{Capítulo~5 -- Análisis}: historias de usuario, actores, 27~casos de uso y matriz de trazabilidad RF--CU.
-  \item \textbf{Capítulo~6 -- Diseño}: servicios web, modelo de datos, diagramas entidad-relación, guía de estilo, mockups y arquitectura del software.
-  \item \textbf{Capítulo~7 -- Desarrollo}: estructura del código (190~clases backend, 92~archivos frontend), fases de implementación y detalles técnicos (QR, JWT, WebSocket, PDF, Flyway).
-  \item \textbf{Capítulo~8 -- Implantación}: arquitectura de despliegue basada en contenedores, plan de capacitación y estrategia de lanzamiento.
-  \item \textbf{Capítulo~9 -- Conclusión}: cumplimiento de objetivos, competencias, dificultades y trabajo futuro.
-\end{itemize}
+% \medskip
+% \noindent\textbf{Estructura del informe}. El documento se organiza en nueve capítulos:
+% \begin{itemize}
+%   \item \textbf{Capítulo~1 -- Introducción}: contexto, problemática, procesos BPMN, propuesta de solución, análisis de competidores, justificación y objetivos.
+%   \item \textbf{Capítulo~2 -- Proyecto}: objetivos del software, metodología, tecnologías, estándares y herramientas.
+%   \item \textbf{Capítulo~3 -- Especificación de Requerimientos}: límites, restricciones, 20~requerimientos funcionales, requerimientos no funcionales e interfaces externas.
+%   \item \textbf{Capítulo~4 -- Factibilidad}: análisis técnico, operativo y económico con proyección a 5~años y cálculo del VAN.
+%   \item \textbf{Capítulo~5 -- Análisis}: historias de usuario, actores, 27~casos de uso y matriz de trazabilidad RF--CU.
+%   \item \textbf{Capítulo~6 -- Diseño}: servicios web, modelo de datos, diagramas entidad-relación, guía de estilo, mockups y arquitectura del software.
+%   \item \textbf{Capítulo~7 -- Desarrollo}: estructura del código (190~clases backend, 92~archivos frontend), fases de implementación y detalles técnicos (QR, JWT, WebSocket, PDF, Flyway).
+%   \item \textbf{Capítulo~8 -- Implantación}: arquitectura de despliegue basada en contenedores, plan de capacitación y estrategia de lanzamiento.
+%   \item \textbf{Capítulo~9 -- Conclusión}: cumplimiento de objetivos, competencias, dificultades y trabajo futuro.
+% \end{itemize}
 
 \medskip
 \noindent\textbf{Resultados}. El sistema alcanzó un estado funcional completo con más de 130~endpoints REST, 2~canales WebSocket, 35~migraciones de base de datos, 54~vistas de interfaz y una PWA instalable en dispositivos móviles. El control de acceso mediante pistola escáner QR permite registrar visitas en menos de cinco segundos a partir de la lectura del código QR de la cédula de identidad. El módulo financiero genera estados de cuenta en PDF y gestiona períodos de gastos comunes. El análisis de factibilidad económica arroja un VAN positivo de \$158.219.839~CLP al 10\%, confirmando la viabilidad comercial del proyecto.
 
 \medskip
-\noindent\textbf{Conclusiones}. Los seis objetivos específicos fueron cumplidos, logrando una plataforma que centraliza la gestión residencial en un solo sistema. Cinco casos de uso fueron postergados para la versión~2.0 (conciliación bancaria, turnos de personal, mantenimiento preventivo, estacionamientos y bitácora de ascensores). Se concluye que DOMU constituye una propuesta competitiva y viable para el mercado chileno de proptech.
+\noindent\textbf{Conclusiones}. Los seis objetivos específicos fueron cumplidos, logrando una plataforma que centraliza la gestión residencial en un solo sistema. Cinco casos de uso fueron postergados para la versión~2.0 (conciliación bancaria, turnos de personal, mantenimiento preventivo, estacionamientos y bitácora automatizadas de conserjes). Se concluye que DOMU constituye una propuesta competitiva y viable para el mercado chileno de proptech.
 
 \keywords{administración de condominios, gestión de comunidades residenciales, plataforma web, control de acceso QR, gastos comunes, proptech}

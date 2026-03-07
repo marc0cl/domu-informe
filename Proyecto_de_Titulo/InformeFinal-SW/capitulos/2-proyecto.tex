@@ -4,26 +4,43 @@ En este capítulo, se explorarán los aspectos relacionados con cómo se desarro
 A continuación se detallan los objetivos del software \textbf{DOMU}.
 
 \subsection{Objetivo General}
-Desarrollar una plataforma digital que facilite la gestión integral de comunidades residenciales mediante la automatización del control de accesos, la recepción de encomiendas, la administración financiera y la asignación de tareas al personal, incorporando mecanismos de trazabilidad y comunicación en tiempo real entre los distintos actores del sistema.
+Desarrollar una plataforma digital para la administración y gestión integral de comunidades residenciales que permita automatizar procesos operativos clave, tales como el control de accesos de visitas, la gestión de encomiendas, la administración de gastos comunes, la asignación de tareas al personal, la gestión de reservas de espacios comunes y la comunicación entre los distintos actores de la comunidad, incorporando mecanismos de trazabilidad, notificaciones en tiempo real y acceso mediante una aplicación web progresiva.
 
 \subsection{Objetivos Específicos}
-Los siguientes objetivos específicos han sido definidos con el propósito de abordar de manera correcta las funcionalidades que se espera desarrollar en el proyecto \textbf{DOMU}:
+
+Los siguientes objetivos específicos han sido definidos con el propósito de abordar de manera adecuada las principales funcionalidades que se espera implementar en la plataforma \textbf{DOMU}:
+
 \begin{itemize}
-    \item Permitir el registro de visitas y proveedores en menos de cinco segundos mediante la lectura del código QR de la cédula de identidad chilena.
-    \item Notificar a los residentes, mediante alertas push, sobre la recepción de encomiendas y la realización de eventos dentro de la comunidad.
-    \item Facilitar el pago en línea de los gastos comunes, así como la generación automática de estados de cuenta mensuales en formato PDF.
-    \item Proporcionar paneles analíticos para la administración, con información sobre la ocupación de espacios comunes y los flujos de visitas.
-    \item Optimizar el proceso de reservas de áreas comunes por parte de los residentes, mediante una interfaz accesible y en tiempo real.
-    \item Agilizar la asignación de tareas al personal operativo, permitiendo un control eficiente de la carga laboral individual y optimizando la distribución de labores dentro de la comunidad.
+
+\item Implementar un sistema de control de accesos que permita registrar visitas y proveedores de forma rápida y segura mediante distintos mecanismos, incluyendo la lectura del código QR de la cédula de identidad chilena, el registro manual por parte de conserjería y la preautorización de visitas por parte de los residentes.
+
+\item Desarrollar un sistema de gestión de encomiendas que permita registrar la recepción de paquetes, almacenar evidencia fotográfica y notificar automáticamente a los residentes sobre la llegada de sus encomiendas.
+
+\item Implementar un mecanismo de notificaciones que informe a los residentes, mediante alertas en la aplicación, sobre eventos relevantes dentro de la comunidad, tales como recepción de encomiendas, registro de visitas, anuncios administrativos o actividades comunitarias.
+
+\item Facilitar la gestión de gastos comunes mediante la generación automática de estados de cuenta mensuales en formato PDF y el registro de pagos simulados a través de la carga de comprobantes de transferencia bancaria por parte de los residentes.
+
+\item Proporcionar herramientas de análisis para la administración, mediante paneles que permitan visualizar información relevante sobre ocupación de espacios comunes, reporte de incidentes y otros indicadores operativos de la comunidad.
+
+\item Optimizar el proceso de reservas de áreas comunes mediante una interfaz accesible que permita a los residentes consultar disponibilidad y realizar reservas en tiempo real.
+
+\item Agilizar la asignación y seguimiento de tareas del personal operativo de la comunidad, permitiendo una mejor organización del trabajo y un control más eficiente de las labores realizadas.
+
+\item Implementar herramientas de comunicación comunitaria que faciliten la interacción entre los residentes, tales como foros, chat interno o espacios de publicación de avisos dentro de la plataforma.
+
 \end{itemize}
-
 \section{Metodología de Trabajo}
-Para el desarrollo del sistema \textbf{DOMU}, se ha optado por una \textbf{metodología híbrida} que combina la estructura secuencial del modelo en Cascada~\cite{royce1970} con la flexibilidad del desarrollo Iterativo e Incremental.
 
-Esta decisión se fundamenta en la naturaleza del proyecto:
+Para el desarrollo del sistema \textbf{DOMU} se adoptó una \textbf{metodología híbrida} que combina la estructura secuencial del modelo en Cascada~\cite{royce1970} con la flexibilidad del desarrollo Iterativo e Incremental.
+
+La elección de este enfoque responde a la naturaleza del proyecto, el cual requiere tanto una planificación formal —propia del contexto académico— como la implementación progresiva de los distintos módulos del sistema. De esta manera, se busca mantener una estructura ordenada en las etapas iniciales del proyecto, al mismo tiempo que se facilita la construcción gradual del software.
+
 \begin{itemize}
-    \item \textbf{Componente Estructural (Cascada):} Las fases de definición de requerimientos y análisis de factibilidad requieren una aprobación formal y documentación exhaustiva antes de iniciar la construcción, alineándose con los estándares académicos de la Universidad.
-    \item \textbf{Componente de Construcción (Iterativo):} Dado que el stack tecnológico incluye un Backend (Javalin) y un Frontend (React) desacoplados, el desarrollo se beneficia de ciclos cortos donde se implementan, integran y prueban módulos funcionales paso a paso (ej. primero el módulo de autenticación, luego el control de visitas, etc.).
+
+\item \textbf{Componente estructural (Cascada):} Las fases de levantamiento de requerimientos, análisis del problema y evaluación de factibilidad se desarrollan siguiendo un enfoque secuencial. Estas etapas requieren una definición clara del alcance del sistema y una documentación formal antes de iniciar la implementación, en concordancia con los estándares académicos exigidos por la Universidad.
+
+\item \textbf{Componente de construcción (Iterativo e Incremental):} La implementación del sistema se realiza mediante ciclos de desarrollo cortos, en los cuales se diseñan, implementan y prueban progresivamente los distintos módulos del sistema. Este enfoque resulta adecuado considerando que la arquitectura del proyecto está basada en un backend desacoplado (Javalin) y un frontend desarrollado en React, permitiendo integrar funcionalidades de forma gradual, tales como autenticación, gestión de visitas, encomiendas y otros servicios de la plataforma.
+
 \end{itemize}
 
 El ciclo de vida del proyecto se define en las siguientes fases:
@@ -41,32 +58,93 @@ Para asegurar la trazabilidad, consistencia y calidad en el proceso de desarroll
 \end{itemize}
 
 \section{Técnicas y Notaciones}
-En esta sección se describe la técnica y notación empleada para representar de forma clara el funcionamiento del sistema y sus componentes. El objetivo de su uso es facilitar la comprensión de los procesos y de la arquitectura del software.
 
-La técnica seleccionada es la siguiente:
+Para la especificación, análisis y diseño del sistema DOMU se emplearon diversas técnicas y notaciones ampliamente utilizadas en la ingeniería de software, con el objetivo de representar de forma clara los procesos del negocio, la arquitectura del sistema y la estructura de los datos.
+
 \begin{itemize}
-    \item \textbf{BPMN~2.0}: Para modelar los procesos de negocio.
-    \begin{itemize}
-        \item \textit{Justificación:} Se adopta esta notación por ser un estándar global (ISO/IEC 19510~\cite{iso19510}) que ofrece un lenguaje visual e inequívoco. Su uso es crucial ya que facilita la comunicación y el análisis de los flujos de trabajo entre todos los involucrados en el proyecto (equipo de desarrollo, profesor guía y usuarios finales), asegurando un entendimiento común del proceso que el software debe soportar.
-    \end{itemize}
+
+\item \textbf{BPMN (Business Process Model and Notation)}: utilizado para modelar los procesos operativos de la administración de comunidades residenciales, tales como el registro de visitas, la recepción de encomiendas y el pago de gastos comunes.
+
+\item \textbf{UML (Unified Modeling Language)}: utilizado para representar la interacción entre los actores y el sistema mediante diagramas de casos de uso.
+
+\item \textbf{Modelo Entidad--Relación (MER)}: utilizado para el diseño conceptual de la base de datos, permitiendo identificar las entidades principales del sistema y las relaciones entre ellas.
+
+\item \textbf{Modelo Relacional}: empleado para definir la estructura lógica de la base de datos que será implementada en el sistema gestor de bases de datos.
+
+\item \textbf{Arquitectura basada en API REST}: utilizada para estructurar los servicios web del sistema, permitiendo la comunicación entre el backend y el frontend mediante endpoints definidos sobre el protocolo HTTP.
+
+\item \textbf{Diagramas de arquitectura de software}: utilizados para representar la organización general del sistema, los componentes principales y la interacción entre ellos.
+
 \end{itemize}
 
 \section{Tecnologías Utilizadas}
-Para el desarrollo del sistema propuesto se seleccionaron tecnologías modernas y ampliamente adoptadas, que permiten asegurar un rendimiento óptimo, escalabilidad y facilidad de mantenimiento. A continuación, se detallan las tecnologías a utilizar según cada área del desarrollo del proyecto:
-\begin{itemize}
-  \item \textbf{Back-end}: Java~21 con Javalin~\cite{javalin2025}.
-  \item \textbf{Front-end web}: React~\cite{react2025} con JavaScript y SCSS.
-  \item \textbf{Aplicación móvil}: Progressive Web App (PWA) accesible desde el navegador móvil, instalable en la pantalla de inicio del dispositivo.
-  \item \textbf{Hardware de Registro}: Computador de Conserjería (infraestructura existente) con pistola escáner de código QR (periférico de captura).
-  \item \textbf{Base de datos relacional}: MySQL~8.0+~\cite{mysql2025}.
-\end{itemize}
+
+El sistema DOMU fue desarrollado utilizando un conjunto de tecnologías modernas orientadas al desarrollo de aplicaciones web basadas en servicios. Estas tecnologías permiten construir una plataforma escalable, modular y desacoplada.
+
+\textbf{Backend}
+
+El backend del sistema fue desarrollado utilizando \textbf{Java} junto al framework ligero \textbf{Javalin}, el cual permite construir APIs REST de forma sencilla y eficiente. A través de esta API se gestionan las operaciones principales del sistema y la comunicación con el frontend.
+
+\textbf{Frontend}
+
+La interfaz de usuario fue desarrollada utilizando \textbf{React}, una biblioteca de JavaScript orientada al desarrollo de interfaces dinámicas mediante componentes reutilizables. 
+La aplicación funciona como una \textbf{Single Page Application (SPA)}, lo que permite una navegación fluida sin recargas completas de página.
+
+Además, la plataforma fue diseñada como una \textbf{Progressive Web App (PWA)}, permitiendo a los usuarios instalar la aplicación en dispositivos móviles directamente desde el navegador, sin necesidad de distribuir una aplicación nativa. Esto facilita el acceso al sistema desde distintos dispositivos y mejora la experiencia de uso en entornos móviles.
+\textbf{Base de datos}
+
+Para el almacenamiento de la información del sistema se utilizó \textbf{MySQL}, un sistema gestor de bases de datos relacional ampliamente utilizado en aplicaciones web.
+
+\textbf{Comunicación y tiempo real}
+
+Para la comunicación entre cliente y servidor se emplea una \textbf{API REST} basada en el protocolo HTTP. Además, se utilizan \textbf{WebSockets} para habilitar comunicación en tiempo real, permitiendo notificaciones y actualizaciones instantáneas dentro de la plataforma.
+
+\textbf{Seguridad}
+
+La autenticación y autorización de usuarios se implementa mediante \textbf{JSON Web Tokens (JWT)}, lo que permite gestionar sesiones seguras en una arquitectura desacoplada.
+
+\textbf{Gestión de base de datos}
+
+Las migraciones del esquema de la base de datos se gestionan mediante \textbf{Flyway}, herramienta que permite mantener control de versiones sobre la estructura de la base de datos durante el desarrollo del sistema.
+
+\textbf{Generación de documentos}
+
+El sistema incorpora generación automática de documentos en formato \textbf{PDF}, utilizados principalmente para la emisión de estados de cuenta de gastos comunes.
 
 \section{Herramientas y Lenguajes}
-Durante el desarrollo del sistema se utilizarán herramientas y lenguajes que facilitarán tanto la programación como el diseño, las pruebas y la automatización de tareas. Estas herramientas fueron seleccionadas por su compatibilidad con las tecnologías elegidas y por la experiencia previa en su uso. A continuación, se detallan las principales:
+
+Para el desarrollo del sistema DOMU se utilizaron distintos lenguajes de programación, frameworks y herramientas de apoyo que permiten implementar una arquitectura web moderna basada en servicios.
+
 \begin{itemize}
-    \item \textbf{Visual Studio Code} con extensiones \textit{ESLint} y \textit{Prettier}: para editar el código y mantener una estructura ordenada y consistente.
-    \item \textbf{Docker~24}~\cite{docker2025}: para ejecutar los servicios del sistema de forma local y reproducible.
-    \item \textbf{Figma}: para diseñar las interfaces del sistema antes de su implementación.
-    \item \textbf{Postman}: para realizar pruebas a las APIs y verificar su correcto funcionamiento.
+
+\item \textbf{Java}: lenguaje de programación utilizado para el desarrollo del backend del sistema, encargado de la lógica de negocio y la exposición de servicios web.
+
+\item \textbf{Javalin}: framework ligero para la construcción de APIs REST en Java, utilizado para implementar los endpoints que permiten la comunicación entre el frontend y el backend.
+
+\item \textbf{JavaScript}: lenguaje de programación utilizado para el desarrollo del frontend de la aplicación web.
+
+\item \textbf{React}: biblioteca de JavaScript utilizada para construir la interfaz de usuario de la plataforma mediante componentes reutilizables.
+
+\item \textbf{HTML5 y CSS}: tecnologías empleadas para la estructura y el diseño visual de las interfaces de usuario.
+
+\item \textbf{SCSS}: preprocesador de CSS utilizado para facilitar la organización y reutilización de estilos en la aplicación.
+
+\item \textbf{MySQL}: sistema gestor de bases de datos relacional utilizado para almacenar la información del sistema.
+
+\item \textbf{Flyway}: herramienta utilizada para gestionar las migraciones de la base de datos y mantener el control de versiones del esquema.
+
+\item \textbf{JWT (JSON Web Token)}: mecanismo de autenticación utilizado para la gestión de sesiones y el control de acceso a los recursos del sistema.
+
+\item \textbf{WebSockets}: tecnología utilizada para habilitar comunicación en tiempo real entre el servidor y los clientes conectados.
+
+\item \textbf{Docker}: herramienta utilizada para la contenerización del sistema y facilitar su despliegue en distintos entornos.
+
+\item \textbf{Git}: sistema de control de versiones utilizado para gestionar el código fuente del proyecto.
+
+\item \textbf{Visual Studio Code}: entorno de desarrollo utilizado para la programación y gestión del código del sistema.
+
 \end{itemize}
+
+Finalmente, el sistema DOMU fue diseñado siguiendo una arquitectura cliente-servidor desacoplada. El backend expone una API REST encargada de gestionar la lógica de negocio y el acceso a la base de datos, mientras que el frontend implementa una aplicación web basada en componentes que consume dichos servicios. 
+Esta separación permite mejorar la escalabilidad del sistema, facilitar el mantenimiento del código y permitir futuras integraciones con aplicaciones móviles u otros clientes.
 

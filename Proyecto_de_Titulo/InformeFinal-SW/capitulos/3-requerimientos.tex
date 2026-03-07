@@ -9,12 +9,19 @@ En esta sección se definen los límites técnicos y operacionales del sistema, 
 \label{sec:limites}
 
 \subsection{Límites de Plataforma (Hardware \& SO)}
-Se detallan aquí las condiciones mínimas requeridas en términos de dispositivos y sistemas operativos, tanto para usuarios móviles como para el entorno de ejecución del backend.
+
+Se detallan a continuación las condiciones mínimas requeridas en términos de dispositivos, navegadores y sistemas operativos para el correcto funcionamiento del sistema, tanto para los usuarios finales como para el entorno de ejecución del backend.
 
 \begin{itemize}
-    \item La aplicación móvil se implementa como una \textbf{Progressive Web App (PWA)} accesible desde cualquier navegador moderno (Chrome, Safari, Firefox) en dispositivos Android e iOS. Los usuarios pueden instalarla en la pantalla de inicio de su dispositivo para una experiencia similar a una aplicación nativa.
-    \item El lector de cédulas debe ser compatible con QR ISO/IEC 18004~\cite{iso18004} y Código~128; otros formatos quedan fuera de alcance.
-    \item El back-end se despliega sobre arquitecturas \textbf{x86\_64}; no se certifica compatibilidad con ARM en ambientes productivos.
+
+\item La aplicación cliente se implementa como una \textbf{Progressive Web App (PWA)} accesible desde navegadores modernos compatibles con \textit{Service Workers}, tales como Google Chrome, Safari o Mozilla Firefox, en dispositivos móviles y computadores personales. La aplicación puede instalarse en la pantalla de inicio del dispositivo, ofreciendo una experiencia de uso similar a la de una aplicación nativa.
+
+\item El soporte de \textbf{notificaciones push} depende del sistema operativo y del navegador utilizado. En dispositivos \textbf{Android}, esta funcionalidad está disponible en navegadores basados en Chromium (por ejemplo, Google Chrome) en versiones modernas del sistema operativo. En dispositivos \textbf{iOS}, el soporte para notificaciones push en aplicaciones PWA está disponible a partir de \textbf{iOS 16.4} cuando la aplicación se instala en la pantalla de inicio.
+
+\item El lector de cédulas utilizado por el sistema debe ser compatible con códigos QR bajo el estándar \textbf{ISO/IEC 18004}~\cite{iso18004} y con códigos de barras \textbf{Code 128}. Otros formatos de codificación quedan fuera del alcance del sistema.
+
+\item El backend del sistema se despliega sobre arquitecturas de servidor \textbf{x86\_64}. No se certifica compatibilidad con arquitecturas \textbf{ARM} en entornos productivos.
+
 \end{itemize}
 
 \subsection{Límites de Conectividad y Red}
@@ -57,7 +64,7 @@ En esta sección se presentan las restricciones técnicas que condicionan el des
 
 \begin{itemize}
     \item La infraestructura para el MVP será los mismos equipos en los que el código fue escrito.
-    \item En caso de que los desarrolladores lo consideren, se expondrá el Frontend en una página web con un hosting adquirido por ellos, al igual que el servidor que alojará el backend y el frontend.
+    \item El sistema DOMU será desplegado en servidores proporcionados por la infraestructura tecnológica de la Universidad del Bío-Bío para efectos de pruebas y demostración del proyecto.  Por esta razón, el sistema debe adaptarse a las configuraciones, políticas de seguridad y limitaciones de acceso establecidas por dicha infraestructura, tales como restricciones en la apertura de puertos, acceso remoto y administración del servidor.
 \end{itemize}
 
 \section{Identificación de Usuario}
@@ -88,7 +95,7 @@ A continuación, se presentan los requerimientos funcionales identificados en la
 \textbf{ID} & \textbf{El sistema debe…} \\ \hline
 RF\_01 & Registrar la \textbf{entrada y salida de VISITAS} mediante lector de cédula o QR, validando el RUT. \\ \hline
 RF\_02 & Enviar \textbf{notificación push} al RESIDENTE cuando se registre una VISITA, DELIVERY o ENCOMIENDA a su nombre. \\ \hline
-RF\_03 & Permitir al RESIDENTE \textbf{pre-autorizar visitas} y generar QR temporal con fecha/hora de expiración. \\ \hline
+RF\_03 & Permitir al RESIDENTE \textbf{pre-autorizar visitas} mediante la aplicación, registrando previamente la información del visitante para facilitar su identificación y acceso en conserjería. \\ \hline
 RF\_04 & Gestionar el \textbf{registro confiable de encomiendas}: recepción, fotografía de evidencia y entrega al residente (firma digital). \\ \hline
 RF\_05 & Gestionar \textbf{tareas y turnos} del PERSONAL (aseo, conserjes), permitiendo al ADMINISTRADOR asignar, re-asignar y monitorear estado. \\ \hline
 RF\_06 & Permitir al PERSONAL marcar \textbf{inicio/fin de jornada} y declarar tareas completadas con fotos adjuntas. \\ \hline
