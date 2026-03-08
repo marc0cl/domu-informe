@@ -20,26 +20,30 @@
 \noindent Este capitulo presenta los actores, diagramas y especificacion de Casos de Uso vigentes del sistema \textit{DOMU} para la version actual. Los casos de uso diferidos a una version futura se consolidan en el Anexo~\ref{anexo:casos-restantes} para mantener separada la funcionalidad implementada del trabajo proyectado.
 
 \section{Actores de casos de uso}
+
 \begin{table}[H]
 \centering
-\setlength{\tabcolsep}{3pt}
-\renewcommand{\arraystretch}{1.10}
-\begin{tabular}{|p{0.14\linewidth}|p{0.18\linewidth}|p{0.30\linewidth}|p{0.16\linewidth}|p{0.14\linewidth}|}
+\small
+\renewcommand{\arraystretch}{1.15}
+
+\begin{tabularx}{\linewidth}{|p{2.5cm}|p{3cm}|X|p{3cm}|p{2.5cm}|}
 \hline
 \textbf{Actor} & \textbf{Cargo(s)} & \textbf{Funciones en el sistema} &
-\textbf{Nivel de conocimientos tecnicos} & \textbf{Nivel de privilegio} \\\hline
+\textbf{Nivel de conocimientos técnicos} & \textbf{Nivel de privilegio} \\\hline
 
-Administrador & Administracion de comunidad & Configura comunidad, usuarios, unidades, personal, finanzas, incidentes, biblioteca y votaciones & Alto & Alto \\\hline
+Administrador & Administración de comunidad & Configura comunidad, usuarios, unidades, personal, finanzas, incidentes, biblioteca y votaciones & Alto & Alto \\\hline
 
-Conserje & Conserjeria/Recepcion & Controla visitas, registra y entrega encomiendas, y puede reportar incidentes operativos & Basico & Medio \\\hline
+Conserje & Conserjería / Recepción & Controla visitas, registra y entrega encomiendas, y puede reportar incidentes operativos & Básico & Medio \\\hline
 
-Personal operativo & Aseo, mantencion, apoyo operativo & Ejecuta tareas asignadas y reporta su cumplimiento con evidencia & Basico & Bajo--Medio \\\hline
+Personal operativo & Aseo, mantención, apoyo operativo & Ejecuta tareas asignadas y reporta su cumplimiento con evidencia & Básico & Bajo--Medio \\\hline
 
-Residente & Usuario final de la comunidad & Pre-autoriza visitas, consulta publicaciones, registra incidentes, reserva espacios, vota, chatea, usa marketplace y revisa gastos comunes & Basico & Bajo \\\hline
+Residente & Usuario final de la comunidad & Pre-autoriza visitas, consulta publicaciones, registra incidentes, reserva espacios, vota, chatea, usa marketplace y revisa gastos comunes & Básico & Bajo \\\hline
 
-Comite & Comite de administracion & Participa en gobernanza comunitaria: crea o fiscaliza votaciones, consulta estados de cuenta y gestiona documentos asociados a actas & Medio & Medio \\\hline
-\end{tabular}
-\caption{Actores que interactuan con el sistema.}
+Comité & Comité de administración & Participa en gobernanza comunitaria: crea o fiscaliza votaciones, consulta estados de cuenta y gestiona documentos asociados a actas & Medio & Medio \\\hline
+
+\end{tabularx}
+
+\caption{Actores que interactúan con el sistema.}
 \label{tab:actores}
 \end{table}
 
@@ -49,10 +53,7 @@ La especificacion principal de este capitulo se restringe a los casos de uso imp
 
 \begin{figure}[H]
   \centering
-  \fbox{\parbox{0.9\textwidth}{\centering\vspace{2.8cm}
-  \textit{Diagrama general de casos de uso de la version vigente de DOMU.}\\
-  \textit{Incluye control de visitas, encomiendas, incidentes, finanzas, reservas, tareas, muro comunitario, votaciones, chat, marketplace, biblioteca y administracion de comunidad.}
-  \vspace{2.8cm}}}
+  \includegraphics[width=0.98\textwidth]{images/ActoresCU-Diagrama General de Casos de Uso.drawio.png}
   \caption{Diagrama general de los principales casos de uso vigentes del sistema DOMU.}
   \label{fig:diagrama-cu}
 \end{figure}
@@ -544,59 +545,59 @@ La especificacion principal de este capitulo se restringe a los casos de uso imp
 \label{tab:cu29}
 \end{table}
 
-\subsection{Diagramas de casos de uso por modulo}
+% \subsection{Diagramas de casos de uso por modulo}
 
-A continuacion se presentan diagramas resumidos por modulo funcional. Se mantienen como apoyo visual del analisis vigente y excluyen los casos de uso diferidos al Anexo~\ref{anexo:casos-restantes}.
+% A continuacion se presentan diagramas resumidos por modulo funcional. Se mantienen como apoyo visual del analisis vigente y excluyen los casos de uso diferidos al Anexo~\ref{anexo:casos-restantes}.
 
-\begin{figure}[H]
-  \centering
-  \fbox{\parbox{0.85\textwidth}{\centering\vspace{3.2cm}
-  \textit{Modulo Visitas y Acceso: CU\_01 y CU\_15.}\\
-  \textit{Actores principales: Residente y Conserje.}
-  \vspace{3.2cm}}}
-  \caption{Diagrama de casos de uso --- Modulo Visitas y Acceso.}
-  \label{fig:cu-modulo-visitas}
-\end{figure}
+% \begin{figure}[H]
+%   \centering
+%   \fbox{\parbox{0.85\textwidth}{\centering\vspace{3.2cm}
+%   \textit{Modulo Visitas y Acceso: CU\_01 y CU\_15.}\\
+%   \textit{Actores principales: Residente y Conserje.}
+%   \vspace{3.2cm}}}
+%   \caption{Diagrama de casos de uso --- Modulo Visitas y Acceso.}
+%   \label{fig:cu-modulo-visitas}
+% \end{figure}
 
-\begin{figure}[H]
-  \centering
-  \fbox{\parbox{0.85\textwidth}{\centering\vspace{3.2cm}
-  \textit{Modulo Encomiendas e Incidentes: CU\_02, CU\_03 y CU\_29.}\\
-  \textit{Actores principales: Conserje, Residente y Administrador.}
-  \vspace{3.2cm}}}
-  \caption{Diagrama de casos de uso --- Modulo Encomiendas e Incidentes.}
-  \label{fig:cu-modulo-encomiendas}
-\end{figure}
+% \begin{figure}[H]
+%   \centering
+%   \fbox{\parbox{0.85\textwidth}{\centering\vspace{3.2cm}
+%   \textit{Modulo Encomiendas e Incidentes: CU\_02, CU\_03 y CU\_29.}\\
+%   \textit{Actores principales: Conserje, Residente y Administrador.}
+%   \vspace{3.2cm}}}
+%   \caption{Diagrama de casos de uso --- Modulo Encomiendas e Incidentes.}
+%   \label{fig:cu-modulo-encomiendas}
+% \end{figure}
 
-\begin{figure}[H]
-  \centering
-  \fbox{\parbox{0.85\textwidth}{\centering\vspace{3.2cm}
-  \textit{Modulo Financiero: CU\_04, CU\_09 y CU\_26.}\\
-  \textit{Actores principales: Residente, Administrador y Comite.}
-  \vspace{3.2cm}}}
-  \caption{Diagrama de casos de uso --- Modulo Financiero.}
-  \label{fig:cu-modulo-financiero}
-\end{figure}
+% \begin{figure}[H]
+%   \centering
+%   \fbox{\parbox{0.85\textwidth}{\centering\vspace{3.2cm}
+%   \textit{Modulo Financiero: CU\_04, CU\_09 y CU\_26.}\\
+%   \textit{Actores principales: Residente, Administrador y Comite.}
+%   \vspace{3.2cm}}}
+%   \caption{Diagrama de casos de uso --- Modulo Financiero.}
+%   \label{fig:cu-modulo-financiero}
+% \end{figure}
 
-\begin{figure}[H]
-  \centering
-  \fbox{\parbox{0.85\textwidth}{\centering\vspace{3.2cm}
-  \textit{Modulo Comunidad: CU\_10, CU\_16, CU\_19, CU\_20, CU\_21, CU\_22, CU\_25 y CU\_27.}\\
-  \textit{Actores principales: Residente, Administrador y Comite.}
-  \vspace{3.2cm}}}
-  \caption{Diagrama de casos de uso --- Modulo Comunidad y Gobernanza.}
-  \label{fig:cu-modulo-comunidad}
-\end{figure}
+% \begin{figure}[H]
+%   \centering
+%   \fbox{\parbox{0.85\textwidth}{\centering\vspace{3.2cm}
+%   \textit{Modulo Comunidad: CU\_10, CU\_16, CU\_19, CU\_20, CU\_21, CU\_22, CU\_25 y CU\_27.}\\
+%   \textit{Actores principales: Residente, Administrador y Comite.}
+%   \vspace{3.2cm}}}
+%   \caption{Diagrama de casos de uso --- Modulo Comunidad y Gobernanza.}
+%   \label{fig:cu-modulo-comunidad}
+% \end{figure}
 
-\begin{figure}[H]
-  \centering
-  \fbox{\parbox{0.85\textwidth}{\centering\vspace{3.2cm}
-  \textit{Modulo Administrativo: CU\_07, CU\_08, CU\_14, CU\_17, CU\_24 y CU\_28.}\\
-  \textit{Actores principales: Administrador y Personal operativo.}
-  \vspace{3.2cm}}}
-  \caption{Diagrama de casos de uso --- Modulo Administrativo.}
-  \label{fig:cu-modulo-admin}
-\end{figure}
+% \begin{figure}[H]
+%   \centering
+%   \fbox{\parbox{0.85\textwidth}{\centering\vspace{3.2cm}
+%   \textit{Modulo Administrativo: CU\_07, CU\_08, CU\_14, CU\_17, CU\_24 y CU\_28.}\\
+%   \textit{Actores principales: Administrador y Personal operativo.}
+%   \vspace{3.2cm}}}
+%   \caption{Diagrama de casos de uso --- Modulo Administrativo.}
+%   \label{fig:cu-modulo-admin}
+% \end{figure}
 
 \section{Matriz de trazabilidad RF--CU}
 
@@ -605,7 +606,7 @@ A continuacion se presentan diagramas resumidos por modulo funcional. Se mantien
 \textbf{RF} & \textbf{Casos de Uso relacionados} \\\hline
 RF\_01 (Visitas) & CU\_01, CU\_15 \\\hline
 RF\_02 (Notificaciones push) & CU\_01, CU\_02, CU\_03, CU\_04, CU\_07, CU\_13, CU\_19, CU\_23, CU\_29 \\\hline
-RF\_03 (Pre-autorizacion de visitas) & CU\_01 \\\hline
+RF\_03 (Pre-autorizacion de visitas) & CU\_01, CU\_15 \\\hline
 RF\_04 (Encomiendas) & CU\_02, CU\_29 \\\hline
 RF\_05 (Tareas del personal) & CU\_07, CU\_08, CU\_13 \\\hline
 RF\_06 (Inicio/fin jornada) & Cobertura parcial en v1.0 mediante CU\_13; la marcacion de jornada queda diferida al anexo. \\\hline
@@ -636,7 +637,7 @@ RF\_20 (Notificaciones en tiempo real) & CU\_01, CU\_02, CU\_03, CU\_04, CU\_07,
 \textbf{RF \textbackslash\ CU} & \textbf{01} & \textbf{02} & \textbf{03} & \textbf{04} & \textbf{05} & \textbf{07} & \textbf{08} & \textbf{09} & \textbf{10} & \textbf{13} & \textbf{14} & \textbf{15} & \textbf{16} & \textbf{17} & \textbf{19} & \textbf{20} & \textbf{21} & \textbf{22} & \textbf{23} & \textbf{24} & \textbf{25} & \textbf{26} & \textbf{27} & \textbf{28} & \textbf{29}\\\hline
 RF\_01 & X &  &  &  &  &  &  &  &  &  &  & X &  &  &  &  &  &  &  &  &  &  &  &  &  \\\hline
 RF\_02 & X & X & X & X &  & X &  &  &  & X &  &  &  &  & X &  &  &  & X &  &  &  &  &  & X \\\hline
-RF\_03 & X &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  \\\hline
+RF\_03 & X &  &  &  &  &  &  &  &  &  &  & X &  &  &  &  &  &  &  &  &  &  &  &  &  \\\hline
 RF\_04 &  & X &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & X \\\hline
 RF\_05 &  &  &  &  &  & X & X &  &  & X &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  \\\hline
 RF\_06 &  &  &  &  &  &  &  &  &  & X &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  \\\hline
@@ -659,73 +660,73 @@ RF\_20 & X & X & X & X &  & X &  &  &  & X &  &  &  &  & X &  &  &  & X &  &  & 
 \end{longtable}
 \end{landscape}
 
-\section{Matriz de trazabilidad CU -- Vistas}
+% \section{Matriz de trazabilidad CU -- Vistas}
 
-La Tabla~\ref{tab:traza-cu-vistas} vincula cada caso de uso vigente con las vistas del frontend donde se materializa, completando la cadena de trazabilidad RF~$\rightarrow$~CU~$\rightarrow$~Pantalla. Las vistas se detallan en la Seccion~\ref{subsec:vistas-por-rol} del Capitulo~\ref{cap:diseno}.
+% La Tabla~\ref{tab:traza-cu-vistas} vincula cada caso de uso vigente con las vistas del frontend donde se materializa, completando la cadena de trazabilidad RF~$\rightarrow$~CU~$\rightarrow$~Pantalla. Las vistas se detallan en la Seccion~\ref{subsec:vistas-por-rol} del Capitulo~\ref{cap:diseno}.
 
-\begin{longtable}{|p{0.07\textwidth}|p{0.25\textwidth}|p{0.42\textwidth}|p{0.18\textwidth}|}
-\caption{Matriz de trazabilidad CU -- Vistas del frontend}\label{tab:traza-cu-vistas}\\
-\hline
-\textbf{CU} & \textbf{Nombre} & \textbf{Vista(s) Frontend} & \textbf{Rol principal} \\
-\hline
-\endfirsthead
-\hline
-\textbf{CU} & \textbf{Nombre} & \textbf{Vista(s) Frontend} & \textbf{Rol principal} \\
-\hline
-\endhead
-\hline
-\endfoot
+% \begin{longtable}{|p{0.07\textwidth}|p{0.25\textwidth}|p{0.42\textwidth}|p{0.18\textwidth}|}
+% \caption{Matriz de trazabilidad CU -- Vistas del frontend}\label{tab:traza-cu-vistas}\\
+% \hline
+% \textbf{CU} & \textbf{Nombre} & \textbf{Vista(s) Frontend} & \textbf{Rol principal} \\
+% \hline
+% \endfirsthead
+% \hline
+% \textbf{CU} & \textbf{Nombre} & \textbf{Vista(s) Frontend} & \textbf{Rol principal} \\
+% \hline
+% \endhead
+% \hline
+% \endfoot
 
-CU\_01 & Gestionar ingreso/salida de visitas & VisitRegistrationPanel, ResidentVisits & Residente, Conserje \\
-\hline
-CU\_02 & Registrar encomiendas & ConciergeParcels, AdminParcels, ResidentParcels & Conserje \\
-\hline
-CU\_03 & Registrar incidente & ResidentIncidents, AdminIncidentsBoard & Residente, Conserje, Administrador \\
-\hline
-CU\_04 & Registrar pago de gastos comunes & ResidentCartola, ResidentChargesDetail, ResidentPaymentFlow, AdminCommonExpenses & Residente, Administrador \\
-\hline
-CU\_05 & Reservar espacio comun & ResidentAmenities, AdminAmenities & Residente \\
-\hline
-CU\_07 & Asignar tareas & AdminTasks & Administrador \\
-\hline
-CU\_08 & Gestionar personal operativo & AdminStaff, AdminCreateUser & Administrador \\
-\hline
-CU\_09 & Consultar reportes y estados financieros & Dashboard, AdminCommonExpenses, AdminIncidentStats & Administrador, Comite \\
-\hline
-CU\_10 & Emitir voto & Votaciones & Residente \\
-\hline
-CU\_13 & Marcar tarea completada & StaffTasks, StaffPortal & Personal operativo \\
-\hline
-CU\_14 & Configurar roles y permisos & AdminCreateUser & Administrador \\
-\hline
-CU\_15 & Escanear QR de cedula & VisitRegistrationPanel & Conserje \\
-\hline
-CU\_16 & Gestionar publicaciones del muro comunitario & ResidentPublications & Administrador, Residente \\
-\hline
-CU\_17 & Gestionar residentes y comite & AdminResidents, AdminCreateUser & Administrador \\
-\hline
-CU\_19 & Gestionar votaciones comunitarias & Votaciones & Administrador, Comite \\
-\hline
-CU\_20 & Chat en tiempo real & ChatHub & Residente \\
-\hline
-CU\_21 & Publicar articulo en marketplace & ResidentMarketplace, ResidentMarketplaceCreate & Residente \\
-\hline
-CU\_22 & Consultar biblioteca documental & ResidentLibrary & Administrador, Residente, Comite \\
-\hline
-CU\_23 & Gestionar notificaciones & NotificationCenter, NotificationPreferences & Todos los roles \\
-\hline
-CU\_24 & Registrar/aprobar comunidad & CreateCommunityModal, CommunitySelector, AdminInviteRegister & Administrador \\
-\hline
-CU\_25 & Publicar documentos y actas & ResidentLibrary & Administrador, Comite \\
-\hline
-CU\_26 & Consultar estados de cuenta para fiscalizacion & AdminCommonExpenses, Dashboard & Comite, Administrador \\
-\hline
-CU\_27 & Publicar resultados de votacion & Votaciones & Administrador, Comite \\
-\hline
-CU\_28 & Gestionar unidades habitacionales & AdminHousingUnits & Administrador \\
-\hline
-CU\_29 & Registrar retiro de encomienda & ConciergeParcels, AdminParcels, ResidentParcels & Conserje \\
+% CU\_01 & Gestionar ingreso/salida de visitas & VisitRegistrationPanel, ResidentVisits & Residente, Conserje \\
+% \hline
+% CU\_02 & Registrar encomiendas & ConciergeParcels, AdminParcels, ResidentParcels & Conserje \\
+% \hline
+% CU\_03 & Registrar incidente & ResidentIncidents, AdminIncidentsBoard & Residente, Conserje, Administrador \\
+% \hline
+% CU\_04 & Registrar pago de gastos comunes & ResidentCartola, ResidentChargesDetail, ResidentPaymentFlow, AdminCommonExpenses & Residente, Administrador \\
+% \hline
+% CU\_05 & Reservar espacio comun & ResidentAmenities, AdminAmenities & Residente \\
+% \hline
+% CU\_07 & Asignar tareas & AdminTasks & Administrador \\
+% \hline
+% CU\_08 & Gestionar personal operativo & AdminStaff, AdminCreateUser & Administrador \\
+% \hline
+% CU\_09 & Consultar reportes y estados financieros & Dashboard, AdminCommonExpenses, AdminIncidentStats & Administrador, Comite \\
+% \hline
+% CU\_10 & Emitir voto & Votaciones & Residente \\
+% \hline
+% CU\_13 & Marcar tarea completada & StaffTasks, StaffPortal & Personal operativo \\
+% \hline
+% CU\_14 & Configurar roles y permisos & AdminCreateUser & Administrador \\
+% \hline
+% CU\_15 & Escanear QR de cedula & VisitRegistrationPanel & Conserje \\
+% \hline
+% CU\_16 & Gestionar publicaciones del muro comunitario & ResidentPublications & Administrador, Residente \\
+% \hline
+% CU\_17 & Gestionar residentes y comite & AdminResidents, AdminCreateUser & Administrador \\
+% \hline
+% CU\_19 & Gestionar votaciones comunitarias & Votaciones & Administrador, Comite \\
+% \hline
+% CU\_20 & Chat en tiempo real & ChatHub & Residente \\
+% \hline
+% CU\_21 & Publicar articulo en marketplace & ResidentMarketplace, ResidentMarketplaceCreate & Residente \\
+% \hline
+% CU\_22 & Consultar biblioteca documental & ResidentLibrary & Administrador, Residente, Comite \\
+% \hline
+% CU\_23 & Gestionar notificaciones & NotificationCenter, NotificationPreferences & Todos los roles \\
+% \hline
+% CU\_24 & Registrar/aprobar comunidad & CreateCommunityModal, CommunitySelector, AdminInviteRegister & Administrador \\
+% \hline
+% CU\_25 & Publicar documentos y actas & ResidentLibrary & Administrador, Comite \\
+% \hline
+% CU\_26 & Consultar estados de cuenta para fiscalizacion & AdminCommonExpenses, Dashboard & Comite, Administrador \\
+% \hline
+% CU\_27 & Publicar resultados de votacion & Votaciones & Administrador, Comite \\
+% \hline
+% CU\_28 & Gestionar unidades habitacionales & AdminHousingUnits & Administrador \\
+% \hline
+% CU\_29 & Registrar retiro de encomienda & ConciergeParcels, AdminParcels, ResidentParcels & Conserje \\
 
-\end{longtable}
+% \end{longtable}
 
 \endgroup
