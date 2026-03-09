@@ -1,19 +1,19 @@
-Este cap\'itulo describe la implantaci\'on y puesta en marcha de la versi\'on de prueba del sistema \textbf{DOMU}, alineando la estrategia de despliegue con la arquitectura y el desarrollo documentados en los cap\'itulos anteriores. A diferencia de un escenario de producci\'on sobre nube p\'ublica, la validaci\'on operativa del sistema se realizar\'a sobre infraestructura institucional provista por la Universidad del B\'io-B\'io, lo que permite contar con un entorno controlado para pruebas t\'ecnicas, demostraciones funcionales y marcha blanca.
+Este capítulo describe la implantación y puesta en marcha de la versión de prueba del sistema \textbf{DOMU}, alineando la estrategia de despliegue con la arquitectura y el desarrollo documentados en los capítulos anteriores. A diferencia de un escenario de producción sobre nube pública, la validación operativa del sistema se realizará sobre infraestructura institucional provista por la Universidad del Bío-Bío, lo que permite contar con un entorno controlado para pruebas técnicas, demostraciones funcionales y marcha blanca.
 
 \section{Arquitectura de Despliegue}
 
-La implantaci\'on de DOMU adopta un esquema \textbf{cliente-servidor} coherente con la arquitectura definida en el Cap\'itulo~6 y con la implementaci\'on descrita en el Cap\'itulo~7. El \textit{frontend} se publica como una SPA/PWA accesible desde navegador, mientras que el \textit{backend} Java expone la API REST y los canales WebSocket requeridos por la plataforma. La persistencia se resuelve mediante MySQL~8, y los servicios externos contin\'uan siendo utilizados para correo electr\'onico, almacenamiento documental y generaci\'on de archivos PDF.
+La implantación de DOMU adopta un esquema \textbf{cliente-servidor} coherente con la arquitectura definida en el Capítulo~6 y con la implementación descrita en el Capítulo~7. El \textit{frontend} se publica como una SPA/PWA accesible desde navegador, mientras que el \textit{backend} Java expone la API REST y los canales WebSocket requeridos por la plataforma. La persistencia se resuelve mediante MySQL~8, y los servicios externos continúan siendo utilizados para correo electrónico, almacenamiento documental y generación de archivos PDF.
 
-La Figura~\ref{fig:despliegue} resume el esquema general de implantaci\'on definido para la versi\'on de prueba.
+La Figura~\ref{fig:despliegue} resume el esquema general de implantación definido para la versión de prueba.
 
 \begin{figure}[H]
 \centering
 \begin{tabular}{|p{0.92\linewidth}|}
 \hline
-\textbf{Arquitectura de Implantaci\'on --- DOMU (entorno de prueba institucional)} \\[4pt]
+\textbf{Arquitectura de Implantación --- DOMU (entorno de prueba institucional)} \\[4pt]
 \texttt{[Cliente Web / PWA]} $\longrightarrow$ \texttt{Servidor virtual UBB} $\longrightarrow$ \texttt{Frontend React compilado} \\[4pt]
 \hfill $\downarrow$ \texttt{HTTP / WebSocket} $\downarrow$ \hfill \\[4pt]
-\texttt{[Servidor de Aplicaciones]} \\ 
+\texttt{[Servidor de Aplicaciones]} \\
 \quad \texttt{Java 21 + Javalin 6} \\
 \quad \texttt{API REST + /ws/chat + /ws/notifications} \\[4pt]
 \hfill $\downarrow$ \texttt{JDBC} $\downarrow$ \hfill \\[4pt]
@@ -22,32 +22,32 @@ La Figura~\ref{fig:despliegue} resume el esquema general de implantaci\'on defin
 \texttt{[Servicios Externos]} \texttt{Box + SMTP + OpenPDF} \\
 \hline
 \end{tabular}
-\caption{Arquitectura de implantaci\'on de la versi\'on de prueba del sistema DOMU.}
+\caption{Arquitectura de implantación de la versión de prueba del sistema DOMU.}
 \label{fig:despliegue}
 \end{figure}
 
 \subsection{Infraestructura Institucional de Pruebas}
 
-La aplicaci\'on de prueba ser\'a alojada en un servidor virtual provisto por la Universidad del B\'io-B\'io. Esta decisi\'on permite centralizar la validaci\'on del sistema en un entorno administrado por la instituci\'on, facilitando el acceso remoto del equipo de desarrollo y el despliegue controlado para fines acad\'emicos.
+La aplicación de prueba será alojada en un servidor virtual provisto por la Universidad del Bío-Bío. Esta decisión permite centralizar la validación del sistema en un entorno administrado por la institución, facilitando el acceso remoto del equipo de desarrollo y el despliegue controlado para fines académicos.
 
 \begin{longtable}{|p{0.32\textwidth}|p{0.56\textwidth}|}
-\caption{Infraestructura institucional asignada para la implantaci\'on de prueba}\label{tab:infraestructura-ubb}\\
+\caption{Infraestructura institucional asignada para la implantación de prueba}\label{tab:infraestructura-ubb}\\
 \hline
-\textbf{Par\'ametro} & \textbf{Valor} \\
+\textbf{Parámetro} & \textbf{Valor} \\
 \hline
 \endfirsthead
 \hline
-\textbf{Par\'ametro} & \textbf{Valor} \\
+\textbf{Parámetro} & \textbf{Valor} \\
 \hline
 \endhead
 \hline
 \endfoot
 
-Distribuci\'on Linux & Debian Bookworm. \\
+Distribución Linux & Debian Bookworm. \\
 \hline
-Servidor virtual & Infraestructura institucional de la Universidad del B\'io-B\'io. \\
+Servidor virtual & Infraestructura institucional de la Universidad del Bío-Bío. \\
 \hline
-Direcci\'on IP & \texttt{146.83.194.142}. \\
+Dirección IP & \texttt{146.83.194.142}. \\
 \hline
 Puerto SSH & \texttt{1897}. \\
 \hline
@@ -65,113 +65,113 @@ La base de datos se encuentra asociada a la misma infraestructura de servidor, u
 
 \subsection{Componentes Desplegados}
 
-Los componentes considerados en la implantaci\'on son los siguientes:
+Los componentes considerados en la implantación son los siguientes:
 
 \begin{itemize}
-    \item \textbf{Frontend Web:} La interfaz desarrollada con React~19 y Vite~7 se compila como una SPA y se publica en el servidor institucional a trav\'es del puerto web asignado. Esta misma publicaci\'on soporta la experiencia PWA descrita en el Cap\'itulo~7.
+    \item \textbf{Frontend Web:} La interfaz desarrollada con React~19 y Vite~7 se compila como una SPA y se publica en el servidor institucional a través del puerto web asignado. Esta misma publicación soporta la experiencia PWA descrita en el Capítulo~7.
 
-    \item \textbf{Backend:} El servidor de aplicaciones se ejecuta con Java~21 y Javalin~6, exponiendo los m\'as de 120~endpoints REST y los canales WebSocket \texttt{/ws/chat} y \texttt{/ws/notifications}.
+    \item \textbf{Backend:} El servidor de aplicaciones se ejecuta con Java~21 y Javalin~6, exponiendo los más de 120~endpoints REST y los canales WebSocket \texttt{/ws/chat} y \texttt{/ws/notifications}.
 
-    \item \textbf{Base de Datos:} La persistencia del sistema utiliza MySQL~8 con la base de datos \texttt{crivas\_bd}, manteniendo consistencia con el dise\~no de persistencia y las migraciones versionadas mediante Flyway.
+    \item \textbf{Base de Datos:} La persistencia del sistema utiliza MySQL~8 con la base de datos \texttt{crivas\_bd}, manteniendo consistencia con el diseño de persistencia y las migraciones versionadas mediante Flyway.
 
-    \item \textbf{Repositorio de c\'odigo:} El control de versiones y almacenamiento del c\'odigo fuente se realiza en el GitLab institucional (\texttt{gitlab.face.ubiobio.cl}), sirviendo como respaldo del proyecto y origen de los artefactos desplegados.
+    \item \textbf{Repositorio de código:} El control de versiones y almacenamiento del código fuente se realiza en el GitLab institucional (\texttt{gitlab.face.ubiobio.cl}), sirviendo como respaldo del proyecto y origen de los artefactos desplegados.
 
-    \item \textbf{Servicios externos:} La implantaci\'on sigue dependiendo de Box para almacenamiento documental, Jakarta Mail/SMTP para notificaciones por correo y OpenPDF para la generaci\'on de comprobantes y estados de cuenta.
+    \item \textbf{Servicios externos:} La implantación sigue dependiendo de Box para almacenamiento documental, Jakarta Mail/SMTP para notificaciones por correo y OpenPDF para la generación de comprobantes y estados de cuenta.
 \end{itemize}
 
 \section{Procedimiento de Puesta en Marcha}
 
-La puesta en marcha del entorno de prueba se estructura en una secuencia controlada de actividades t\'ecnicas, con el fin de asegurar trazabilidad y reducir errores de configuraci\'on.
+La puesta en marcha del entorno de prueba se estructura en una secuencia controlada de actividades técnicas, con el fin de asegurar trazabilidad y reducir errores de configuración.
 
-\subsection{Preparaci\'on del Servidor}
+\subsection{Preparación del Servidor}
 
-Previo al despliegue, el servidor virtual institucional debe quedar configurado con las dependencias necesarias para ejecutar la aplicaci\'on:
+Previo al despliegue, el servidor virtual institucional debe quedar configurado con las dependencias necesarias para ejecutar la aplicación:
 
 \begin{itemize}
-    \item Instalaci\'on de Java~21 para la ejecuci\'on del backend.
+    \item Instalación de Java~21 para la ejecución del backend.
     \item Disponibilidad de MySQL~8 y acceso a la base de datos \texttt{crivas\_bd}.
-    \item Configuraci\'on del puerto web institucional para publicar la versi\'on de prueba.
-    \item Habilitaci\'on de acceso remoto v\'ia SSH sobre el puerto \texttt{1897}.
-    \item Definici\'on de variables de entorno para conexi\'on a base de datos, JWT, correo electr\'onico, Box y configuraci\'on general del servidor.
+    \item Configuración del puerto web institucional para publicar la versión de prueba.
+    \item Habilitación de acceso remoto vía SSH sobre el puerto \texttt{1897}.
+    \item Definición de variables de entorno para conexión a base de datos, JWT, correo electrónico, Box y configuración general del servidor.
 \end{itemize}
 
-Estas variables son coherentes con la configuraci\'on descrita en la clase \texttt{AppConfig} del \textit{backend}, evitando el uso de credenciales embebidas en el c\'odigo fuente.
+Estas variables son coherentes con la configuración descrita en la clase \texttt{AppConfig} del \textit{backend}, evitando el uso de credenciales embebidas en el código fuente.
 
 \subsection{Despliegue de Artefactos}
 
-El proceso de implantaci\'on contempla la publicaci\'on separada de los dos artefactos principales del sistema:
+El proceso de implantación contempla la publicación separada de los dos artefactos principales del sistema:
 
 \begin{enumerate}
-    \item Construcci\'on del \textit{frontend} con Vite para obtener los archivos est\'aticos optimizados.
-    \item Compilaci\'on del \textit{backend} con Gradle y generaci\'on del artefacto ejecutable en Java.
+    \item Construcción del \textit{frontend} con Vite para obtener los archivos estáticos optimizados.
+    \item Compilación del \textit{backend} con Gradle y generación del artefacto ejecutable en Java.
     \item Transferencia de los artefactos al servidor virtual institucional.
-    \item Publicaci\'on del \textit{frontend} en el puerto web asignado por la Universidad.
-    \item Levantamiento del \textit{backend} y verificaci\'on de conectividad con la base de datos y los servicios externos.
+    \item Publicación del \textit{frontend} en el puerto web asignado por la Universidad.
+    \item Levantamiento del \textit{backend} y verificación de conectividad con la base de datos y los servicios externos.
 \end{enumerate}
 
-Una vez desplegados ambos componentes, se realizan pruebas de humo sobre autenticaci\'on, navegaci\'on general, conexi\'on WebSocket y persistencia de datos.
+Una vez desplegados ambos componentes, se realizan pruebas de humo sobre autenticación, navegación general, conexión WebSocket y persistencia de datos.
 
-\subsection{Gesti\'on de Migraciones}
+\subsection{Gestión de Migraciones}
 
-El esquema de base de datos se mantiene versionado mediante \textbf{Flyway}. Al iniciar el servidor, se ejecutan autom\'aticamente las migraciones pendientes, garantizando que la estructura de \texttt{crivas\_bd} se encuentre sincronizada con la versi\'on del c\'odigo desplegado. Esta estrategia reduce el riesgo de inconsistencias entre la implementaci\'on del \textit{backend} y la persistencia real utilizada durante la marcha blanca.
+El esquema de base de datos se mantiene versionado mediante \textbf{Flyway}. Al iniciar el servidor, se ejecutan automáticamente las migraciones pendientes, garantizando que la estructura de \texttt{crivas\_bd} se encuentre sincronizada con la versión del código desplegado. Esta estrategia reduce el riesgo de inconsistencias entre la implementación del \textit{backend} y la persistencia real utilizada durante la marcha blanca.
 
-\section{Plan de Capacitaci\'on}
+\section{Plan de Capacitación}
 
-La adopci\'on del sistema requiere acompa\~nar a los distintos perfiles de usuario con actividades breves de inducci\'on, ajustadas a sus responsabilidades dentro de la comunidad.
+La adopción del sistema requiere acompañar a los distintos perfiles de usuario con actividades breves de inducción, ajustadas a sus responsabilidades dentro de la comunidad.
 
-\subsection{Administraci\'on y Comit\'e}
+\subsection{Administración y Comité}
 
-Se contempla una sesi\'on de inducci\'on de aproximadamente 2~horas, orientada a la configuraci\'on inicial del edificio y a la operaci\'on de los m\'odulos de gesti\'on y gobernanza. Esta capacitaci\'on considera:
+Se contempla una sesión de inducción de aproximadamente 2~horas, orientada a la configuración inicial del edificio y a la operación de los módulos de gestión y gobernanza. Esta capacitación considera:
 
 \begin{itemize}
     \item Carga de residentes y unidades habitacionales.
-    \item Configuraci\'on de per\'iodos de gasto com\'un y consulta de estados de cuenta.
-    \item Uso del m\'odulo de votaciones.
-    \item Publicaci\'on de documentos comunitarios, incluyendo actas.
-    \item Validaci\'on de flujos de revisi\'on por parte del Comit\'e.
+    \item Configuración de períodos de gasto común y consulta de estados de cuenta.
+    \item Uso del módulo de votaciones.
+    \item Publicación de documentos comunitarios, incluyendo actas.
+    \item Validación de flujos de revisión por parte del Comité.
 \end{itemize}
 
-Se entrega adem\'as un manual digital de operaci\'on, segmentado por rol.
+Se entrega además un manual digital de operación, segmentado por rol.
 
-\subsection{Personal de Conserjer\'ia}
+\subsection{Personal de Conserjería}
 
-La capacitaci\'on para conserjer\'ia es principalmente pr\'actica y de corta duraci\'on (aproximadamente 30~minutos). Se concentra en:
+La capacitación para conserjería es principalmente práctica y de corta duración (aproximadamente 30~minutos). Se concentra en:
 
 \begin{itemize}
-    \item Inicio de sesi\'on.
-    \item Registro y verificaci\'on de visitas.
+    \item Inicio de sesión.
+    \item Registro y verificación de visitas.
     \item Uso de lectura QR para control de acceso.
     \item Registro de encomiendas.
 \end{itemize}
 
 \subsection{Residentes}
 
-Para residentes se considera una estrategia liviana de adopci\'on, basada en material audiovisual breve y apoyo remoto. El contenido cubre registro, recuperaci\'on de contrase\~na, autorizaci\'on de visitas, reservas de \'areas comunes y consulta de gastos comunes.
+Para residentes se considera una estrategia liviana de adopción, basada en material audiovisual breve y apoyo remoto. El contenido cubre registro, recuperación de contraseña, autorización de visitas, reservas de áreas comunes y consulta de gastos comunes.
 
 \section{Estrategia de Lanzamiento}
 
-La implantaci\'on se realizar\'a mediante una \textbf{marcha blanca} de dos semanas sobre el entorno institucional de prueba, con el objetivo de validar tanto el funcionamiento t\'ecnico como la adopci\'on gradual de los usuarios.
+La implantación se realizará mediante una \textbf{marcha blanca} de dos semanas sobre el entorno institucional de prueba, con el objetivo de validar tanto el funcionamiento técnico como la adopción gradual de los usuarios.
 
 \begin{enumerate}
-    \item \textbf{Semana~1:} Operaci\'on en paralelo con los mecanismos tradicionales. El objetivo es validar autenticaci\'on, acceso, encomiendas y carga inicial de datos.
+    \item \textbf{Semana~1:} Operación en paralelo con los mecanismos tradicionales. El objetivo es validar autenticación, acceso, encomiendas y carga inicial de datos.
 
-    \item \textbf{Semana~2:} Transici\'on progresiva hacia el uso habitual de la plataforma para visitas, encomiendas, reservas y notificaciones.
+    \item \textbf{Semana~2:} Transición progresiva hacia el uso habitual de la plataforma para visitas, encomiendas, reservas y notificaciones.
 
-    \item \textbf{Cierre de marcha blanca:} Revisi\'on de incidencias, ajustes menores de configuraci\'on y habilitaci\'on formal del entorno de prueba para demostraciones y validaci\'on acad\'emica.
+    \item \textbf{Cierre de marcha blanca:} Revisión de incidencias, ajustes menores de configuración y habilitación formal del entorno de prueba para demostraciones y validación académica.
 \end{enumerate}
 
-\section{Respaldo y Recuperaci\'on}
+\section{Respaldo y Recuperación}
 
-Con el fin de proteger la informaci\'on generada durante la implantaci\'on de prueba, se define la siguiente estrategia de respaldo:
+Con el fin de proteger la información generada durante la implantación de prueba, se define la siguiente estrategia de respaldo:
 
 \begin{itemize}
-    \item \textbf{Base de datos:} Generaci\'on peri\'odica de respaldos de MySQL mediante \texttt{mysqldump}, almacenados en un directorio protegido del servidor y/o en un medio institucional secundario.
+    \item \textbf{Base de datos:} Generación periódica de respaldos de MySQL mediante \texttt{mysqldump}, almacenados en un directorio protegido del servidor y/o en un medio institucional secundario.
 
-    \item \textbf{Archivos y documentos:} Los archivos cargados por la aplicaci\'on se almacenan en Box, aprovechando las capacidades de versionado y recuperaci\'on del servicio.
+    \item \textbf{Archivos y documentos:} Los archivos cargados por la aplicación se almacenan en Box, aprovechando las capacidades de versionado y recuperación del servicio.
 
-    \item \textbf{RPO:} Se establece como objetivo de punto de recuperaci\'on un m\'aximo de 24~horas.
+    \item \textbf{RPO:} Se establece como objetivo de punto de recuperación un máximo de 24~horas.
 
-    \item \textbf{RTO:} Se establece como objetivo de tiempo de recuperaci\'on un m\'aximo de 2~horas para restaurar la operaci\'on del entorno de prueba.
+    \item \textbf{RTO:} Se establece como objetivo de tiempo de recuperación un máximo de 2~horas para restaurar la operación del entorno de prueba.
 \end{itemize}
 
 \section{Monitoreo y Mantenimiento}
@@ -179,36 +179,36 @@ Con el fin de proteger la informaci\'on generada durante la implantaci\'on de pr
 El monitoreo del entorno de prueba se basa en mecanismos simples y coherentes con el contexto institucional del despliegue:
 
 \begin{itemize}
-    \item \textbf{Logs de aplicaci\'on:} Revisi\'on de logs del backend para detectar errores HTTP, fallos de autenticaci\'on y eventos de WebSocket.
+    \item \textbf{Logs de aplicación:} Revisión de logs del backend para detectar errores HTTP, fallos de autenticación y eventos de WebSocket.
 
-    \item \textbf{Verificaci\'on funcional:} Comprobaci\'on peri\'odica de los flujos cr\'iticos del sistema, incluyendo inicio de sesi\'on, acceso a m\'odulos principales y consulta de datos persistidos.
+    \item \textbf{Verificación funcional:} Comprobación periódica de los flujos críticos del sistema, incluyendo inicio de sesión, acceso a módulos principales y consulta de datos persistidos.
 
-    \item \textbf{Mantenimiento correctivo:} Los ajustes y correcciones se aplican mediante la generaci\'on de una nueva versi\'on de los artefactos y su redepliegue controlado sobre el servidor institucional.
+    \item \textbf{Mantenimiento correctivo:} Los ajustes y correcciones se aplican mediante la generación de una nueva versión de los artefactos y su redepliegue controlado sobre el servidor institucional.
 
-    \item \textbf{Mantenimiento evolutivo:} Las nuevas funcionalidades contin\'uan desarroll\'andose en ramas independientes del repositorio institucional antes de su integraci\'on al entorno de prueba.
+    \item \textbf{Mantenimiento evolutivo:} Las nuevas funcionalidades continúan desarrollándose en ramas independientes del repositorio institucional antes de su integración al entorno de prueba.
 \end{itemize}
 
 \section{Plan de Rollback}
 
-En caso de detectarse fallos cr\'iticos durante la implantaci\'on, el procedimiento de reversi\'on considera:
+En caso de detectarse fallos críticos durante la implantación, el procedimiento de reversión considera:
 
 \begin{enumerate}
-    \item Restaurar la \'ultima versi\'on estable del \textit{frontend} y del \textit{backend}.
-    \item Recuperar el respaldo m\'as reciente de la base de datos si existiera incompatibilidad a nivel de esquema o datos.
-    \item Verificar el funcionamiento de autenticaci\'on, persistencia y conectividad general.
-    \item Registrar la incidencia y posponer la nueva publicaci\'on hasta corregir el error detectado.
+    \item Restaurar la última versión estable del \textit{frontend} y del \textit{backend}.
+    \item Recuperar el respaldo más reciente de la base de datos si existiera incompatibilidad a nivel de esquema o datos.
+    \item Verificar el funcionamiento de autenticación, persistencia y conectividad general.
+    \item Registrar la incidencia y posponer la nueva publicación hasta corregir el error detectado.
 \end{enumerate}
 
 \section{Limitaciones del Despliegue}
 
-La estrategia de implantaci\'on definida para la versi\'on de prueba presenta las siguientes limitaciones:
+La estrategia de implantación definida para la versión de prueba presenta las siguientes limitaciones:
 
 \begin{itemize}
-    \item \textbf{Entorno de prueba, no productivo:} La infraestructura institucional se utilizar\'a para validaci\'on, demostraci\'on y marcha blanca, por lo que no corresponde a un escenario de alta disponibilidad ni de explotaci\'on comercial.
+    \item \textbf{Entorno de prueba, no productivo:} La infraestructura institucional se utilizará para validación, demostración y marcha blanca, por lo que no corresponde a un escenario de alta disponibilidad ni de explotación comercial.
 
-    \item \textbf{Despliegue manual:} La publicaci\'on de nuevas versiones se realiza manualmente a partir de artefactos generados por el equipo de desarrollo. La automatizaci\'on mediante GitLab CI/CD queda propuesta como trabajo futuro.
+    \item \textbf{Despliegue manual:} La publicación de nuevas versiones se realiza manualmente a partir de artefactos generados por el equipo de desarrollo. La automatización mediante GitLab CI/CD queda propuesta como trabajo futuro.
 
-    \item \textbf{Instancia \'unica:} El servidor opera como una sola instancia, sin balanceo de carga ni redundancia horizontal.
+    \item \textbf{Instancia única:} El servidor opera como una sola instancia, sin balanceo de carga ni redundancia horizontal.
 
-    \item \textbf{Restricciones de la PWA:} La aplicaci\'on conserva las limitaciones propias de una Progressive Web App respecto de ciertas capacidades nativas del dispositivo.
+    \item \textbf{Restricciones de la PWA:} La aplicación conserva las limitaciones propias de una Progressive Web App respecto de ciertas capacidades nativas del dispositivo.
 \end{itemize}
