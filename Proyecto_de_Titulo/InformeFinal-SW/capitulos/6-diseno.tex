@@ -366,9 +366,7 @@ Ambos canales requieren autenticación mediante token JWT enviado como parámetr
 % Etiquetas en español. Formato: PNG 300dpi."
 \begin{figure}[H]
   \centering
-  \fbox{\parbox{0.85\textwidth}{\centering\vspace{3cm}
-  \textit{[Insertar diagrama: Arquitectura modular de la API REST --- 12 módulos + 2 canales WebSocket]}
-  \vspace{3cm}}}
+  \includegraphics[width=0.98\textwidth]{images/ActoresCU-Diagrama General de Casos de Uso.drawio.png}
   \caption{Diagrama de módulos de la API REST del sistema DOMU.}
   \label{fig:diagrama-api-modulos}
 \end{figure}
@@ -598,22 +596,56 @@ El texto que acompaña al ícono utiliza una tipografía de estilo moderno y geo
 
 \begin{figure}[H]
   \centering
-  \includegraphics[scale=0.5]{LogotipoDOMU.png}
+  \begin{tikzpicture}[x=0.001cm,y=0.001cm]
+    \begin{scope}[shift={(0,5.87cm)}, yscale=-1]
+      \path[fill=black] svg "M3125 4805 c-412 -239 -861 -499 -997 -577 l-247 -143 0 -530 0 -530 803 -463 c442 -254 809 -462 815 -462 6 0 97 50 202 111 105 61 198 108 205 105 8 -3 98 -53 199 -111 102 -58 189 -105 194 -105 7 0 180 100 1066 615 l140 81 0 759 0 758 -570 329 c-984 568 -1037 598 -1048 598 -7 0 -349 -196 -762 -435z m1545 -61 c418 -242 760 -441 760 -444 0 -3 -82 -52 -183 -110 -107 -62 -182 -111 -182 -120 0 -9 75 -58 183 -120 100 -57 182 -107 182 -111 0 -8 -1117 -659 -1130 -659 -6 0 -96 50 -200 110 -104 61 -194 110 -200 110 -6 0 -97 -50 -201 -111 -104 -61 -196 -109 -204 -107 -18 4 -1535 881 -1535 888 0 13 1917 1120 1932 1116 10 -2 359 -201 778 -442z m800 -674 c0 -104 -2 -190 -5 -190 -10 0 -325 185 -325 190 0 6 311 189 323 190 4 0 7 -85 7 -190z m-2927 -406 c331 -191 674 -388 762 -439 l160 -93 3 -481 c1 -264 1 -481 -1 -481 -2 0 -154 87 -338 193 -184 106 -529 305 -766 441 l-433 248 0 479 c0 264 2 479 5 479 3 0 276 -156 608 -346z m2925 -355 l-3 -491 -565 -329 c-311 -181 -568 -329 -572 -329 -5 0 -8 220 -8 489 l0 489 568 330 c312 182 570 331 575 331 4 1 6 -220 5 -490z m-1588 -458 l0 -490 -97 -57 c-54 -31 -135 -79 -180 -105 l-83 -49 0 494 0 493 173 101 c94 55 175 101 180 101 4 1 7 -219 7 -488z m222 375 l163 -94 3 -481 c1 -265 -1 -480 -5 -478 -5 2 -81 46 -170 97 l-163 93 0 478 c0 264 2 479 4 479 2 0 78 -42 168 -94z";
+      \path[fill=black] svg "M3285 4440 c-434 -252 -601 -355 -603 -369 -3 -15 35 -41 200 -135 112 -64 210 -116 219 -116 15 0 1165 663 1204 694 l20 16 -20 16 c-27 21 -406 244 -414 244 -3 -1 -276 -158 -606 -350z m583 74 l-3 -207 -375 -218 c-206 -120 -381 -219 -389 -219 -15 0 -351 191 -351 200 0 6 1100 648 1113 649 4 1 6 -92 5 -205z m244 86 c84 -49 114 -71 105 -77 -9 -8 -229 -136 -289 -170 -5 -2 -8 78 -8 177 l0 182 38 -22 c20 -13 90 -53 154 -90z";
+      \path[fill=black] svg "M2505 1407 c-3 -6 -4 -188 -3 -402 l3 -390 132 -3 c130 -3 132 -2 135 20 2 14 12 24 28 28 18 4 26 13 28 33 3 21 9 27 28 27 22 0 24 4 24 50 0 46 2 50 24 50 l25 0 3 133 c2 72 2 158 0 189 -3 50 -6 57 -25 60 -19 3 -22 10 -25 56 -3 48 -5 52 -28 52 -19 0 -24 5 -24 25 0 20 -5 25 -24 25 -18 0 -25 7 -29 30 l-6 30 -131 0 c-95 0 -132 -3 -135 -13z m213 -134 c2 -17 10 -23 27 -23 22 0 24 -5 27 -52 3 -46 6 -53 26 -56 22 -3 22 -6 22 -133 l0 -129 -25 0 c-23 0 -25 -3 -25 -50 0 -47 -2 -50 -25 -50 -20 0 -25 -5 -25 -24 0 -20 -6 -25 -40 -31 -21 -4 -44 -4 -50 0 -6 4 -10 105 -10 291 l0 285 48 -3 c40 -3 47 -6 50 -25z";
+      \path[fill=black] svg "M3265 1405 c-3 -8 -7 -22 -10 -30 -2 -8 -13 -15 -24 -15 -13 0 -21 -8 -23 -22 -2 -14 -12 -24 -28 -28 l-25 -6 -3 -292 -2 -292 25 0 c20 0 27 -6 32 -30 4 -23 11 -30 29 -30 19 0 24 -5 24 -25 l0 -26 108 3 c102 3 107 4 110 26 3 16 10 22 28 22 20 0 24 5 24 30 0 25 4 30 25 30 l25 0 0 295 0 295 -25 0 c-20 0 -25 5 -25 25 0 20 -5 25 -24 25 -19 0 -25 6 -28 28 l-3 27 -103 3 c-85 2 -103 0 -107 -13z m155 -130 c0 -20 5 -25 25 -25 l25 0 0 -235 0 -235 -24 0 c-19 0 -25 -6 -28 -27 -3 -26 -6 -28 -48 -28 -39 0 -45 3 -50 25 -4 18 -14 26 -33 28 l-27 3 2 232 3 231 25 6 c16 4 26 14 28 28 3 19 9 22 53 22 46 0 49 -2 49 -25z";
+      \path[fill=black] svg "M3807 1414 c-4 -4 -7 -187 -7 -406 l0 -398 55 0 55 0 2 293 3 292 23 3 c21 3 22 0 22 -52 l0 -56 54 0 55 0 3 53 c3 45 6 52 26 55 l22 3 0 -295 0 -296 55 0 55 0 -2 403 -3 402 -50 0 c-44 0 -50 -2 -55 -25 -4 -16 -14 -26 -27 -28 -14 -2 -23 -12 -25 -25 -3 -19 -10 -22 -50 -25 -42 -3 -47 -1 -50 20 -2 14 -12 24 -28 28 -15 4 -26 15 -30 30 -5 21 -12 25 -51 28 -25 2 -48 0 -52 -4z";
+      \path[fill=black] svg "M4457 1414 c-4 -4 -7 -162 -7 -350 l0 -343 22 -3 c14 -2 24 -12 28 -28 4 -16 14 -26 27 -28 14 -2 23 -12 25 -25 3 -21 9 -22 111 -25 l107 -3 0 26 c0 20 5 25 25 25 20 0 27 6 32 30 4 23 11 30 29 30 l24 0 -2 348 -3 347 -52 3 c-45 3 -53 0 -53 -15 0 -10 -2 -153 -3 -318 l-2 -299 -25 -6 c-15 -4 -26 -15 -30 -30 -5 -22 -11 -25 -50 -25 -39 0 -45 3 -50 25 -4 16 -14 26 -28 28 l-22 3 -2 317 -3 317 -45 3 c-25 2 -49 0 -53 -4z";
+    \end{scope}
+  \end{tikzpicture}
   \caption{Logotipo de Domu}
   \label{fig:logo}
 \end{figure}
 
 \subsection{Guía de colores}
-Los colores corporativos de la aplicación componen una gama cromática cálida, orientada a transmitir cercanía, energía y modernidad.
+La interfaz implementada en el \textit{frontend} de DOMU utiliza un sistema de diseño basado en variables globales de color, lo que permite mantener consistencia visual entre pantallas, componentes y estados de interacción. A diferencia de la propuesta cromática inicial, la versión construida consolidó al \textbf{turquesa} como color principal de identidad, mientras que el \textbf{naranja} se utiliza como acento para llamadas a la acción y acciones destacadas.
 
-En conjunto, esta paleta de colores, que se muestra en la figura a continuación, busca lograr una experiencia visual agradable y llamativa para los usuarios de la plataforma.
+La paleta vigente combina colores de marca, neutros de apoyo para fondos y tipografía, y colores semánticos para representar estados del sistema tales como éxito, advertencia, error e información. La Tabla~\ref{tab:paleta-domu} resume los colores efectivamente utilizados por la aplicación.
 
 \begin{figure}[H]
   \centering
-  \includegraphics[scale=0.5]{PaletaDeColores.png}
-  \caption{Paleta de Colores DOMU}
+  \includegraphics[width=0.82\textwidth]{nuevaPaletaColores.png}
+  \caption{Paleta de colores vigente de DOMU}
   \label{fig:paleta}
 \end{figure}
+
+\begin{table}[H]
+  \centering
+  \caption{Paleta cromática vigente de la aplicación DOMU}
+  \label{tab:paleta-domu}
+  \begin{tabular}{|p{0.24\textwidth}|p{0.18\textwidth}|p{0.46\textwidth}|}
+    \hline
+    \textbf{Categoría} & \textbf{Código HEX} & \textbf{Uso principal} \\ \hline
+    Turquesa principal & \texttt{\#53A497} & Color identitario de la plataforma; encabezados, botones secundarios, estados activos, resaltados y color de tema general. \\ \hline
+    Naranja acento & \texttt{\#F16B32} & Botones primarios, acciones destacadas y énfasis visual en módulos interactivos. \\ \hline
+    Negro & \texttt{\#000000} & Texto principal y elementos de alto contraste. \\ \hline
+    Gris oscuro & \texttt{\#67696A} & Texto secundario, etiquetas y apoyo tipográfico. \\ \hline
+    Gris medio & \texttt{\#808282} & Metadatos, descripciones y elementos de menor jerarquía visual. \\ \hline
+    Blanco & \texttt{\#FFFFFF} & Fondo base de tarjetas, contenedores y superficies principales. \\ \hline
+    Fondo secundario & \texttt{\#F8F9FA} & Secciones auxiliares y contraste suave entre bloques de contenido. \\ \hline
+    Fondo terciario & \texttt{\#F1F3F5} & Áreas de apoyo, controles y superficies neutras de separación. \\ \hline
+    Fondo acento & \texttt{\#E8F5F2} & Realces suaves asociados al color turquesa y estados de enfoque o selección. \\ \hline
+    Éxito & \texttt{\#2D7A36} & Confirmaciones, validaciones correctas y estados completados. \\ \hline
+    Error & \texttt{\#B42318} & Alertas críticas, validaciones fallidas y acciones destructivas. \\ \hline
+    Advertencia & \texttt{\#B54708} & Avisos, tareas pendientes o estados que requieren atención. \\ \hline
+    Información & \texttt{\#0369A1} & Mensajes informativos, indicadores de contexto y notificaciones neutrales. \\ \hline
+  \end{tabular}
+\end{table}
+
+Cabe señalar que el color amarillo \texttt{\#F7CE0F}, presente en una versión temprana de la identidad visual, permanece definido en el sistema de estilos, pero ya no forma parte de la paleta operativa predominante de la interfaz actual.
 
 \subsection{Tipografía}
 La tipografía utilizada es un tipo de letra sencilla y universal que facilite la legibilidad. Se ha optado por emplear una fuente gratuita de Google Fonts, como es Roboto Mono. En las figuras \ref{fig:tipografia1} y \ref{fig:tipografia2} se incluye una representación de dicha fuente con los caracteres más comunes.
@@ -751,230 +783,38 @@ La composición de las interfaces expuesta a continuación corresponde a la vers
 \end{figure}
 \clearpage
 
-\subsection{Vistas del Sistema por Rol}
-\label{subsec:vistas-por-rol}
 
-El frontend de DOMU está compuesto por \textbf{52~vistas} organizadas según el rol del usuario. A continuación se presentan las vistas agrupadas por categoría de acceso, indicando los casos de uso (CU) que cada vista materializa.
-
-% --- Vistas Públicas ---
-\begin{longtable}{|p{0.28\textwidth}|p{0.42\textwidth}|p{0.22\textwidth}|}
-\caption{Vistas públicas (sin autenticación)}\label{tab:vistas-publicas}\\
-\hline
-\textbf{Vista} & \textbf{Descripción} & \textbf{CUs relacionados} \\
-\hline
-\endfirsthead
-\hline \textbf{Vista} & \textbf{Descripción} & \textbf{CUs relacionados} \\ \hline
-\endhead
-\hline \endfoot
-
-Home (Landing) & Página de presentación de la plataforma DOMU. & --- \\
-\hline
-Login & Formulario de inicio de sesión con JWT. & --- \\
-\hline
-Register & Registro de nuevo usuario con confirmación por correo. & --- \\
-\hline
-ForgotPassword & Solicitud de recuperación de contraseña. & --- \\
-\hline
-ConfirmEmail & Confirmación de correo electrónico vía token. & --- \\
-\hline
-About & Información sobre el proyecto y el equipo. & --- \\
-\hline
-RegisterByInvite & Registro mediante código de invitación de administrador. & CU\_24 \\
-
-\end{longtable}
-
-% --- Vistas Administrador ---
-\begin{longtable}{|p{0.28\textwidth}|p{0.42\textwidth}|p{0.22\textwidth}|}
-\caption{Vistas del Administrador}\label{tab:vistas-admin}\\
-\hline
-\textbf{Vista} & \textbf{Descripción} & \textbf{CUs relacionados} \\
-\hline
-\endfirsthead
-\hline \textbf{Vista} & \textbf{Descripción} & \textbf{CUs relacionados} \\ \hline
-\endhead
-\hline \endfoot
-
-Dashboard & Panel principal con resumen de actividad comunitaria. & CU\_09 \\
-\hline
-AdminCreateUser & Creación e invitación de usuarios a la comunidad. & CU\_14, CU\_17, CU\_24 \\
-\hline
-AdminIncidentsBoard & Tablero Kanban de incidentes con estados de avance. & CU\_03 \\
-\hline
-AdminIncidentStats & Estadísticas y métricas de incidentes reportados. & CU\_09 \\
-\hline
-AdminResidents & Listado y gestión de residentes y comité por unidad. & CU\_17 \\
-\hline
-AdminHousingUnits & Gestión de unidades habitacionales, asociación y desvinculación de residentes. & CU\_28 \\
-\hline
-AdminAmenities & Configuración de áreas comunes, aforo y horarios. & CU\_05 \\
-\hline
-AdminCommonExpenses & Gestión de períodos, cargos, comprobantes y validación de gastos comunes. & CU\_04, CU\_09 \\
-\hline
-AdminParcels & Gestión y seguimiento de encomiendas. & CU\_02, CU\_29 \\
-\hline
-AdminTasks & Creación y asignación de tareas al personal. & CU\_07 \\
-\hline
-AdminStaff & Gestión de personal operativo de la comunidad. & CU\_08 \\
-\hline
-Votaciones & Gestión de votaciones comunitarias y publicación de resultados. & CU\_19, CU\_27 \\
-\hline
-ResidentLibrary & Carga de documentos y actas en la biblioteca documental. & CU\_22, CU\_25 \\
-\hline
-AdminCommonExpenses & Consulta de estados de cuenta para fiscalización. & CU\_26 \\
-
-\end{longtable}
-
-% --- Vistas Conserje ---
-\begin{longtable}{|p{0.28\textwidth}|p{0.42\textwidth}|p{0.22\textwidth}|}
-\caption{Vistas del Conserje}\label{tab:vistas-conserje}\\
-\hline
-\textbf{Vista} & \textbf{Descripción} & \textbf{CUs relacionados} \\
-\hline
-\endfirsthead
-\hline \textbf{Vista} & \textbf{Descripción} & \textbf{CUs relacionados} \\ \hline
-\endhead
-\hline \endfoot
-
-VisitRegistrationPanel & Registro de visitas con escaneo QR y check-in/out. & CU\_01, CU\_15 \\
-\hline
-ConciergeVisitLog & Historial operativo de visitas registradas. & CU\_01 \\
-\hline
-ConciergeParcels & Registro y gestión de encomiendas recibidas y retiradas. & CU\_02, CU\_29 \\
-
-\end{longtable}
-
-% --- Vistas Residente ---
-\begin{longtable}{|p{0.28\textwidth}|p{0.42\textwidth}|p{0.22\textwidth}|}
-\caption{Vistas del Residente}\label{tab:vistas-residente}\\
-\hline
-\textbf{Vista} & \textbf{Descripción} & \textbf{CUs relacionados} \\
-\hline
-\endfirsthead
-\hline \textbf{Vista} & \textbf{Descripción} & \textbf{CUs relacionados} \\ \hline
-\endhead
-\hline \endfoot
-
-ResidentProfile & Perfil personal con edición de datos y avatar. & --- \\
-\hline
-ResidentVisits & Pre-autorización y seguimiento de visitas. & CU\_01, CU\_15 \\
-\hline
-ResidentIncidents & Reporte y seguimiento de incidentes. & CU\_03 \\
-\hline
-ResidentAmenities & Consulta de disponibilidad y reserva de áreas comunes. & CU\_05 \\
-\hline
-ResidentCartola & Estado de cuenta del residente (gastos comunes). & CU\_04 \\
-\hline
-ResidentChargesDetail & Detalle de cargos por período. & CU\_04 \\
-\hline
-ResidentPaymentFlow & Flujo de carga de comprobante para gastos comunes. & CU\_04 \\
-\hline
-ResidentParcels & Visualización de encomiendas pendientes y retiradas. & CU\_02, CU\_29 \\
-\hline
-ResidentPublications & Muro comunitario para publicación y consulta de avisos. & CU\_16 \\
-\hline
-ResidentLibrary & Biblioteca de documentos comunitarios. & CU\_22 \\
-\hline
-ResidentMarketplace & Marketplace de artículos entre vecinos. & CU\_21 \\
-\hline
-ResidentMarketplaceCreate & Publicación de nuevo artículo en marketplace. & CU\_21 \\
-\hline
-ChatHub & Hub de conversaciones en tiempo real (WebSocket). & CU\_20 \\
-\hline
-ChatRoom & Sala de chat individual con historial. & CU\_20 \\
-\hline
-ResidentVotaciones & Listado de votaciones activas y cerradas. & CU\_10 \\
-\hline
-ResidentVoteDetail & Detalle de votación con opciones y resultados. & CU\_10 \\
-\hline
-StaffTasks & Visualización y actualización de tareas asignadas (rol Personal). & CU\_13 \\
-\hline
-ResidentContacts & Gestión de contactos frecuentes para visitas. & CU\_01 \\
-
-\end{longtable}
-
-% --- Vistas Comité ---
-\begin{longtable}{|p{0.28\textwidth}|p{0.42\textwidth}|p{0.22\textwidth}|}
-\caption{Vistas del Comité}\label{tab:vistas-comite}\\
-\hline
-\textbf{Vista} & \textbf{Descripción} & \textbf{CUs relacionados} \\
-\hline
-\endfirsthead
-\hline \textbf{Vista} & \textbf{Descripción} & \textbf{CUs relacionados} \\ \hline
-\endhead
-\hline \endfoot
-
-Votaciones & Gestión de votaciones comunitarias y publicación de resultados en rol Comité. & CU\_19, CU\_27 \\
-\hline
-ResidentLibrary & Consulta y carga de actas en la biblioteca documental del comité. & CU\_22, CU\_25 \\
-\hline
-AdminCommonExpenses & Consulta de estados de cuenta en modo lectura para fiscalización. & CU\_26 \\
-
-\end{longtable}
-
-% --- Vistas Especiales ---
-\begin{longtable}{|p{0.28\textwidth}|p{0.42\textwidth}|p{0.22\textwidth}|}
-\caption{Vistas especiales y transversales}\label{tab:vistas-especiales}\\
-\hline
-\textbf{Vista} & \textbf{Descripción} & \textbf{CUs relacionados} \\
-\hline
-\endfirsthead
-\hline \textbf{Vista} & \textbf{Descripción} & \textbf{CUs relacionados} \\ \hline
-\endhead
-\hline \endfoot
-
-NotificationCenter & Centro de notificaciones con lectura y preferencias. & CU\_23 \\
-\hline
-CommunitySelector & Selector de comunidad activa (multi-comunidad). & CU\_24 \\
-\hline
-UserTypeSelector & Selección de rol en flujos de administración y gobierno comunitario. & CU\_14, CU\_24 \\
-\hline
-NotFound (404) & Página de error para rutas inexistentes. & --- \\
-
-\end{longtable}
-
-% === PLACEHOLDER: Reemplazar con imagen generada ===
-% PROMPT para generador de imágenes (Gemini/GPT/DALL-E):
-%
-% "Genera un MAPA DE NAVEGACIÓN (sitemap) para una aplicación web llamada DOMU.
-%
-% NOTACIÓN:
-% - VISTAS/PANTALLAS: rectángulos pequeños con bordes redondeados, nombre de la vista dentro.
-% - ROLES: 5 franjas horizontales (swimlanes) separadas por líneas, cada una con el nombre del rol a la izquierda.
-% - CONEXIONES: líneas finas conectando vistas relacionadas (ej: Cartola → ChargesDetail → PaymentFlow).
-% - VISTA COMPARTIDA: el rectángulo 'NotificationCenter' cruza todas las franjas con borde punteado.
-%
-% FRANJAS (de arriba a abajo):
-% 1. 'Público' (fondo gris claro, 7 cajas): Home, Login, Register, ForgotPassword, ConfirmEmail, About, RegisterByInvite
-% 2. 'Administrador' (fondo naranja pálido, 13 cajas): Dashboard, CreateUser, IncidentsBoard, IncidentStats,
-%    Residents, HousingUnits, Amenities, CommonExpenses, Parcels, Tasks, Staff, GovernancePolls, GovernanceDocs
-% 3. 'Conserje' (fondo verde pálido, 3 cajas): VisitRegistration, VisitLog, Parcels
-% 4. 'Residente' (fondo azul pálido, 18 cajas): Profile, Visits, Incidents, Amenities, Cartola,
-%    ChargesDetail, PaymentFlow, Parcels, Publications, Library, Marketplace, MarketplaceCreate,
-%    ChatHub, ChatRoom, Votaciones, VoteDetail, Tasks, Contacts
-% 5. 'Comité' (fondo morado pálido, 2 cajas): GovernancePolls, GovernanceDocs
-%
-% Las cajas dentro de cada franja se organizan en filas. Conectar con flechas finas:
-% Login → (cualquier dashboard según rol). Cartola → ChargesDetail → PaymentFlow.
-% ChatHub → ChatRoom. Marketplace → MarketplaceCreate. Votaciones → VoteDetail.
-%
-% ESTILO: Fondo blanco general, franjas con colores pastel muy suaves. Bordes de cajas en gris oscuro.
-% Sin sombras ni gradientes. Tipografía sans-serif pequeña. Profesional para tesis universitaria.
-% Etiquetas en español. Formato: PNG 300dpi orientación horizontal (landscape)."
-\begin{figure}[H]
-  \centering
-  \fbox{\parbox{0.85\textwidth}{\centering\vspace{3cm}
-  \textit{[Insertar diagrama: Mapa de navegación del sistema por rol --- 52 vistas organizadas por actor]}
-  \vspace{3cm}}}
-  \caption{Mapa de navegación del sistema DOMU segmentado por rol de usuario.}
-  \label{fig:mapa-navegacion-roles}
-\end{figure}
-
-\clearpage
 
 \section{Diseño de arquitectura}
 La solución adopta un patrón de arquitectura \textbf{Cliente-Servidor} con una API RESTful como medio principal de comunicación, complementada por canales WebSocket para eventos en tiempo real. Esta separación permite que el \textit{frontend} y el \textit{backend} evolucionen, se desarrollen y se desplieguen de manera independiente, favoreciendo la mantenibilidad y la escalabilidad horizontal.
 
 La filosofía de diseño del \textit{backend} se fundamenta en tres principios: (i)~\textbf{separación de responsabilidades} mediante una arquitectura estricta de tres capas (\textit{Controller}~$\rightarrow$~\textit{Service}~$\rightarrow$~\textit{Repository}); (ii)~\textbf{inversión de dependencias} a través del contenedor de inyección Google~Guice, que desacopla la construcción de objetos de su uso; y (iii)~\textbf{aislamiento por comunidad} (\textit{multi-tenancy} lógico) mediante el \textit{header} HTTP \texttt{X-Building-Id}, que permite que una misma instancia del servidor atienda múltiples comunidades de forma segura.
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[
+node distance=2.5cm,
+box/.style={draw, rounded corners, minimum width=3.2cm, minimum height=1.2cm, align=center},
+db/.style={draw, cylinder, shape border rotate=90, aspect=0.25, minimum height=1.2cm, minimum width=2cm},
+arrow/.style={->, thick}
+]
+
+\node[box] (frontend) {Frontend\\React SPA / PWA};
+\node[box, right=4cm of frontend] (backend) {API REST\\Javalin};
+\node[box, below=1.8cm of backend] (ws) {WebSocket\\Chat / Notificaciones};
+\node[db, right=4cm of backend] (db) {MySQL};
+\node[box, above=1.8cm of backend] (ext) {Servicios externos\\Email / Almacenamiento};
+
+\draw[arrow] (frontend) -- node[above]{HTTP REST} (backend);
+\draw[arrow] (frontend) |- node[left]{WebSocket} (ws);
+\draw[arrow] (backend) -- (db);
+\draw[arrow] (backend) -- (ws);
+\draw[arrow] (backend) -- (ext);
+
+\end{tikzpicture}
+\caption{Arquitectura general del sistema DOMU}
+\label{fig:arquitectura-general-domu}
+\end{figure}
 
 La Tabla~\ref{tab:arquitectura-componentes} detalla los componentes principales y la tecnología que los sustenta.
 
